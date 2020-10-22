@@ -21,7 +21,6 @@
 </script>
 
 <div>
-    <p>login user: {session?.user}</p>
     <p>count {$count}</p>
     <p>token {token}</p>
     <button on:click={submit}>login</button>

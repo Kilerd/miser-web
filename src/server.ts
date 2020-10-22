@@ -24,8 +24,7 @@ export default polka() // You can also use Express
 						profile,
 						token
 					};
-					console.log(a);
-					return a; 
+					return a;
 				}
 			})(req, res, next)
 		}
