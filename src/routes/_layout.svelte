@@ -1,7 +1,28 @@
 <script lang="ts">
-	import Nav from '../components/Nav.svelte';
+	import Nav from "../components/Nav.svelte";
 
-	export let segment: string;
+	import { onMount } from "svelte";
+	import { stores } from "@sapper/app";
+	import { api } from "../http";
+	import axios from "axios";
+	export let segment;
+	const { session } = stores();
+
+	onMount(async () => {
+		console.log("onmount");
+		try {
+			if ($session.token) {
+				api.setAuthenticateToken($session.token);
+			}
+			let user_info = await api.getUserInfo();
+			$session.user = user_info.data.data;
+		} catch (e) {
+			console.log(`Something went wrong`);
+			$session.user = false;
+			return;
+		}
+		console.log("doen");
+	});
 </script>
 
 <style>
@@ -15,8 +36,8 @@
 	}
 </style>
 
-<Nav {segment}/>
+<Nav {segment} />
 
 <main>
-	<slot></slot>
+	<slot />
 </main>

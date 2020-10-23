@@ -3,6 +3,8 @@ import polka from 'polka';
 import compression from 'compression';
 import * as sapper from '@sapper/server';
 import cookieParser from 'cookie-parser';
+import jwt from 'jsonwebtoken';
+import { api } from './http'
 
 import { count } from "./stores"
 
@@ -15,16 +17,16 @@ export default polka() // You can also use Express
 		cookieParser(),
 		sirv('static', { dev }),
 		async (req, res, next) => {
-			const token = req.cookies['AUTH']
-			const profile = true
+			const token = req.cookies['AUTH'] || null;
+			const profile = token ? jwt.decode(token) : false
 			return sapper.middleware({
 				session: () => {
-					let a = {
+					return {
 						authenticated: !!profile,
 						profile,
+						user:false, 
 						token
 					};
-					return a;
 				}
 			})(req, res, next)
 		}

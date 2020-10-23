@@ -1,27 +1,31 @@
 <script context="module" lang="ts">
     import { count } from "../stores";
-    export async function preload(this, page, session) {
-        count.update(n => n+1);
-        return {token: session.token};
-    }
 </script>
-
 
 <script lang="ts">
-    import { stores } from "@sapper/app";
-    const { preloading, page, session } = stores();
+    import { goto, stores } from "@sapper/app";
 
-    console.log("normal session", session);
-    function submit() {
-        session.user = "hello";
-        console.log("submit", session.token);
+    const { session } = stores();
+
+    let email = "";
+    let password = "";
+    import { api } from "../http";
+
+    let userinfo = api.getUserInfo().then(() => {
+        goto("/");
+    });
+
+    async function submit() {
+        goto("/");
     }
-
-    export let token;
 </script>
 
-<div>
-    <p>count {$count}</p>
-    <p>token {token}</p>
-    <button on:click={submit}>login</button>
-</div>
+<h1>Login form</h1>
+
+<input type="email" bind:value={email} placeholder="your email" />
+<br />
+
+<input type="password" bind:value={password} placeholder="your password" />
+<br />
+
+<button on:click={submit}>Login</button>
