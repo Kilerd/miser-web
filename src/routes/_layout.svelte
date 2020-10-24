@@ -17,6 +17,7 @@
 			let user_info = await api.getUserInfo();
 			$session.user = user_info.data.data;
 		} catch (e) {
+			e
 			console.log(`Something went wrong`);
 			$session.user = false;
 			return;

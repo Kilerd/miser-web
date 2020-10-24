@@ -1,31 +1,42 @@
-<script context="module" lang="ts">
-    import { count } from "../stores";
-</script>
-
 <script lang="ts">
-    import { goto, stores } from "@sapper/app";
+    import {goto, stores} from "@sapper/app";
+    import {api} from "../http";
 
-    const { session } = stores();
+    const {session} = stores();
 
     let email = "";
     let password = "";
-    import { api } from "../http";
+    let error = null;
 
-    let userinfo = api.getUserInfo().then(() => {
-        goto("/");
-    });
+    if ($session.user) {
+        goto("/", {})
+    }
 
     async function submit() {
-        goto("/");
+        try {
+            let axiosResponse = await api.login(email, password);
+            const token = axiosResponse.data.data;
+            document.cookie = `AUTH=${token}`;
+            api.setAuthenticateToken(token);
+            let axiosResponse1 = await api.getUserInfo();
+            $session.user = axiosResponse1.data.data;
+
+            await goto("/", {})
+        } catch (e) {
+            error = "error on login"
+        }
+
     }
 </script>
 
 <h1>Login form</h1>
+{#if error}
+    <p>{error}</p>
+{/if}
+<input type="email" bind:value={email} placeholder="your email"/>
+<br/>
 
-<input type="email" bind:value={email} placeholder="your email" />
-<br />
-
-<input type="password" bind:value={password} placeholder="your password" />
-<br />
+<input type="password" bind:value={password} placeholder="your password"/>
+<br/>
 
 <button on:click={submit}>Login</button>
