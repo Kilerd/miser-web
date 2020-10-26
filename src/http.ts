@@ -36,6 +36,7 @@ class API {
     }
 
     async getUserInfo() {
+        console.log(`BASE_URL = ${BASE_URL}, NODE_ENV = ${process.env.NODE_ENV}`);
         return await this.axios.request({
             method: "get",
             url: "/user",
