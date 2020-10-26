@@ -1,8 +1,8 @@
 import axios, { AxiosInstance } from "axios";
 import { stores } from '@sapper/app';
-const BASE_URL = process.env.NODE_ENV === "production"
-    ? "https://miser.3min.work"
-    : "http://localhost:8000";
+const BASE_URL = process.env.NODE_ENV !== "production"
+    ? "http://localhost:8000"
+    : "https://miser.3min.work";
 
 // const BASE_URL = "https://miser.3min.work"
 
@@ -32,11 +32,11 @@ class API {
     }
 
     clearAuthenticateToken() {
+        document.cookie = ``;
         this.axios.defaults.headers["Authorization"] = null;
     }
 
     async getUserInfo() {
-        console.log(`BASE_URL = ${BASE_URL}, NODE_ENV = ${process.env.NODE_ENV}`);
         return await this.axios.request({
             method: "get",
             url: "/user",
