@@ -6,6 +6,19 @@ const BASE_URL = process.env.NODE_ENV === "development"
 
 // const BASE_URL = "https://miser.3min.work"
 
+
+export const delete_cookie = (name: string) => {
+    if (get_cookie(name)) {
+        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT";
+    }
+}
+
+export const get_cookie = (name: string) => {
+    return document.cookie.split(';').some(c => {
+        return c.trim().startsWith(name + '=');
+    });
+}
+
 class API {
     axios: AxiosInstance;
     token: string;
@@ -32,7 +45,7 @@ class API {
     }
 
     clearAuthenticateToken() {
-        document.cookie = ``;
+        delete_cookie("AUTH");
         this.axios.defaults.headers["Authorization"] = null;
     }
 
