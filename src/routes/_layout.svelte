@@ -1,10 +1,10 @@
 <script lang="ts">
 	import Nav from "../components/Nav.svelte";
 
-	import { onMount } from "svelte";
-	import { stores } from "@sapper/app";
-	import { api } from "../http";
-	import axios from "axios";
+	import {onMount} from "svelte";
+	import {stores} from "@sapper/app";
+	import {api} from "../http";
+
 	export let segment;
 	const { session } = stores();
 

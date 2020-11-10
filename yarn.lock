@@ -1152,6 +1152,19 @@ caniuse-lite@^1.0.30001135:
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001150.tgz#6d0d829da654b0b233576de00335586bc2004df1"
   integrity sha512-kiNKvihW0m36UhAFnl7bOAv0i1K1f6wpfVtTF5O5O82XzgtBnb05V0XeV3oZ968vfg2sRNChsHw8ASH2hDfoYQ==
 
+carbon-components-svelte@^0.20.0:
+  version "0.20.0"
+  resolved "https://registry.yarnpkg.com/carbon-components-svelte/-/carbon-components-svelte-0.20.0.tgz#05ffa0c8852f8cd06e1926cee45b6816db277447"
+  integrity sha512-P3we9OujAA4JvvtnUUSIeXMuxOdX7vdn82kmy5MJ0CKqOp97sPZOQ4YjzB1UCLaLPsUT+EX7iVjRxn0MF+afhQ==
+  dependencies:
+    carbon-icons-svelte "^10.17.0"
+    flatpickr "4.6.3"
+
+carbon-icons-svelte@^10.17.0:
+  version "10.17.0"
+  resolved "https://registry.yarnpkg.com/carbon-icons-svelte/-/carbon-icons-svelte-10.17.0.tgz#f7559f58be9c789097ea4035e52dbc4c12691d45"
+  integrity sha512-as1RN87YLvF7iepGAGWQOk2oleyb4w17BoHSYyQgE3MceOla04YdSWASK5c22XZZnmMJbbrT17Z34Cl70niz0Q==
+
 chalk@^2.0.0:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-2.4.2.tgz#cd42541677a54333cf541a49108c1432b44c9424"
@@ -1417,6 +1430,11 @@ fill-range@^7.0.1:
   integrity sha512-qOo9F+dMUmC2Lcb4BbVvnKJxTPjCm+RRpe4gDuGrzkL7mEVl/djYSu2OdQ2Pa302N4oqkSg9ir6jaLWJ2USVpQ==
   dependencies:
     to-regex-range "^5.0.1"
+
+flatpickr@4.6.3:
+  version "4.6.3"
+  resolved "https://registry.yarnpkg.com/flatpickr/-/flatpickr-4.6.3.tgz#15a8b76b6e34e3a072861250503a5995b9d3bc60"
+  integrity sha512-007VucCkqNOMMb9ggRLNuJowwaJcyOh4sKAFcdGfahfGc7JQbf94zSzjdBq/wVyHWUEs5o3+idhFZ0wbZMRmVQ==
 
 follow-redirects@^1.10.0:
   version "1.13.0"

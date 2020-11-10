@@ -7,7 +7,7 @@
     if(!$session.user) {
         goto("/login", {})
     }
-    console.log("dashboard load", $session.user);
+
 </script>
 
 <div>protected</div>
