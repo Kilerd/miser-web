@@ -1,5 +1,6 @@
-import axios, { AxiosInstance } from "axios";
-import { stores } from '@sapper/app';
+import axios, {AxiosInstance} from "axios";
+import {stores} from '@sapper/app';
+
 const BASE_URL = process.env.NODE_ENV === "development"
     ? "http://localhost:8000"
     : "https://miser.3min.work";
@@ -59,7 +60,7 @@ class API {
     async login(email: string, password: string) {
         return await this.axios.post(
             "/authorization",
-            { email, password },
+            {email, password},
         )
     }
 
@@ -72,6 +73,11 @@ class API {
         )
     }
 
+    async getJournal() {
+        return await this.axios.get(
+            "/entries/demo/journals",
+        )
+    }
 }
 
 export const api = new API();
