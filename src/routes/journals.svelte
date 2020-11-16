@@ -6,6 +6,7 @@
     import DirectiveLine from "../components/DirectiveLine.svelte";
     import {ListGroup, Button, Modal, ModalHeader, ModalBody, ModalFooter} from "sveltestrap/src";
     import Datepicker from "svelte-calendar";
+    import NewTransactionModal from "../components/NewTransactionModal.svelte";
 
     const {page, session} = stores();
     if (!$session.user) {
@@ -31,18 +32,7 @@
     <h1>Journals</h1>
     <div>
         <Button on:click={toggle}>new</Button>
-        <Modal isOpen={newTransactionStatus} centered={true} fade={true} backdrop={false} size="lg" {toggle}>
-            <ModalHeader {toggle}>New Transaction</ModalHeader>
-            <ModalBody>
-                <Datepicker />
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                tempor incididunt ut labore et dolore magna aliqua.
-            </ModalBody>
-            <ModalFooter>
-                <Button color="primary" on:click={toggle}>Create</Button>
-                <Button color="secondary" on:click={toggle}>Cancel</Button>
-            </ModalFooter>
-        </Modal>
+        <NewTransactionModal isOpen={newTransactionStatus} toggle={toggle} />
     </div>
 </div>
 
