@@ -11,6 +11,8 @@
         border-bottom: 1px solid rgba(255, 62, 0, 0.1);
         font-weight: 300;
         padding: 0 1em;
+        position: sticky;
+        top: 0;
     }
 
     ul {
@@ -53,27 +55,10 @@
 </style>
 
 <nav>
-    <ul>
-        <li>
-            <a
-                    aria-current={segment === undefined ? 'page' : undefined}
-                    href=".">home</a>
-        </li>
-        <li>
-            <a
-                    aria-current={segment === 'login' ? 'page' : undefined}
-                    href="login">login</a>
-        </li>
-        <li>
-            <a
-                    aria-current={segment === 'dashboard' ? 'page' : undefined}
-                    href="dashboard">dashboard</a>
-        </li>
-        {#if $session.user}
-            <li>
-                <a
-                        href="/logout">{$session.user.username}</a>
-            </li>
-        {/if}
-    </ul>
+    <a aria-current={segment === undefined ? 'page' : undefined} href=".">home</a>
+    <a aria-current={segment === 'login' ? 'page' : undefined} href="login">login</a>
+    <a aria-current={segment === 'journals' ? 'page' : undefined} href="journals">Journals</a>
+    {#if $session.user}
+        <a href="/logout">{$session.user.username}</a>
+    {/if}
 </nav>

@@ -28,18 +28,33 @@
 </script>
 
 <style>
+	section {
+		display: flex;
+		min-height: 100vh;
+		align-items: stretch;
+	}
+	side {
+		flex: 0 0 17rem;
+	}
 	main {
-		position: relative;
-		max-width: 56em;
+		flex: 1;
+
 		background-color: white;
 		padding: 2em;
-		margin: 0 auto;
 		box-sizing: border-box;
 	}
 </style>
 
-<Nav {segment} />
+<svelte:head>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</svelte:head>
+<section>
+	<side>
+		<Nav {segment} />
+	</side>
 
-<main>
-	<slot />
-</main>
+	<main>
+		<slot />
+	</main>
+
+</section>

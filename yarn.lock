@@ -1727,6 +1727,11 @@ lodash.isnumber@^3.0.3:
   resolved "https://registry.yarnpkg.com/lodash.isnumber/-/lodash.isnumber-3.0.3.tgz#3ce76810c5928d03352301ac287317f11c0b1ffc"
   integrity sha1-POdoEMWSjQM1IwGsKHMX8RwLH/w=
 
+lodash.isobject@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/lodash.isobject/-/lodash.isobject-3.0.2.tgz#3c8fb8d5b5bf4bf90ae06e14f2a530a4ed935e1d"
+  integrity sha1-PI+41bW/S/kK4G4U8qUwpO2TXh0=
+
 lodash.isplainobject@^4.0.6:
   version "4.0.6"
   resolved "https://registry.yarnpkg.com/lodash.isplainobject/-/lodash.isplainobject-4.0.6.tgz#7c526a52d89b45c45cc690b88163be0497f550cb"
@@ -1741,6 +1746,11 @@ lodash.once@^4.0.0:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/lodash.once/-/lodash.once-4.1.1.tgz#0dd3971213c7c56df880977d504c88fb471a97ac"
   integrity sha1-DdOXEhPHxW34gJd9UEyI+0cal6w=
+
+lodash.tonumber@^4.0.3:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/lodash.tonumber/-/lodash.tonumber-4.0.3.tgz#0b96b31b35672793eb7f5a63ee791f1b9e9025d9"
+  integrity sha1-C5azGzVnJ5Prf1pj7nkfG56QJdk=
 
 lodash@^4.17.19:
   version "4.17.20"
@@ -2210,6 +2220,13 @@ supports-color@^7.0.0, supports-color@^7.1.0:
   dependencies:
     has-flag "^4.0.0"
 
+svelte-calendar@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/svelte-calendar/-/svelte-calendar-1.5.0.tgz#d7dcdcb4a2399193c9c0a0e989b3ee69cf004a1c"
+  integrity sha512-S4Ds0Ya5gMLV2ibc6vVWvxYdSBDRlhNMsKlDRE/usDJp/h9jFuZWR2+UefZYILFzPT2lNs2NHhD3WVm34Q1hOA==
+  dependencies:
+    timeUtils "2.0.0"
+
 svelte-check@^1.0.46:
   version "1.0.60"
   resolved "https://registry.yarnpkg.com/svelte-check/-/svelte-check-1.0.60.tgz#7496b9bcaff791f250a5ba9166a0f10620be0f42"
@@ -2286,6 +2303,14 @@ svelte@^3.17.3:
   resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.29.0.tgz#80acac4254341ad8f3301e5ef03f4127ea967d96"
   integrity sha512-f+A65eyOQ5ujETLy+igNXtlr6AEjAQLYd1yJE1VwNiXMQO5Z/Vmiy3rL+zblV/9jd7rtTTWqO1IcuXsP2Qv0OA==
 
+sveltestrap@^3.9.5:
+  version "3.9.5"
+  resolved "https://registry.yarnpkg.com/sveltestrap/-/sveltestrap-3.9.5.tgz#1eafdb67d45203dd48b39ffe57ec904ec1c8dd11"
+  integrity sha512-cqpAQ+MD7Z0Oe+rAMLmHwwEYJ+UyYtIz1r1DDB6xPzN9iYGnjqTfYoW4BZqnZFj7ejsDMNnyQV3tWJyf8NbXzA==
+  dependencies:
+    lodash.isobject "^3.0.2"
+    lodash.tonumber "^4.0.3"
+
 terser@^5.0.0:
   version "5.3.7"
   resolved "https://registry.yarnpkg.com/terser/-/terser-5.3.7.tgz#798a4ae2e7ff67050c3e99fcc4e00725827d97e2"
@@ -2294,6 +2319,11 @@ terser@^5.0.0:
     commander "^2.20.0"
     source-map "~0.7.2"
     source-map-support "~0.5.19"
+
+timeUtils@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/timeUtils/-/timeUtils-2.0.0.tgz#b3ac3eaa8f6d47e9ca008c76e9fd5b0f0afc18c0"
+  integrity sha512-rk1y/5ix4HczK3q4caEvo2iIhgRIHL6g85sX2rPNse8sKUATzYEAX1jAYYsW139aAcn1b24jV4By0SLmosQVyA==
 
 to-fast-properties@^2.0.0:
   version "2.0.0"
