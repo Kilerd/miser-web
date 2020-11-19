@@ -1,5 +1,4 @@
 import axios, {AxiosInstance} from "axios";
-import {stores} from '@sapper/app';
 
 const BASE_URL = process.env.NODE_ENV === "development"
     ? "http://localhost:8000"
@@ -77,6 +76,25 @@ class API {
         return await this.axios.get(
             "/entries/demo/journals",
         )
+    }
+
+    async getAccounts() {
+        return await this.axios.get("/entries/demo/accounts")
+    }
+
+    async getEntries() {
+        return await this.axios.get("/entries")
+    }
+
+    async createTransaction(date, payee, narration, tags, links, lines) {
+        return await this.axios.post("/entries/demo/transactions", {
+            date,
+            payee,
+            narration,
+            tags,
+            links,
+            lines
+        })
     }
 }
 

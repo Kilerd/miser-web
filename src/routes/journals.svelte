@@ -15,7 +15,6 @@
     onMount(async () => {
         let raw_directives = (await api.getJournal()).data.data;
         let fetched = Object.keys(raw_directives).sort().reverse().map((key) => {
-
             return {
                 date: key,
                 contents: raw_directives[key]
@@ -24,6 +23,7 @@
         directives.update(() => {
             return fetched;
         })
+
     })
     let newTransactionStatus = false;
     const toggle = () => (newTransactionStatus = !newTransactionStatus);
@@ -32,7 +32,7 @@
     <h1>Journals</h1>
     <div>
         <Button on:click={toggle}>new</Button>
-        <NewTransactionModal isOpen={newTransactionStatus} toggle={toggle} />
+        <NewTransactionModal isOpen={newTransactionStatus} toggle={toggle}/>
     </div>
 </div>
 
