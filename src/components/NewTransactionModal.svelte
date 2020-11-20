@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     export let isOpen;
     export let toggle;
     import {Modal, ModalHeader, ModalFooter, ModalBody, Button, FormGroup, Label, Input, Spinner} from "sveltestrap/src"
