@@ -56,9 +56,11 @@
 
 <nav>
     <a aria-current={segment === undefined ? 'page' : undefined} href=".">home</a>
-    <a aria-current={segment === 'login' ? 'page' : undefined} href="login">login</a>
+
     <a aria-current={segment === 'journals' ? 'page' : undefined} href="journals">Journals</a>
     {#if $session.user}
         <a href="/logout">{$session.user.username}</a>
+    {:else}
+        <a aria-current={segment === 'login' ? 'page' : undefined} href="login">login</a>
     {/if}
 </nav>

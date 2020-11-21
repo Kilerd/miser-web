@@ -1,23 +1,35 @@
-import axios, {AxiosInstance} from "axios";
+import axios, {AxiosInstance, AxiosPromise, AxiosResponse} from 'axios';
+import type {JournalDirective} from './types';
 
-const BASE_URL = process.env.NODE_ENV === "development"
-    ? "http://localhost:8000"
-    : "https://miser.3min.work";
+const BASE_URL = process.env.NODE_ENV === 'development'
+    ? 'http://localhost:8000'
+    : 'https://miser.3min.work';
 
 // const BASE_URL = "https://miser.3min.work"
 
 
-export const delete_cookie = (name: string) => {
-    if (get_cookie(name)) {
-        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT";
+export const deleteCookie = (name: string) => {
+    if (getCookie(name)) {
+        document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT';
     }
 }
 
-export const get_cookie = (name: string) => {
+export const getCookie = (name: string) => {
     return document.cookie.split(';').some(c => {
         return c.trim().startsWith(name + '=');
     });
 }
+
+
+export interface OkResponse<T> {
+    data: T
+}
+
+
+export interface JournalResponse {
+    [key: string] : JournalDirective[]
+}
+
 
 class API {
     axios: AxiosInstance;
@@ -40,54 +52,54 @@ class API {
 
     setAuthenticateToken(token: string | null) {
         if (token) {
-            this.axios.defaults.headers["Authorization"] = `Bearer ${token}`;
+            this.axios.defaults.headers.Authorization = `Bearer ${token}`;
         }
     }
 
     clearAuthenticateToken() {
-        delete_cookie("AUTH");
-        this.axios.defaults.headers["Authorization"] = null;
+        deleteCookie('AUTH');
+        this.axios.defaults.headers.Authorization = null;
     }
 
     async getUserInfo() {
         return await this.axios.request({
-            method: "get",
-            url: "/user",
+            method: 'get',
+            url: '/user',
         })
     }
 
     async login(email: string, password: string) {
         return await this.axios.post(
-            "/authorization",
+            '/authorization',
             {email, password},
         )
     }
 
     async register(email: string, username: string, password: string) {
         return await this.axios.post(
-            "/user",
+            '/user',
             {
                 email, username, password
             }
         )
     }
 
-    async getJournal() {
+    async getJournal(): Promise<AxiosResponse<OkResponse<JournalResponse>>> {
         return await this.axios.get(
-            "/entries/demo/journals",
+            '/entries/demo/journals',
         )
     }
 
     async getAccounts() {
-        return await this.axios.get("/entries/demo/accounts")
+        return await this.axios.get('/entries/demo/accounts')
     }
 
     async getEntries() {
-        return await this.axios.get("/entries")
+        return await this.axios.get('/entries')
     }
 
     async createTransaction(date, payee, narration, tags, links, lines) {
-        return await this.axios.post("/entries/demo/transactions", {
+        return await this.axios.post('/entries/demo/transactions', {
             date,
             payee,
             narration,

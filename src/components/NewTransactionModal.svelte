@@ -1,14 +1,16 @@
 <script lang="ts">
-    export let isOpen;
-    export let toggle;
-    import {Modal, ModalHeader, ModalFooter, ModalBody, Button, FormGroup, Label, Input, Spinner} from "sveltestrap/src"
-    import Datepicker from 'svelte-calendar';
-    import AutoComplete from "simple-svelte-autocomplete";
-    import {entries} from "../stores";
-    import {api} from "../http"
+    import {Button, FormGroup, Input, Modal, ModalBody, ModalFooter, ModalHeader, Spinner} from 'sveltestrap/src'
+    import AutoComplete from 'simple-svelte-autocomplete';
+    import {entries} from '../stores';
+    import {api} from '../http'
 
-    let accountList = []
-    entries.subscribe(value => {
+
+
+    export let isOpen: boolean;
+    export let toggle: () => boolean;
+
+    let accountList= [];
+    entries.subscribe(() => {
         let currentEntry = $entries['demo'];
         accountList = currentEntry?.accounts.map((account, index) => {
             return {
@@ -18,7 +20,7 @@
         })
     })
 
-    async function getItems(keyword) {
+    async function getItems(keyword: string) {
         return [
             ...accountList,
             {id: -1, name: keyword}
@@ -33,9 +35,9 @@
     let narration = "";
 
     let selectAccount;
-    let amount = "";
+    let amount: string = "";
     let selectAccount2;
-    let amount2 = "";
+    let amount2: string = "";
 
     $: canBeSubmit = selectAccount !== undefined && amount !== "" && selectAccount2 !== undefined && amount2 !== "";
     $: submitDisable = !canBeSubmit || isSubmit;
@@ -119,7 +121,7 @@
                               bind:selectedItem={selectAccount2}
                               searchFunction={getItems} showClear={true}/>
                 <FormGroup>
-                    <Input bind:value={amount2}/>
+                    <Input bind:value={amount2} pattern="[0-9]{4}"/>
                 </FormGroup>
                 <FormGroup>
                     <Input type="select" name="select" id="exampleSelect2">
