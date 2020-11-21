@@ -1,5 +1,7 @@
 <script lang="ts">
     import {Label, ListGroupItem, Badge} from 'sveltestrap/src';
+    import {accounts} from "../stores";
+
     export let directive;
     const type = directive.type;
 
@@ -79,7 +81,7 @@
                         {#each Object.keys(directive.summaries).filter((it)=> directive.summaries[it][0] !== "0") as idx}
                             <div>
                                 <div>{directive.summaries[idx][0]}<span>{directive.summaries[idx][1]}</span></div>
-                                <Badge pill color="light">{idx}</Badge>
+                                <Badge pill color="light">{accounts.getAlias(idx)}</Badge>
                             </div>
                         {/each}
                     </div>

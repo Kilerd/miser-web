@@ -1,4 +1,6 @@
 <script lang="ts">
+    import AccountTree from "./AccountTree.svelte";
+
     export let segment: string;
     import {stores} from "@sapper/app"
 
@@ -63,4 +65,6 @@
     {:else}
         <a aria-current={segment === 'login' ? 'page' : undefined} href="login">login</a>
     {/if}
+    <AccountTree />
+
 </nav>

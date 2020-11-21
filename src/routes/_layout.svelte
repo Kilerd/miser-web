@@ -5,7 +5,7 @@
 	import {onMount} from "svelte";
 	import {stores} from "@sapper/app";
 	import {api} from "../http";
-	import {entries} from "../stores";
+	import {accounts, entries} from "../stores";
 
 	export let segment;
 	const { session } = stores();
@@ -25,13 +25,14 @@
 			return;
 		}
 		let fetchedEntries = (await api.getEntries()).data.data;
-		console.log(fetchedEntries);
 		let t = {};
 		for (let entry of fetchedEntries) {
 			t[entry.id] = entry;
 		}
-		console.log(t);
 		entries.update(n => t);
+
+		let fetchedAccounts = (await api.getAccounts()).data.data;
+		accounts.update(n=> fetchedAccounts)
 	});
 </script>
 
