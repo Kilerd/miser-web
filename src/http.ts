@@ -86,12 +86,12 @@ class API {
 
     async getJournal(): Promise<AxiosResponse<OkResponse<JournalResponse>>> {
         return await this.axios.get(
-            '/entries/demo/journals',
+            '/entries/1/journals',
         )
     }
 
     async getAccounts() {
-        return await this.axios.get('/entries/demo/accounts')
+        return await this.axios.get('/entries/1/accounts')
     }
 
     async getEntries() {
@@ -99,7 +99,7 @@ class API {
     }
 
     async createTransaction(date, payee, narration, tags, links, lines) {
-        return await this.axios.post('/entries/demo/transactions', {
+        return await this.axios.post('/entries/1/transactions', {
             date,
             payee,
             narration,

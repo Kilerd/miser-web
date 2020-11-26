@@ -11,12 +11,12 @@ export const accounts = (() => {
         subscribe,
         set,
         update,
-        getAlias: (account) => {
+        getAlias: (accountId) => {
+            let innerAccount = `${accountId}`;
             subscribe((accountsEntity) => {
-                console.log("update alias", accountsEntity);
-                account =  (accountsEntity[account]?.notes || {})['alias'] || account;
+                innerAccount =  accountsEntity[accountId]?.alias || accountsEntity[accountId]?.name;
             });
-            return account;
+            return innerAccount;
         }
     }
 })()

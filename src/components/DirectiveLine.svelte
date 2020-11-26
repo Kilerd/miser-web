@@ -3,7 +3,6 @@
     import {accounts} from "../stores";
 
     export let directive;
-    const type = directive.type;
 
     let showLineInfo = false;
 
@@ -44,69 +43,64 @@
     div.from-to {
         display: flex;
     }
+
     div.line-info {
         display: flex;
         flex-direction: row;
     }
 </style>
 
-{#if type === 'Transaction'}
-    <ListGroupItem>
-        <div class="directive-line">
-            <div class="header" on:click={toggle}>
-                <div class="left">
-                    <div class="name">
-                        <Label size={"tiny"}>
-                            {#if directive.raw.flag !== 'Complete'}
-                                <span>!</span>
-                            {/if}
-                            {directive.raw.payee} {directive.raw.narration}
-                        </Label>
-                        <div class="from-to">
-<!--                            <div class="from">-->
-<!--                                {#each directive.from as it}-->
-<!--                                    <Badge pill color="light">{it}</Badge>-->
-<!--                                {/each}-->
-<!--                            </div>-->
-<!--                            <div class="to">-->
-<!--                                {#each directive.to as it}-->
-<!--                                    <Badge pill color="light">{it}</Badge>-->
-<!--                                {/each}-->
-<!--                            </div>-->
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="amount">
-                        {#each Object.keys(directive.summaries).filter((it)=> directive.summaries[it][0] !== "0") as idx}
-                            <div>
-                                <div>{directive.summaries[idx][0]}<span>{directive.summaries[idx][1]}</span></div>
-                                <Badge pill color="light">{accounts.getAlias(idx)}</Badge>
-                            </div>
-                        {/each}
+<ListGroupItem>
+    <div class="directive-line">
+        <div class="header" on:click={toggle}>
+            <div class="left">
+                <div class="name">
+                    <Label size={"tiny"}>
+                        {#if directive.flag !== 'Complete'}
+                            <span>!</span>
+                        {/if}
+                        {directive.payee} {directive.narration}
+                    </Label>
+                    <div class="from-to">
+                        <!--                            <div class="from">-->
+                        <!--                                {#each directive.from as it}-->
+                        <!--                                    <Badge pill color="light">{it}</Badge>-->
+                        <!--                                {/each}-->
+                        <!--                            </div>-->
+                        <!--                            <div class="to">-->
+                        <!--                                {#each directive.to as it}-->
+                        <!--                                    <Badge pill color="light">{it}</Badge>-->
+                        <!--                                {/each}-->
+                        <!--                            </div>-->
                     </div>
                 </div>
             </div>
-            {#if showLineInfo}
-                <div class="content">
-                    {#each directive.raw.lines as line}
-
-                        <div class="line-info">
-                            <div class="line-info left">
-                                {line.account}
-                            </div>
-                            <div class="line-info right">
-                                {line.amount[0]} {line.amount[1]}
-                            </div>
-                        </div>
-
-                    {/each}
-                </div>
-            {/if}
+            <div>
+<!--                <div class="amount">-->
+                    <!--{#each Object.keys(directive.summaries).filter((it) => directive.summaries[it][0] !== "0") as idx}-->
+                    <!--    <div>-->
+                    <!--        <div>{directive.summaries[idx][0]}<span>{directive.summaries[idx][1]}</span></div>-->
+                    <!--        <Badge pill color="light">{accounts.getAlias(idx)}</Badge>-->
+                    <!--    </div>-->
+                    <!--{/each}-->
+<!--                </div>-->
+            </div>
         </div>
-    </ListGroupItem>
-{:else}
-    <ListGroupItem>
-        other
-    </ListGroupItem>
-{/if}
+        {#if showLineInfo}
+            <div class="content">
+                {#each directive.lines as line}
+
+                    <div class="line-info">
+                        <div class="line-info left">
+                            {accounts.getAlias(line.account)}
+                        </div>
+                        <div class="line-info right">
+                            {line.cost[0]} {line.cost[1]}
+                        </div>
+                    </div>
+
+                {/each}
+            </div>
+        {/if}
+    </div>
+</ListGroupItem>

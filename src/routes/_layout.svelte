@@ -32,7 +32,12 @@
 		entries.update(n => t);
 
 		let fetchedAccounts = (await api.getAccounts()).data.data;
-		accounts.update(n=> fetchedAccounts)
+
+		let a = {};
+		for (let it of fetchedAccounts) {
+			a[it.id] = it;
+		}
+		accounts.update(n=> a);
 	});
 </script>
 

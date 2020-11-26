@@ -1,7 +1,7 @@
 <script lang="ts">
     import {Button, FormGroup, Input, Modal, ModalBody, ModalFooter, ModalHeader, Spinner} from 'sveltestrap/src'
     import AutoComplete from 'simple-svelte-autocomplete';
-    import {entries} from '../stores';
+    import {accounts, entries} from '../stores';
     import {api} from '../http'
 
 
@@ -10,20 +10,14 @@
     export let toggle: () => boolean;
 
     let accountList= [];
-    entries.subscribe(() => {
-        let currentEntry = $entries['demo'];
-        accountList = currentEntry?.accounts.map((account, index) => {
-            return {
-                id: index,
-                name: account
-            }
-        })
+    accounts.subscribe((storeValue) => {
+        accountList = Object.values(storeValue);
     })
 
     async function getItems(keyword: string) {
         return [
             ...accountList,
-            {id: -1, name: keyword}
+            {id: -1, name: keyword, alias: keyword}
         ]
     }
 
@@ -46,14 +40,14 @@
         isSubmit = true;
         let lines = [
             {
-                account: selectAccount.name,
+                account: selectAccount.id,
                 amount: [
                     amount,
                     "CNY"
                 ]
             },
             {
-                account: selectAccount2.name,
+                account: selectAccount2.id,
                 amount: [
                     amount2,
                     "CNY"
