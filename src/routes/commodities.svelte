@@ -14,6 +14,7 @@
     import {commodities, currentLedger} from "../stores";
     import {Button} from "sveltestrap/src";
     import NewTransactionModal from "../components/NewTransactionModal.svelte";
+    import NewCommodityModal from "../components/NewCommodityModal.svelte";
 
     const {page, session} = stores();
 
@@ -33,14 +34,14 @@
         })
 
     })
-    let newTransactionStatus = false;
-    const toggle = () => (newTransactionStatus = !newTransactionStatus);
+    let newCommodityStatus = false;
+    const toggle = () => (newCommodityStatus = !newCommodityStatus);
 </script>
 <div>
     <h1>Commodities</h1>
     <div>
         <Button on:click={toggle}>new</Button>
-        <NewTransactionModal isOpen={newTransactionStatus} toggle={toggle}/>
+        <NewCommodityModal isOpen={newCommodityStatus} toggle={toggle}/>
     </div>
 </div>
 

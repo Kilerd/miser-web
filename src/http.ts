@@ -138,6 +138,12 @@ class API {
     async getCommodities() {
         return await this.axios.get(`/ledgers/${this.currentLedgerId}/commodities`)
     }
+
+    async createCommodity(name: string) {
+        return await this.axios.post(`/ledgers/${this.currentLedgerId}/commodities`, {
+            name
+        })
+    }
 }
 
 export const api = new API();
