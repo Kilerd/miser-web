@@ -39,12 +39,9 @@
         <div>
             <div class="line">
                 <FormGroup>
-                    <Input bind:value={name} placeholder="Payee"/>
+                    <Input bind:value={name} placeholder="Name"/>
                 </FormGroup>
             </div>
-
-
-
         </div>
 
 
