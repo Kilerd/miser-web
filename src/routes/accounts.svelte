@@ -13,7 +13,7 @@
     import {onMount} from "svelte";
     import {accounts, currentLedger, directives} from "../stores";
     import DirectiveLine from "../components/DirectiveLine.svelte";
-    import {Button, ListGroup} from "sveltestrap/src";
+    import {Button, ListGroup, Table} from "sveltestrap/src";
     import NewTransactionModal from "../components/NewTransactionModal.svelte";
     import {isToday} from "../helper";
     import NewAccountModal from "../components/NewAccountModal.svelte";
@@ -47,13 +47,28 @@
     </div>
 </div>
 
-<div class="account-list">
-    {#each Object.values($accounts) as account }
-        <div class="account">
-            [{account.status}][{account.full_name}]{account.name}
-        </div>
+<Table bordered>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Status</th>
+      <th>Name</th>
+      <th>Alias</th>
+      <th>Full Name</th>
+      <th>Commodities</th>
+    </tr>
+  </thead>
+  <tbody>
+   {#each Object.values($accounts) as account }
+        <tr>
+      <th scope="row">{account.id}</th>
+      <td>{account.status}</td>
+      <td>{account.name}</td>
+      <td>{account.alias}</td>
+      <td>{account.full_name}</td>
+      <td>{account.commodities}</td>
+    </tr>
     {/each}
-</div>
-
-
-
+    
+  </tbody>
+</Table>

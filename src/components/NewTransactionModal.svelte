@@ -97,7 +97,7 @@
 
 
             <div class="line">
-                <AutoComplete inputId="account1" className="account-input" items={accountList} labelFieldName="name"
+                <AutoComplete inputId="account1" className="account-input" items={accountList} labelFunction={item => `${item.alias || ""} [${item.full_name}]`}
                               valueFieldName="name"
                               bind:selectedItem={selectAccount}
                               searchFunction={getItems} showClear={true}/>
@@ -111,7 +111,7 @@
                 </FormGroup>
             </div>
             <div class="line">
-                <AutoComplete inputId="account2" items={accountList} labelFieldName="name" valueFieldName="name"
+                <AutoComplete inputId="account2" items={accountList} labelFunction={item => `${item.alias || ""} [${item.full_name}]`} valueFieldName="name"
                               bind:selectedItem={selectAccount2}
                               searchFunction={getItems} showClear={true}/>
                 <FormGroup>

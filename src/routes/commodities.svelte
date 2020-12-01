@@ -12,7 +12,7 @@
     import {stores} from "@sapper/app";
     import {onMount} from "svelte";
     import {commodities, currentLedger} from "../stores";
-    import {Button} from "sveltestrap/src";
+    import {Button, Table} from "sveltestrap/src";
     import NewTransactionModal from "../components/NewTransactionModal.svelte";
     import NewCommodityModal from "../components/NewCommodityModal.svelte";
 
@@ -45,13 +45,27 @@
     </div>
 </div>
 
-<div class="commodity-list">
-    {#each Object.values($commodities) as commodity }
-        <div class="commodity">
-            [{commodity.name}][{commodity.last_price}]{commodity.last_price_update_time}
-        </div>
-    {/each}
-</div>
 
+<Table bordered>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Last Price</th>
+      <th>Last price update time</th>
+    </tr>
+  </thead>
+  <tbody>
+  {#each Object.values($commodities) as commodity }
+        
+        <tr>
+      <th scope="row">{commodity.name}</th>
+      <td>{commodity.last_price}</td>
+      <td>{commodity.last_price_update_time}</td>
+    </tr>
+    {/each}
+        
+    
+  </tbody>
+</Table>
 
 
