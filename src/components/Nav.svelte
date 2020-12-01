@@ -62,9 +62,13 @@
     <Nav vertical>
         {#each Object.values($entries) as entry, i}
             <NavItem>
-                <NavLink on:click={changeLedger(entry.id)}>{entry.name}</NavLink>
+                <NavLink href="/journals" on:click={changeLedger(entry.id)}>{entry.name}</NavLink>
             </NavItem>
         {/each}
+
+        <NavItem>
+            <NavLink href="/new_ledger" active={segment==='new_ledger'}>new ledger</NavLink>
+        </NavItem>
     </Nav>
     <hr/>
     <Nav vertical>

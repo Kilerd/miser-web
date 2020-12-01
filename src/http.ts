@@ -1,5 +1,6 @@
 import axios, {AxiosInstance, AxiosPromise, AxiosResponse} from 'axios';
 import type {JournalDirective} from './types';
+import {init} from "svelte/internal";
 
 const BASE_URL = process.env.NODE_ENV === 'development'
     ? 'http://localhost:8000'
@@ -142,6 +143,32 @@ class API {
     async createCommodity(name: string) {
         return await this.axios.post(`/ledgers/${this.currentLedgerId}/commodities`, {
             name
+        })
+    }
+
+    async createAccount(name: string, alias: string, commodities: string[], initChecked: boolean, pad: any, amount: string, commodity: string) {
+        const accountType = name.split(':')[0];
+        let data = {
+            account_type: accountType,
+            full_name: name,
+            alias: alias === ''? null: alias,
+            commodities,
+        };
+
+        if(initChecked) {
+            data['init'] =  {
+                pad,
+                amount,
+                commodity
+            }
+        }
+        return await this.axios.post(`/ledgers/${this.currentLedgerId}/accounts`, data)
+    }
+
+    async createLedger(name: string, defaultOperatingCommodity: string) {
+        return await this.axios.post(`/ledgers`, {
+            name,
+            default_operating_commodity: defaultOperatingCommodity
         })
     }
 }

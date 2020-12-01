@@ -16,6 +16,7 @@
     import {Button, ListGroup} from "sveltestrap/src";
     import NewTransactionModal from "../components/NewTransactionModal.svelte";
     import {isToday} from "../helper";
+    import NewAccountModal from "../components/NewAccountModal.svelte";
 
     const {page, session} = stores();
 
@@ -42,7 +43,7 @@
     <h1>Accounts</h1>
     <div>
         <Button on:click={toggle}>new</Button>
-        <NewTransactionModal isOpen={newTransactionStatus} toggle={toggle}/>
+        <NewAccountModal isOpen={newTransactionStatus} toggle={toggle}/>
     </div>
 </div>
 
