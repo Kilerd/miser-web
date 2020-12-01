@@ -17,10 +17,10 @@
             let axiosResponse = await api.login(email, password);
             const token = axiosResponse.data.data;
             document.cookie = `AUTH=${token}`;
-            api.setAuthenticateToken(token);
+            api.setAuthenticateToken($session, token);
             let axiosResponse1 = await api.getUserInfo();
             $session.user = axiosResponse1.data.data;
-
+            $session.authenticated = true;
             await goto("/", {})
         } catch (e) {
             error = "error on login"

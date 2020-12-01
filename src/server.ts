@@ -21,7 +21,7 @@ export default polka() // You can also use Express
 					return {
 						authenticated: !!profile,
 						profile,
-						user:false, 
+						user:false,
 						token
 					};
 				}

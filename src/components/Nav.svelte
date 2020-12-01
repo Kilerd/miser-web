@@ -1,10 +1,20 @@
 <script lang="ts">
     import AccountTree from "./AccountTree.svelte";
+    import {stores} from "@sapper/app"
+    import {Nav, NavItem, NavLink} from 'sveltestrap/src';
+    import {entries, currentLedger} from "../stores";
+    import {api, existCookie, setCookie} from "../http";
+
 
     export let segment: string;
-    import {stores} from "@sapper/app"
-
     const {session} = stores()
+
+    function changeLedger(ledgerId: number) {
+        api.setCurrentLedgerId(ledgerId.toString());
+        currentLedger.update(n => ledgerId.toString())
+        setCookie("CURRENT_LEDGER_ID", ledgerId.toString())
+    }
+
 
 </script>
 
@@ -15,23 +25,6 @@
         padding: 0 1em;
         position: sticky;
         top: 0;
-    }
-
-    ul {
-        margin: 0;
-        padding: 0;
-    }
-
-    /* clearfix */
-    ul::after {
-        content: "";
-        display: block;
-        clear: both;
-    }
-
-    li {
-        display: block;
-        float: left;
     }
 
     [aria-current] {
@@ -56,15 +49,42 @@
     }
 </style>
 
-<nav>
-    <a aria-current={segment === undefined ? 'page' : undefined} href=".">home</a>
 
-    <a aria-current={segment === 'journals' ? 'page' : undefined} href="journals">Journals</a>
-    {#if $session.user}
-        <a href="/logout">{$session.user.username}</a>
-    {:else}
-        <a aria-current={segment === 'login' ? 'page' : undefined} href="login">login</a>
-    {/if}
-    <AccountTree />
+{#if $session.user}
+    <Nav vertical>
+        <NavItem>
+            <NavLink href="#">{$session.user.username}</NavLink>
+        </NavItem>
+    </Nav>
+    <hr/>
 
-</nav>
+    <p>current select: {$currentLedger}</p>
+    <Nav vertical>
+        {#each Object.values($entries) as entry, i}
+            <NavItem>
+                <NavLink on:click={changeLedger(entry.id)}>{entry.name}</NavLink>
+            </NavItem>
+        {/each}
+    </Nav>
+    <hr/>
+    <Nav vertical>
+        <NavItem>
+            <NavLink href="/journals" active={segment==='journals'}>journals</NavLink>
+        </NavItem>
+        <NavItem>
+            <NavLink href="/accounts" active={segment==='accounts'}>accounts</NavLink>
+        </NavItem>
+        <NavItem>
+            <NavLink href="/commodities" active={segment==='commodities'}>commodities</NavLink>
+        </NavItem>
+    </Nav>
+{:else}
+    <Nav vertical>
+        <NavItem>
+            <NavLink href="/" active={segment===undefined}>Home</NavLink>
+        </NavItem>
+        <NavItem>
+            <NavLink href="/login" active={segment==='login'}>login</NavLink>
+        </NavItem>
+    </Nav>
+{/if}
