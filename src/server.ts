@@ -15,6 +15,7 @@ export default polka() // You can also use Express
 		sirv('static', { dev }),
 		async (req, res, next) => {
 			const token = req.cookies['AUTH'] || null;
+			const currentLedgerId = req.cookies['CURRENT_LEDGER_ID'] || null;
 			const profile = token ? jwt.decode(token) : false
 			return sapper.middleware({
 				session: () => {
@@ -22,7 +23,8 @@ export default polka() // You can also use Express
 						authenticated: !!profile,
 						profile,
 						user:false,
-						token
+						token,
+						currentLedgerId
 					};
 				}
 			})(req, res, next)

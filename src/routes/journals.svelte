@@ -21,15 +21,17 @@
 
     onMount(async () => {
         currentLedger.subscribe(async id => {
-            let raw_directives = (await api.getJournal()).data.data;
+            if (id !== undefined) {
+                let raw_directives = (await api.getJournal()).data.data;
 
-            let fetched = Object.keys(raw_directives).sort().reverse().map((date) => ({
-                date: date,
-                content: raw_directives[date]
-            }));
-            directives.update(() => {
-                return fetched;
-            })
+                let fetched = Object.keys(raw_directives).sort().reverse().map((date) => ({
+                    date: date,
+                    content: raw_directives[date]
+                }));
+                directives.update(() => {
+                    return fetched;
+                })
+            }
         })
 
     })

@@ -22,17 +22,18 @@
 
     onMount(async () => {
         currentLedger.subscribe(async id => {
-            let fetchedAccount = (await api.getAccounts()).data.data;
+            if (id !== undefined) {
+                let fetchedAccount = (await api.getAccounts()).data.data;
 
-            let accountsMap = {}
+                let accountsMap = {}
 
-            for (let it of fetchedAccount) {
-                accountsMap[it.id] = it
+                for (let it of fetchedAccount) {
+                    accountsMap[it.id] = it
+                }
+                accounts.update(() => {
+                    return accountsMap;
+                })
             }
-
-            accounts.update(() => {
-                return accountsMap;
-            })
         })
 
     })
@@ -48,27 +49,27 @@
 </div>
 
 <Table bordered>
-  <thead>
+    <thead>
     <tr>
-      <th>#</th>
-      <th>Status</th>
-      <th>Name</th>
-      <th>Alias</th>
-      <th>Full Name</th>
-      <th>Commodities</th>
+        <th>#</th>
+        <th>Status</th>
+        <th>Name</th>
+        <th>Alias</th>
+        <th>Full Name</th>
+        <th>Commodities</th>
     </tr>
-  </thead>
-  <tbody>
-   {#each Object.values($accounts) as account }
+    </thead>
+    <tbody>
+    {#each Object.values($accounts) as account }
         <tr>
-      <th scope="row">{account.id}</th>
-      <td>{account.status}</td>
-      <td>{account.name}</td>
-      <td>{account.alias}</td>
-      <td>{account.full_name}</td>
-      <td>{account.commodities}</td>
-    </tr>
+            <th scope="row">{account.id}</th>
+            <td>{account.status}</td>
+            <td>{account.name}</td>
+            <td>{account.alias}</td>
+            <td>{account.full_name}</td>
+            <td>{account.commodities}</td>
+        </tr>
     {/each}
-    
-  </tbody>
+
+    </tbody>
 </Table>

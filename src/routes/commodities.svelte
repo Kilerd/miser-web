@@ -20,17 +20,19 @@
 
     onMount(async () => {
         currentLedger.subscribe(async id => {
-            let fetchedCommodities = (await api.getCommodities()).data.data;
+            if (id !== undefined) {
+                let fetchedCommodities = (await api.getCommodities()).data.data;
 
-            let commoditiesMap = {}
+                let commoditiesMap = {}
 
-            for (let it of fetchedCommodities) {
-                commoditiesMap[it.name] = it
+                for (let it of fetchedCommodities) {
+                    commoditiesMap[it.name] = it
+                }
+
+                commodities.update(() => {
+                    return commoditiesMap;
+                })
             }
-
-            commodities.update(() => {
-                return commoditiesMap;
-            })
         })
 
     })
@@ -47,25 +49,25 @@
 
 
 <Table bordered>
-  <thead>
+    <thead>
     <tr>
-      <th>Name</th>
-      <th>Last Price</th>
-      <th>Last price update time</th>
+        <th>Name</th>
+        <th>Last Price</th>
+        <th>Last price update time</th>
     </tr>
-  </thead>
-  <tbody>
-  {#each Object.values($commodities) as commodity }
-        
+    </thead>
+    <tbody>
+    {#each Object.values($commodities) as commodity }
+
         <tr>
-      <th scope="row">{commodity.name}</th>
-      <td>{commodity.last_price}</td>
-      <td>{commodity.last_price_update_time}</td>
-    </tr>
+            <th scope="row">{commodity.name}</th>
+            <td>{commodity.last_price}</td>
+            <td>{commodity.last_price_update_time}</td>
+        </tr>
     {/each}
-        
-    
-  </tbody>
+
+
+    </tbody>
 </Table>
 
 

@@ -27,34 +27,38 @@
     const {session} = stores();
 
     onMount(async () => {
-        console.log("onmount");
 
-        let currentLedgerId: string = undefined;
-        let fetchedEntries = (await api.getEntries()).data.data;
-        let t = {};
-        for (let entry of fetchedEntries) {
-            if (currentLedgerId === undefined) {
-                currentLedgerId = entry.id.toString();
+
+        console.log("onmount", $session);
+        if ($session.authenticated) {
+            let currentLedgerId: string = undefined;
+            let fetchedEntries = (await api.getEntries()).data.data;
+            let t = {};
+            for (let entry of fetchedEntries) {
+                if (currentLedgerId === undefined) {
+                    currentLedgerId = entry.id.toString();
+                }
+                t[entry.id] = entry;
             }
-            t[entry.id] = entry;
-        }
-        entries.update(n => t);
+            entries.update(n => t);
 
-        let ledgerIdCookie = getCookie("CURRENT_LEDGER_ID");
-        if (ledgerIdCookie !== undefined) {
-            currentLedgerId = ledgerIdCookie;
-        }
-        currentLedger.update(() => {
-            api.setCurrentLedgerId(currentLedgerId)
-            return currentLedgerId;
-        })
+            let ledgerIdCookie = getCookie("CURRENT_LEDGER_ID");
+            if (ledgerIdCookie !== undefined) {
+                currentLedgerId = ledgerIdCookie;
+            }
+            currentLedger.update(() => {
+                api.setCurrentLedgerId(currentLedgerId)
+                return currentLedgerId;
+            })
 
-        let fetchedAccounts = (await api.getAccounts()).data.data;
-        let a = {};
-        for (let it of fetchedAccounts) {
-            a[it.id] = it;
+            let fetchedAccounts = (await api.getAccounts()).data.data;
+            let a = {};
+            for (let it of fetchedAccounts) {
+                a[it.id] = it;
+            }
+            accounts.update(n => a);
         }
-        accounts.update(n => a);
+
     });
 </script>
 
