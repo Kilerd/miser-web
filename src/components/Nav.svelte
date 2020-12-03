@@ -19,69 +19,99 @@
 </script>
 
 <style>
-    nav {
-        border-bottom: 1px solid rgba(255, 62, 0, 0.1);
-        font-weight: 300;
-        padding: 0 1em;
-        position: sticky;
-        top: 0;
+    aside {
+
     }
 
-    [aria-current] {
-        position: relative;
-        display: inline-block;
+    div.user {
+        display: flex;
+        flex-direction: column;
+        align-items: baseline;
+        padding: 1.5rem;
     }
 
-    [aria-current]::after {
-        position: absolute;
-        content: "";
-        width: calc(100% - 1em);
-        height: 2px;
-        background-color: rgb(255, 62, 0);
-        display: block;
-        bottom: -1px;
+    div.user nav {
+        display: flex;
+        flex-direction: column;
+        align-items: baseline;
     }
 
-    a {
-        text-decoration: none;
-        padding: 1em 0.5em;
-        display: block;
+    div.list {
+        display: flex;
+        flex-direction: column;
+        align-items: baseline;
+        border-top: 1px solid #e2e8f0;
+        padding: 1.5rem;
+    }
+
+    div.list div.header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+        font-size: 16px;
+    }
+
+    div.list nav {
+        display: flex;
+        flex-direction: column;
+        align-items: baseline;
+        font-size: 14px;
+        width: 100%;
+    }
+    div.list nav a {
+        padding: 7px 14px;
+        border-radius: 3px;
+        width: 100%;
+    }
+
+    div.list nav a.actived {
+        background: rgba(251, 183, 120, .25);
+        color: #333;
     }
 </style>
 
 
 {#if $session.user}
-    <Nav vertical>
-        <NavItem>
-            <NavLink href="#">{$session.user.username}</NavLink>
-        </NavItem>
-    </Nav>
-    <hr/>
+    <aside>
+        <div class="user">
+            <img src="https://secure.gravatar.com/avatar/0ef2d17d4b179f70e13b35ec11a185bb" alt="avatar">
+            <div class="username">{$session.user.username}</div>
+            <nav>
+                <a href="/setting">Settings</a>
+                <a href="/logout">Sign out</a>
+            </nav>
+        </div>
+        <div class="list">
+            <div class="header">
+                Ledgers
+                <span><a href="/new_ledger">+</a></span>
+            </div>
+            <nav>
+                {#each Object.values($entries) as entry, i}
+                    <a on:click={changeLedger(entry.id)}
+                       class:actived={entry.id.toString()===$currentLedger}>{entry.name}</a>
+                {/each}
+            </nav>
+        </div>
+        <div class="list">
+            <nav>
+                <a href="/journals"> journals</a>
+                <a href="/accounts"> Commodities</a>
+            </nav>
+        </div>
+        <div class="list">
+            <div class="header">
+                <a href="/accounts">accounts</a>
+                <span>+</span>
+            </div>
+            <nav>
+                <a href=""> Test</a>
+                <a href=""> Test</a>
+            </nav>
+        </div>
+    </aside>
 
-    <p>current select: {$currentLedger}</p>
-    <Nav vertical>
-        {#each Object.values($entries) as entry, i}
-            <NavItem>
-                <NavLink href="/journals" on:click={changeLedger(entry.id)}>{entry.name}</NavLink>
-            </NavItem>
-        {/each}
-
-        <NavItem>
-            <NavLink href="/new_ledger" active={segment==='new_ledger'}>new ledger</NavLink>
-        </NavItem>
-    </Nav>
-    <hr/>
-    <Nav vertical>
-        <NavItem>
-            <NavLink href="/journals" active={segment==='journals'}>journals</NavLink>
-        </NavItem>
-        <NavItem>
-            <NavLink href="/accounts" active={segment==='accounts'}>accounts</NavLink>
-        </NavItem>
-        <NavItem>
-            <NavLink href="/commodities" active={segment==='commodities'}>commodities</NavLink>
-        </NavItem>
-    </Nav>
 {:else}
     <Nav vertical>
         <NavItem>

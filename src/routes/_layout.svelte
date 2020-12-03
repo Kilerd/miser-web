@@ -31,6 +31,7 @@
 
         console.log("onmount", $session);
         if ($session.authenticated) {
+
             let currentLedgerId: string = undefined;
             let fetchedEntries = (await api.getEntries()).data.data;
             let t = {};
@@ -71,6 +72,7 @@
 
     side {
         flex: 0 0 17rem;
+        background-color: #f4f4f4;
     }
 
     main {
@@ -79,6 +81,7 @@
         background-color: white;
         padding: 2em;
         box-sizing: border-box;
+        border-left: 1px solid #e2e8f0;
     }
 </style>
 

@@ -9,7 +9,7 @@
     let error = null;
 
     if ($session.user) {
-        goto("/", {})
+        goto("/journals", {})
     }
 
     async function submit() {
