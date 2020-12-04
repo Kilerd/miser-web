@@ -1,6 +1,6 @@
+import dayjs from 'dayjs';
+
 export const isToday = (date: string): boolean => {
-    const today = new Date();
-    today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
-    const todayString = today.toJSON().slice(0, 10) + 'UTC'
-    return date === todayString
+    const today = dayjs().format('YYYY-MM-DD');
+    return today === date;
 }

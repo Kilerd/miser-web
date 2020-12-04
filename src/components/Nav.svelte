@@ -41,28 +41,45 @@
         flex-direction: column;
         align-items: baseline;
         border-top: 1px solid #e2e8f0;
-        padding: 1.5rem;
+        padding: 1.5rem 1rem;
     }
 
     div.list div.header {
+        padding: 4px 10px;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         width: 100%;
-        font-size: 16px;
+        font-size: 18px;
+        color: #333;
+        text-transform: uppercase;
+    }
+    div.list div.header a {
+        color: #333;
+        text-decoration: none;
+        text-transform: uppercase;
     }
 
     div.list nav {
         display: flex;
         flex-direction: column;
         align-items: baseline;
-        font-size: 14px;
+        font-size: 16px;
         width: 100%;
+
     }
     div.list nav a {
-        padding: 7px 14px;
+        margin: 2px 0;
+        padding: 4px 10px;
         border-radius: 3px;
         width: 100%;
+        color: #666;
+        cursor: pointer;
+        text-decoration: none;
+    }
+    div.list nav a:hover {
+        background-color: #eee;
+        color: #333;
     }
 
     div.list nav a.actived {

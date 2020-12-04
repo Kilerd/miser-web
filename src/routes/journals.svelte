@@ -16,6 +16,7 @@
     import {Button, ListGroup} from "sveltestrap/src";
     import NewTransactionModal from "../components/NewTransactionModal.svelte";
     import {isToday} from "../helper";
+    import dayjs from 'dayjs';
 
     const {page, session} = stores();
 
@@ -24,17 +25,28 @@
             if (id !== undefined) {
                 let raw_directives = (await api.getJournal()).data.data;
 
-                let fetched = Object.keys(raw_directives).sort().reverse().map((date) => ({
-                    date: date,
-                    content: raw_directives[date]
-                }));
+                let groupedTransactions = {}
+
+                for (let it of raw_directives) {
+                    const date = dayjs(it.create_time).format("YYYY-MM-DD");
+                    if (groupedTransactions[date] === undefined) {
+                        groupedTransactions[date] = []
+                    }
+                    groupedTransactions[date].push(it)
+                }
                 directives.update(() => {
-                    return fetched;
+                    return groupedTransactions;
                 })
             }
         })
-
     })
+    const today = dayjs().format("YYYY-MM-DD");
+
+    $: sortedJournals = Object.keys($directives).sort().reverse().map((date) => ({
+        date: date,
+        content: $directives[date]
+    }));
+
     let newTransactionStatus = false;
     const toggle = () => (newTransactionStatus = !newTransactionStatus);
 </script>
@@ -46,7 +58,7 @@
     </div>
 </div>
 
-{#each $directives as {date, content},i }
+{#each sortedJournals as {date, content},i }
     <h2>
         {#if isToday(date)}Today{:else}{date}{/if}
     </h2>
