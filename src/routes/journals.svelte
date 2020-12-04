@@ -17,6 +17,7 @@
     import NewTransactionModal from "../components/NewTransactionModal.svelte";
     import {isToday} from "../helper";
     import dayjs from 'dayjs';
+    import Big from 'big.js'
 
     const {page, session} = stores();
 
@@ -42,10 +43,20 @@
     })
     const today = dayjs().format("YYYY-MM-DD");
 
-    $: sortedJournals = Object.keys($directives).sort().reverse().map((date) => ({
-        date: date,
-        content: $directives[date]
-    }));
+    $: sortedJournals = Object.keys($directives).sort().reverse().map((date) => {
+        const dateTransactions = $directives[date];
+        let debit = new Big(0.00)
+        let credit = new Big(0.00)
+        for (let it of dateTransactions) {
+            for (let line of it.lines) {
+
+            }
+        }
+        return {
+            date: date,
+            content: dateTransactions
+        }
+    });
 
     let newTransactionStatus = false;
     const toggle = () => (newTransactionStatus = !newTransactionStatus);
@@ -60,7 +71,7 @@
 
 {#each sortedJournals as {date, content},i }
     <h2>
-        {#if isToday(date)}Today{:else}{date}{/if}
+        {#if isToday(date)}Today <span>{date}</span>{:else}{date}{/if}
     </h2>
     <ListGroup>
         {#each content as directive}
