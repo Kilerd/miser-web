@@ -114,7 +114,7 @@
         <div class="list">
             <nav>
                 <a href="/journals"> journals</a>
-                <a href="/accounts"> Commodities</a>
+                <a href="/commodities"> Commodities</a>
             </nav>
         </div>
         <div class="list">

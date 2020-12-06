@@ -11,7 +11,7 @@
 <script lang="ts">
     import {goto, stores} from "@sapper/app";
     import {onMount} from "svelte";
-    import {currentLedger, directives} from "../stores";
+    import {accounts, currentLedger, directives} from '../stores';
     import DirectiveLine from "../components/DirectiveLine.svelte";
     import {Button, ListGroup} from "sveltestrap/src";
     import NewTransactionModal from "../components/NewTransactionModal.svelte";
@@ -49,7 +49,22 @@
         let credit = new Big(0.00)
         for (let it of dateTransactions) {
             for (let line of it.lines) {
+                const accountId = line.account;
+                const type = $accounts[accountId].full_name.split(":")[0];
+                const cost = new Big(line.cost[0]);
+                switch (type) {
+                    case "Income":
 
+                        break;
+                    case "Expenses":
+                        break;
+                    case "Liabilities":
+                        break;
+                    case "Equity":
+                        break;
+                    case "Assets":
+                        break;
+                }
             }
         }
         return {
