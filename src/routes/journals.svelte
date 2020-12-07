@@ -18,6 +18,7 @@
     import {isToday} from "../helper";
     import dayjs from 'dayjs';
     import Big from 'big.js'
+    import TransactionGroup from "../components/TransactionGroup.svelte";
 
     const {page, session} = stores();
 
@@ -52,24 +53,46 @@
                 const accountId = line.account;
                 const type = $accounts[accountId].full_name.split(":")[0];
                 const cost = new Big(line.cost[0]);
+                console.log(cost, cost.s);
                 switch (type) {
                     case "Income":
-
+                        // if (cost.s === 1) {
+                        //     credit = credit.add(cost)
+                        // } else {
+                        //     debit = debit.add(cost.mul(-1))
+                        // }
                         break;
                     case "Expenses":
+                        // if (cost.s === 1) {
+                        //     credit = credit.add(cost)
+                        // } else {
+                        //     debit = debit.add(cost.mul(-1))
+                        // }
                         break;
                     case "Liabilities":
+                        if (cost.s === 1) {
+                            debit = debit.add(cost)
+                        } else {
+                            credit = credit.add(cost.mul(-1))
+                        }
                         break;
                     case "Equity":
                         break;
                     case "Assets":
+                        if (cost.s === 1) {
+                            debit = debit.add(cost)
+                        } else {
+                            credit = credit.add(cost.mul(-1))
+                        }
                         break;
                 }
             }
         }
         return {
             date: date,
-            content: dateTransactions
+            content: dateTransactions,
+            credit,
+            debit
         }
     });
 
@@ -84,15 +107,9 @@
     </div>
 </div>
 
-{#each sortedJournals as {date, content},i }
-    <h2>
-        {#if isToday(date)}Today <span>{date}</span>{:else}{date}{/if}
-    </h2>
-    <ListGroup>
-        {#each content as directive}
-            <DirectiveLine directive={directive}/>
-        {/each}
-    </ListGroup>
+{#each sortedJournals as datedGroup,i }
+
+    <TransactionGroup data={datedGroup} />
 {/each}
 
 

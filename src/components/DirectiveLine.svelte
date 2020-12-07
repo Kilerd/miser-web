@@ -1,20 +1,14 @@
 <script lang="ts">
-    import {Label, ListGroupItem, Badge} from 'sveltestrap/src';
-    import {accounts} from "../stores";
+    import type {Transaction} from "../types";
 
-    export let directive;
-
-    let showLineInfo = false;
-
-    function toggle() {
-        showLineInfo = !showLineInfo;
-    }
+    export let directive: Transaction;
 </script>
 
 <style>
     div.directive-line {
         display: flex;
         flex-direction: column;
+        border: 1px solid #e2e8f0;
     }
 
     div.header {
@@ -34,73 +28,26 @@
         font-size: 1.1rem;
         margin-bottom: 5px;
     }
-
-    div.amount {
-        display: flex;
-        font-size: 1.3rem;
-    }
-
-    div.from-to {
-        display: flex;
-    }
-
-    div.line-info {
-        display: flex;
-        flex-direction: row;
-    }
 </style>
 
-<ListGroupItem>
-    <div class="directive-line">
-        <div class="header" on:click={toggle}>
-            <div class="left">
-                <div class="name">
-                    <Label size={"tiny"}>
-                        {#if directive.flag !== 'Complete'}
-                            <span>!</span>
-                        {/if}
-                        {directive.payee} {directive.narration}
-                    </Label>
-                    <div class="from-to">
-                        <!--                            <div class="from">-->
-                        <!--                                {#each directive.from as it}-->
-                        <!--                                    <Badge pill color="light">{it}</Badge>-->
-                        <!--                                {/each}-->
-                        <!--                            </div>-->
-                        <!--                            <div class="to">-->
-                        <!--                                {#each directive.to as it}-->
-                        <!--                                    <Badge pill color="light">{it}</Badge>-->
-                        <!--                                {/each}-->
-                        <!--                            </div>-->
-                    </div>
+<div class="directive-line">
+    <div class="header">
+        <div class="left">
+            <div class="name">
+                <div>
+                    {#if directive.flag !== 'Complete'}<span>!</span>{/if}
+                    {directive.payee}
+                    {directive.narration}
                 </div>
             </div>
-            <div>
-<!--                <div class="amount">-->
-                    <!--{#each Object.keys(directive.summaries).filter((it) => directive.summaries[it][0] !== "0") as idx}-->
-                    <!--    <div>-->
-                    <!--        <div>{directive.summaries[idx][0]}<span>{directive.summaries[idx][1]}</span></div>-->
-                    <!--        <Badge pill color="light">{accounts.getAlias(idx)}</Badge>-->
-                    <!--    </div>-->
-                    <!--{/each}-->
-<!--                </div>-->
+            <div class="meta">
+                <span class="tag">Journals</span>
+                <span class="tag">Success</span>
             </div>
         </div>
-        {#if showLineInfo}
-            <div class="content">
-                {#each directive.lines as line}
-
-                    <div class="line-info">
-                        <div class="line-info left">
-                            {accounts.getAlias(line.account)}
-                        </div>
-                        <div class="line-info right">
-                            {line.cost[0]} {line.cost[1]}
-                        </div>
-                    </div>
-
-                {/each}
-            </div>
-        {/if}
+        <div class="right">
+            <div class="statics" />
+            <div class="action" />
+        </div>
     </div>
-</ListGroupItem>
+</div>

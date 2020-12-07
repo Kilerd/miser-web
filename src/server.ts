@@ -7,8 +7,7 @@ import jwt from 'jsonwebtoken';
 
 const { PORT, NODE_ENV } = process.env;
 const dev = NODE_ENV === 'development';
-
-export default polka() // You can also use Express
+export default polka()
 	.use(
 		compression({ threshold: 0 }),
 		cookieParser(),
@@ -22,7 +21,7 @@ export default polka() // You can also use Express
 					return {
 						authenticated: !!profile,
 						profile,
-						user:false,
+						user: false,
 						token,
 						currentLedgerId
 					};
@@ -30,6 +29,6 @@ export default polka() // You can also use Express
 			})(req, res, next)
 		}
 	)
-	.listen(PORT, err => {
+	.listen(PORT, (err: any) => {
 		if (err) console.log('error', err);
 	});
