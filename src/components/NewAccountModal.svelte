@@ -1,9 +1,6 @@
 <script lang="ts">
-
-
     import {Button, FormGroup, Input, Modal, ModalBody, ModalFooter, ModalHeader, Spinner, Label} from 'sveltestrap/src'
-    import AutoComplete from 'simple-svelte-autocomplete';
-    import {accounts, commodities, entries} from '../stores';
+    import {accounts, commodities} from '../stores';
     import {api} from '../http'
 
     export let isOpen: boolean;
@@ -11,14 +8,14 @@
 
 
     let isSubmitting = false;
-    let name = "";
-    let alias = "";
+    let name = '';
+    let alias = '';
     let commoditiesSelectStatus: { [commodity: string]: boolean } = {};
 
     let initChecked = true;
-    let amount = "";
-    let commodity = "CNY";
-    let pad = undefined;
+    let amount = '';
+    let commodity = 'CNY';
+    let pad: number = undefined;
 
 
     accounts.subscribe(value => {
@@ -39,7 +36,7 @@
         commoditiesSelectStatus[commodity] = !commoditiesSelectStatus[commodity];
     }
 
-    $: canBeSubmit = ['Income:', "Assets:", "Equity:", "Liabilities:", "Expenses:"].some(value => name.startsWith(value));
+    $: canBeSubmit = ['Income:', 'Assets:', 'Equity:', 'Liabilities:', 'Expenses:'].some(value => name.startsWith(value));
 
     async function submit() {
         isSubmitting = true;
@@ -95,7 +92,7 @@
                         <Label for="exampleSelect">Select</Label>
                         <Input type="select" name="select" id="exampleSelect" bind:value={pad}>
                             {#if pad === undefined}
-                                <option value="{undefined}">Pls select pad accoutn</option>
+                                <option value="{undefined}">Pls select pad account</option>
                             {/if}
                             {#each Object.values($accounts) as account }
                                 <option value="{account.id}">[{account.name}] [{account.full_name}]</option>

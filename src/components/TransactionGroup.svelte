@@ -2,9 +2,9 @@
     import {isToday} from "../helper";
     import DirectiveLine from "./DirectiveLine.svelte";
     import type {Transaction} from "../types";
-    import Big from 'big.js';
+    import type Big from 'big.js';
 
-    export let data: { date: String, content: Transaction[], debit: Big, credit: Big };
+    export let data: { date: string, content: Transaction[], debit: Big, credit: Big };
     let {date, content, debit, credit} = data;
 </script>
 

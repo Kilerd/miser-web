@@ -1,24 +1,23 @@
 <script context="module" lang="ts">
-    import {api} from "../http";
+    import {api} from '../http';
 
     export async function preload(page, session) {
         if (!session.authenticated) {
-            return this.redirect(302, "/login")
+            return this.redirect(302, '/login')
         }
     }
 </script>
 
 <script lang="ts">
-    import {goto, stores} from "@sapper/app";
-    import {onMount} from "svelte";
+    import {stores} from '@sapper/app';
+    import {onMount} from 'svelte';
     import {accounts, currentLedger, directives} from '../stores';
-    import DirectiveLine from "../components/DirectiveLine.svelte";
-    import {Button, ListGroup} from "sveltestrap/src";
-    import NewTransactionModal from "../components/NewTransactionModal.svelte";
-    import {isToday} from "../helper";
+    import {Button} from 'sveltestrap/src';
+    import NewTransactionModal from '../components/NewTransactionModal.svelte';
     import dayjs from 'dayjs';
     import Big from 'big.js'
-    import TransactionGroup from "../components/TransactionGroup.svelte";
+    import TransactionGroup from '../components/TransactionGroup.svelte';
+    import type {Transaction} from '../types';
 
     const {page, session} = stores();
 
@@ -27,10 +26,10 @@
             if (id !== undefined) {
                 let raw_directives = (await api.getJournal()).data.data;
 
-                let groupedTransactions = {}
+                let groupedTransactions: { [key: string]: Transaction[] } = {}
 
                 for (let it of raw_directives) {
-                    const date = dayjs(it.create_time).format("YYYY-MM-DD");
+                    const date = dayjs(it.create_time).format('YYYY-MM-DD');
                     if (groupedTransactions[date] === undefined) {
                         groupedTransactions[date] = []
                     }
@@ -42,7 +41,7 @@
             }
         })
     })
-    const today = dayjs().format("YYYY-MM-DD");
+    const today = dayjs().format('YYYY-MM-DD');
 
     $: sortedJournals = Object.keys($directives).sort().reverse().map((date) => {
         const dateTransactions = $directives[date];
@@ -51,34 +50,34 @@
         for (let it of dateTransactions) {
             for (let line of it.lines) {
                 const accountId = line.account;
-                const type = $accounts[accountId].full_name.split(":")[0];
+                const type = $accounts[accountId].full_name.split(':')[0];
                 const cost = new Big(line.cost[0]);
                 console.log(cost, cost.s);
                 switch (type) {
-                    case "Income":
+                    case 'Income':
                         // if (cost.s === 1) {
                         //     credit = credit.add(cost)
                         // } else {
                         //     debit = debit.add(cost.mul(-1))
                         // }
                         break;
-                    case "Expenses":
+                    case 'Expenses':
                         // if (cost.s === 1) {
                         //     credit = credit.add(cost)
                         // } else {
                         //     debit = debit.add(cost.mul(-1))
                         // }
                         break;
-                    case "Liabilities":
+                    case 'Liabilities':
                         if (cost.s === 1) {
                             debit = debit.add(cost)
                         } else {
                             credit = credit.add(cost.mul(-1))
                         }
                         break;
-                    case "Equity":
+                    case 'Equity':
                         break;
-                    case "Assets":
+                    case 'Assets':
                         if (cost.s === 1) {
                             debit = debit.add(cost)
                         } else {
@@ -109,7 +108,7 @@
 
 {#each sortedJournals as datedGroup,i }
 
-    <TransactionGroup data={datedGroup} />
+    <TransactionGroup data={datedGroup}/>
 {/each}
 
 

@@ -33,20 +33,21 @@
 		"export": "run-s sapper:export validate"
 	},
 	"dependencies": {
+		"@fortawesome/fontawesome-free": "5.14.0",
+		"@popperjs/core": "2.5.1",
+		"@rollup/plugin-alias": "3.1.1",
+		"@tailwindcss/custom-forms": "0.2.1",
 		"axios": "^0.20.0",
 		"big.js": "^6.0.3",
+		"chart.js": "2.9.3",
 		"compression": "^1.7.4",
 		"cookie-parser": "^1.4.5",
 		"dayjs": "^1.9.6",
 		"jsonwebtoken": "^8.5.1",
 		"polka": "next",
 		"sirv": "^1.0.7",
-		"tailwindcss": "^2.0.1",
-		"@fortawesome/fontawesome-free": "5.14.0",
-		"@popperjs/core": "2.5.1",
-		"@rollup/plugin-alias": "3.1.1",
-		"@tailwindcss/custom-forms": "0.2.1",
-		"chart.js": "2.9.3"
+		"svelte-routing": "^1.4.2",
+		"tailwindcss": "^2.0.1"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.12.9",

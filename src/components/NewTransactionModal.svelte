@@ -8,7 +8,14 @@
     export let isOpen: boolean;
     export let toggle: () => boolean;
 
-    let accountList = [];
+    interface AccountSelectItem {
+        id: number,
+        keyword: string,
+        alias: string
+    }
+
+    let accountList: AccountSelectItem[] = [];
+
     accounts.subscribe((storeValue) => {
         accountList = Object.values(storeValue);
     })
@@ -24,15 +31,15 @@
     let defaultDate = new Date();
     defaultDate.setMinutes(defaultDate.getMinutes() - defaultDate.getTimezoneOffset());
     let date = defaultDate.toJSON().slice(0, 10)
-    let payee = "";
-    let narration = "";
+    let payee = '';
+    let narration = '';
 
-    let selectAccount;
-    let amount: string = "";
-    let selectAccount2;
-    let amount2: string = "";
+    let selectAccount: AccountSelectItem;
+    let amount: string = '';
+    let selectAccount2: AccountSelectItem;
+    let amount2: string = '';
 
-    $: canBeSubmit = selectAccount !== undefined && amount !== "" && selectAccount2 !== undefined && amount2 !== "";
+    $: canBeSubmit = selectAccount !== undefined && amount !== '' && selectAccount2 !== undefined && amount2 !== '';
     $: submitDisable = !canBeSubmit || isSubmit;
 
     async function submit() {
@@ -42,14 +49,14 @@
                 account: selectAccount.id,
                 amount: [
                     amount,
-                    "CNY"
+                    'CNY'
                 ]
             },
             {
                 account: selectAccount2.id,
                 amount: [
                     amount2,
-                    "CNY"
+                    'CNY'
                 ]
             }
         ]
@@ -73,7 +80,7 @@
     }
 </style>
 
-<Modal isOpen={isOpen} centered={true} fade={true} backdrop={false} size="lg" {toggle}>
+<Modal isOpen={isOpen} centered={true} fade={true} backdrop={false} size="lg" {toggle} transitionOptions={{}}>
     <ModalHeader {toggle}>New Transaction</ModalHeader>
     <ModalBody>
         <div>

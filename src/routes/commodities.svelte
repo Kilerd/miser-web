@@ -13,7 +13,6 @@
     import {onMount} from "svelte";
     import {commodities, currentLedger} from "../stores";
     import {Button, Table} from "sveltestrap/src";
-    import NewTransactionModal from "../components/NewTransactionModal.svelte";
     import NewCommodityModal from "../components/NewCommodityModal.svelte";
 
     const {page, session} = stores();

@@ -1,9 +1,8 @@
 <script lang="ts">
-    import AccountTree from "./AccountTree.svelte";
-    import {stores} from "@sapper/app"
+    import {stores} from '@sapper/app'
     import {Nav, NavItem, NavLink} from 'sveltestrap/src';
-    import {entries, currentLedger} from "../stores";
-    import {api, existCookie, setCookie} from "../http";
+    import {entries, currentLedger} from '../stores';
+    import {api, setCookie} from '../http';
 
 
     export let segment: string;
@@ -12,7 +11,7 @@
     function changeLedger(ledgerId: number) {
         api.setCurrentLedgerId(ledgerId.toString());
         currentLedger.update(n => ledgerId.toString())
-        setCookie("CURRENT_LEDGER_ID", ledgerId.toString())
+        setCookie('CURRENT_LEDGER_ID', ledgerId.toString())
     }
 
 
@@ -54,6 +53,7 @@
         color: #333;
         text-transform: uppercase;
     }
+
     div.list div.header a {
         color: #333;
         text-decoration: none;
@@ -68,6 +68,7 @@
         width: 100%;
 
     }
+
     div.list nav a {
         margin: 2px 0;
         padding: 4px 10px;
@@ -77,6 +78,7 @@
         cursor: pointer;
         text-decoration: none;
     }
+
     div.list nav a:hover {
         background-color: #eee;
         color: #333;

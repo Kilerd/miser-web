@@ -1,6 +1,5 @@
 import axios, {AxiosInstance, AxiosPromise, AxiosResponse} from 'axios';
-import type {JournalDirective} from './types';
-import {init} from "svelte/internal";
+import type {Transaction} from './types';
 
 const BASE_URL = process.env.NODE_ENV === 'development'
     ? 'http://localhost:8000'
@@ -44,15 +43,10 @@ export interface OkResponse<T> {
 }
 
 
-export interface JournalResponse {
-    [key: string] : JournalDirective[]
-}
-
-
 class API {
     axios: AxiosInstance;
-    token: string;
-    private currentLedgerId: string = undefined;
+    token?: string = undefined;
+    private currentLedgerId?: string = undefined;
     private session: any;
 
     constructor() {
@@ -107,7 +101,7 @@ class API {
         )
     }
 
-    async getJournal(): Promise<AxiosResponse<OkResponse<JournalResponse>>> {
+    async getJournal(): Promise<AxiosResponse<OkResponse<Transaction[]>>> {
         return await this.axios.get(
             `/ledgers/${this.currentLedgerId}/journals`,
         )
@@ -121,7 +115,7 @@ class API {
         return await this.axios.get('/ledgers')
     }
 
-    async createTransaction(date, payee, narration, tags, links, lines) {
+    async createTransaction(date: string, payee: string, narration: string, tags: string[], links: string[], lines: any[]) {
         return await this.axios.post(`/ledgers/${this.currentLedgerId}/transactions`, {
             date,
             payee,
@@ -151,12 +145,13 @@ class API {
         let data = {
             account_type: accountType,
             full_name: name,
-            alias: alias === ''? null: alias,
+            alias: alias === '' ? null : alias,
             commodities,
+
         };
 
-        if(initChecked) {
-            data['init'] =  {
+        if (initChecked) {
+            data['init'] = {
                 pad,
                 amount,
                 commodity

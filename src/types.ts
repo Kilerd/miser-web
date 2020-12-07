@@ -1,22 +1,18 @@
-
-export type Account = string;
-
 export interface Dated<T> {
     date: string,
     content: T
 }
 
-export interface JournalDirective {
-    type: 'Transaction' | 'Other',
-    raw: Directive,
-    from: Account[],
-    to: Account[]
+export interface Entry {
+    id: number;
+    name: string,
+    operating_commodity: string,
+    accounts: Account[]
 }
 
-
 export interface Transaction {
-    type: 'Transaction',
-    date: string,
+    id: number,
+    create_time: string,
     flag: string,
     payee?: string,
     narration?: string,
@@ -26,24 +22,27 @@ export interface Transaction {
 }
 
 export interface TransactionLine {
+    id: number,
     flag: string,
-    account: Account,
+    account: number,
     amount?: string[],
     cost?: string[],
-    single_price?: string,
-    total_price?: string
+    description: string
 }
 
-
-export interface Other {
-    type: 'Other'
-}
-
-export interface Entry {
-    id: string,
+export interface Account {
+    id: number,
     name: string,
-    config: { [key: string]: string },
-    accounts: Account[]
+    alias?: string,
+    full_name: string,
+    ledger_id: number,
+    status: string
 }
 
-export type Directive = Transaction | Other
+
+export interface Commodity {
+    name: string,
+    is_deleted: boolean,
+    last_price?: string,
+    last_price_update_time?: string
+}
