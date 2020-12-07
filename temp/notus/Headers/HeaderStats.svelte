@@ -1,6 +1,6 @@
 <script>
   // core components
-  import CardStats from "components/Cards/CardStats.svelte";
+  import CardStats from "../notus/Cards/CardStats.svelte";
 </script>
 
 <!-- Header -->

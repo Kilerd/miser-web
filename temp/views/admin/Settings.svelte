@@ -1,7 +1,7 @@
 <script>
   // core components
-  import CardSettings from "components/Cards/CardSettings.svelte";
-  import CardProfile from "components/Cards/CardProfile.svelte";
+  import CardSettings from "../notus/Cards/CardSettings.svelte";
+  import CardProfile from "../notus/Cards/CardProfile.svelte";
   export let location;
 </script>
 

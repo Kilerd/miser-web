@@ -1,9 +1,9 @@
 <script>
   // core components
-  import CardLineChart from "components/Cards/CardLineChart.svelte";
-  import CardBarChart from "components/Cards/CardBarChart.svelte";
-  import CardPageVisits from "components/Cards/CardPageVisits.svelte";
-  import CardSocialTraffic from "components/Cards/CardSocialTraffic.svelte";
+  import CardLineChart from "../notus/Cards/CardLineChart.svelte";
+  import CardBarChart from "../notus/Cards/CardBarChart.svelte";
+  import CardPageVisits from "../notus/Cards/CardPageVisits.svelte";
+  import CardSocialTraffic from "../notus/Cards/CardSocialTraffic.svelte";
   export let location;
 </script>
 

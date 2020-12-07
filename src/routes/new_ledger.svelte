@@ -1,6 +1,6 @@
 <script context="module" lang="ts">
 
-import {api} from "../http";
+    import {api} from '../http';
 
     export async function preload(page, session) {
         if (!session.authenticated) {
@@ -10,23 +10,17 @@ import {api} from "../http";
 </script>
 
 <script lang="ts">
-    import {goto, stores} from "@sapper/app";
-    import {onMount} from "svelte";
-    import {currentLedger, directives} from "../stores";
-    import DirectiveLine from "../components/DirectiveLine.svelte";
-    import {Button, ListGroup} from "sveltestrap/src";
-    import NewTransactionModal from "../components/NewTransactionModal.svelte";
-    import {isToday} from "../helper";
+    import {stores} from "@sapper/app";
+
 
     const {page, session} = stores();
 
-    let name: string = undefined;
-    let default_operating_commodity: string = undefined;
+    let name: string | undefined = undefined;
+    let default_operating_commodity: string | undefined = undefined;
 
     $: canBeSumbit = name !== undefined && default_operating_commodity !== undefined;
     async function submit() {
         let axiosResponse = await api.createLedger(name, default_operating_commodity);
-
     }
 </script>
 

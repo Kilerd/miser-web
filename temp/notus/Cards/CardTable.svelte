@@ -1,6 +1,6 @@
 <script>
   // core components
-  import TableDropdown from "components/Dropdowns/TableDropdown.svelte";
+  import TableDropdown from "../notus/Dropdowns/TableDropdown.svelte";
 
   const bootstrap = "../assets/img/bootstrap.jpg";
   const angular = "../assets/img/angular.jpg";

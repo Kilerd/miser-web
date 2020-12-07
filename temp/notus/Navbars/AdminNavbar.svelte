@@ -1,6 +1,6 @@
 <script>
   // core components
-  import UserDropdown from "components/Dropdowns/UserDropdown.svelte";
+  import UserDropdown from "../notus/Dropdowns/UserDropdown.svelte";
 </script>
 
 <!-- Navbar -->

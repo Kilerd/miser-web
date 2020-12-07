@@ -2,8 +2,8 @@
   import { link } from "svelte-routing";
 
   // core components
-  import AuthNavbar from "components/Navbars/AuthNavbar.svelte";
-  import Footer from "components/Footers/Footer.svelte";
+  import AuthNavbar from "../notus/Navbars/AuthNavbar.svelte";
+  import Footer from "../notus/Footers/Footer.svelte";
 
   const team1 = "/assets/img/team-1-800x800.jpg";
   const team2 = "/assets/img/team-2-800x800.jpg";

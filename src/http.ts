@@ -64,7 +64,7 @@ class API {
             });
     }
 
-    setAuthenticateToken(session, token: string | null) {
+    setAuthenticateToken(session: any, token: string | null) {
         this.session = session;
         if (token) {
             this.axios.defaults.headers.Authorization = `Bearer ${token}`;
@@ -147,15 +147,16 @@ class API {
             full_name: name,
             alias: alias === '' ? null : alias,
             commodities,
-
-        };
-
-        if (initChecked) {
-            data['init'] = {
+            init: {
                 pad,
                 amount,
                 commodity
             }
+        };
+
+        if (!initChecked) {
+            // @ts-ignore
+            data.init = null
         }
         return await this.axios.post(`/ledgers/${this.currentLedgerId}/accounts`, data)
     }

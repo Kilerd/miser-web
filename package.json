@@ -28,9 +28,9 @@
 		"sapper:build": "cross-env NODE_ENV=production sapper build --legacy",
 		"sapper:export": "cross-env NODE_ENV=production sapper export --legacy",
 		"dev": "run-p validate:dev sapper:dev",
-		"prod": "run-s sapper:build validate",
+		"build": "run-s sapper:build",
 		"start": "node __sapper__/build",
-		"export": "run-s sapper:export validate"
+		"export": "run-s sapper:export"
 	},
 	"dependencies": {
 		"@fortawesome/fontawesome-free": "5.14.0",
@@ -62,6 +62,7 @@
 		"@rollup/plugin-replace": "^2.3.4",
 		"@rollup/plugin-typescript": "^6.1.0",
 		"@types/big.js": "^6.0.0",
+		"@types/chart.js": "^2.9.28",
 		"@types/compression": "^1.7.0",
 		"@types/cookie-parser": "^1.4.2",
 		"@types/jsonwebtoken": "^8.5.0",

@@ -2,16 +2,16 @@
   import { Router, Route } from "svelte-routing";
 
   // components for this layout
-  import AdminNavbar from "components/Navbars/AdminNavbar.svelte";
-  import Sidebar from "components/Sidebar/Sidebar.svelte";
-  import HeaderStats from "components/Headers/HeaderStats.svelte";
-  import FooterAdmin from "components/Footers/FooterAdmin.svelte";
+  import AdminNavbar from "../../src/notus/Navbars/AdminNavbar.svelte";
+  import Sidebar from "../../src/notus/Sidebar/Sidebar.svelte";
+  import HeaderStats from "../../src/notus/Headers/HeaderStats.svelte";
+  import FooterAdmin from "../../src/notus/Footers/FooterAdmin.svelte";
 
   // pages for this layout
-  import Dashboard from "views/admin/Dashboard.svelte";
-  import Settings from "views/admin/Settings.svelte";
-  import Tables from "views/admin/Tables.svelte";
-  import Maps from "views/admin/Maps.svelte";
+  import Dashboard from "../../src/views/admin/Dashboard.svelte";
+  import Settings from "../../src/views/admin/Settings.svelte";
+  import Tables from "../../src/views/admin/Tables.svelte";
+  import Maps from "../../src/views/admin/Maps.svelte";
 
   export let location;
   export let admin = "";

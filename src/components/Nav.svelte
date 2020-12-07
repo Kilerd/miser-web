@@ -108,7 +108,7 @@
             </div>
             <nav>
                 {#each Object.values($entries) as entry, i}
-                    <a on:click={changeLedger(entry.id)}
+                    <a href="{segment}" on:click={changeLedger(entry.id)}
                        class:actived={entry.id.toString()===$currentLedger}>{entry.name}</a>
                 {/each}
             </nav>
@@ -124,10 +124,6 @@
                 <a href="/accounts">accounts</a>
                 <span>+</span>
             </div>
-            <nav>
-                <a href=""> Test</a>
-                <a href=""> Test</a>
-            </nav>
         </div>
     </aside>
 

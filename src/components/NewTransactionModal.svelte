@@ -1,8 +1,9 @@
 <script lang="ts">
     import {Button, FormGroup, Input, Modal, ModalBody, ModalFooter, ModalHeader, Spinner} from 'sveltestrap/src'
     import AutoComplete from 'simple-svelte-autocomplete';
-    import {accounts, entries} from '../stores';
+    import {accounts} from '../stores';
     import {api} from '../http'
+    import type {Account} from '../types';
 
 
     export let isOpen: boolean;
@@ -14,7 +15,7 @@
         alias: string
     }
 
-    let accountList: AccountSelectItem[] = [];
+    let accountList: Account[] = [];
 
     accounts.subscribe((storeValue) => {
         accountList = Object.values(storeValue);
@@ -66,6 +67,9 @@
         toggle()
     }
 
+    function itemShow(item: Account) {
+        return `${item.alias || ''} [${item.full_name}]`
+    }
 
 </script>
 
@@ -104,7 +108,7 @@
 
             <div class="line">
                 <AutoComplete inputId="account1" className="account-input" items={accountList}
-                              labelFunction={item => `${item.alias || ""} [${item.full_name}]`}
+                              labelFunction={itemShow}
                               valueFieldName="name"
                               bind:selectedItem={selectAccount}
                               searchFunction={getItems} showClear={true}/>
@@ -119,7 +123,7 @@
             </div>
             <div class="line">
                 <AutoComplete inputId="account2" items={accountList}
-                              labelFunction={item => `${item.alias || ""} [${item.full_name}]`} valueFieldName="name"
+                              labelFunction={itemShow} valueFieldName="name"
                               bind:selectedItem={selectAccount2}
                               searchFunction={getItems} showClear={true}/>
                 <FormGroup>

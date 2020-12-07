@@ -33,7 +33,7 @@
     }
 </style>
 
-<Modal isOpen={isOpen} centered={true} fade={true} backdrop={false} size="lg" {toggle}>
+<Modal isOpen={isOpen} centered={true} fade={true} backdrop={false} size="lg" {toggle} transitionOptions={{}}>
     <ModalHeader {toggle}>New Commodity</ModalHeader>
     <ModalBody>
         <div>

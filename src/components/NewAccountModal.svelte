@@ -15,7 +15,7 @@
     let initChecked = true;
     let amount = '';
     let commodity = 'CNY';
-    let pad: number = undefined;
+    let pad: string | undefined = undefined;
 
 
     accounts.subscribe(value => {
@@ -25,7 +25,7 @@
         }
     })
     commodities.subscribe(value => {
-        let a = {};
+        let a : {[name: string]: boolean}= {};
         Object.keys(value).forEach(commodity => {
             a[commodity] = false;
         })
@@ -59,7 +59,7 @@
     }
 </style>
 
-<Modal isOpen={isOpen} centered={true} fade={true} backdrop={false} size="lg" {toggle}>
+<Modal isOpen={isOpen} centered={true} fade={true} backdrop={false} size="lg" {toggle} transitionOptions={{}}>
     <ModalHeader {toggle}>New Commodity</ModalHeader>
     <ModalBody>
         <div>

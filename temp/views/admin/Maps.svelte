@@ -1,6 +1,6 @@
 <script>
   // core components
-  import MapExample from "components/Maps/MapExample.svelte";
+  import MapExample from "../notus/Maps/MapExample.svelte";
   export let location;
 </script>
 
