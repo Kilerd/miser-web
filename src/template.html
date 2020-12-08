@@ -14,6 +14,8 @@
 
 		<link rel="stylesheet" href="/main.css" />
 		<link rel="stylesheet" href="/normalize.css" />
+		<link rel="stylesheet" href="/tailwind.css" />
+		<link rel="stylesheet" href="/vendor/@fortawesome/fontawesome-free/css/all.min.css" />
 
 		<!-- Sapper generates a <style> tag containing critical CSS
   		for the current page. CSS for the rest of the app is
@@ -24,10 +26,15 @@
 		the current page has one -->
 		%sapper.head%
 	</head>
+	<body class="text-gray-800 antialiased">
+	<noscript>
+		<strong
+		>We're sorry but notus-svelte doesn't work properly without
+			JavaScript enabled. Please enable it to continue.</strong
+		>
+	</noscript>
+	<div id="sapper">%sapper.html%</div>
 
-	<body class="bg-grey-lighter h-screen font-sans">
-		<div id="sapper">%sapper.html%</div>
-
-		%sapper.scripts%
+	%sapper.scripts%
 	</body>
 </html>

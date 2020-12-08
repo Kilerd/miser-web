@@ -27,7 +27,7 @@
 		"sapper:dev": "sapper dev",
 		"sapper:build": "cross-env NODE_ENV=production sapper build --legacy",
 		"sapper:export": "cross-env NODE_ENV=production sapper export --legacy",
-		"dev": "run-p validate:dev sapper:dev",
+		"dev": "run-p sapper:dev",
 		"build": "run-s sapper:build",
 		"start": "node __sapper__/build",
 		"export": "run-s sapper:export"
