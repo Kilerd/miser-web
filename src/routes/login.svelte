@@ -1,21 +1,27 @@
+<script context="module" lang="ts">
+    import {api} from '../http';
+
+    export async function preload(page, session) {
+        if (session.authenticated) {
+            return this.redirect(302, '/dashboard')
+        }
+    }
+</script>
+
 <script lang="ts">
-    import {goto, stores} from "@sapper/app";
-    import {api} from "../http";
-    import AuthNavbar from "../notus/Navbars/AuthNavbar.svelte";
-    import FooterSmall from "../notus/Footers/FooterSmall.svelte";
+    import {goto, stores} from '@sapper/app';
+    import AuthNavbar from '../notus/Navbars/AuthNavbar.svelte';
+    import FooterSmall from '../notus/Footers/FooterSmall.svelte';
 
     const {session} = stores();
 
-    const github = "../assets/img/github.svg";
-    const google = "../assets/img/google.svg";
+    const github = '../assets/img/github.svg';
+    const google = '../assets/img/google.svg';
 
-    let email = "";
-    let password = "";
+    let email = '';
+    let password = '';
     let error = null;
 
-    if ($session.user) {
-        goto("/dashboard", {})
-    }
 
     async function submit() {
         try {
@@ -26,9 +32,9 @@
             let axiosResponse1 = await api.getUserInfo();
             $session.user = axiosResponse1.data.data;
             $session.authenticated = true;
-            await goto("/dashboard", {})
+            await goto('/dashboard', {})
         } catch (e) {
-            error = "error on login"
+            error = 'error on login'
         }
 
     }
@@ -152,7 +158,7 @@
                                 </a>
                             </div>
                             <div class="w-1/2 text-right">
-                                <a  href="/auth/register" class="text-gray-300">
+                                <a href="/auth/register" class="text-gray-300">
                                     <small>Create new account</small>
                                 </a>
                             </div>

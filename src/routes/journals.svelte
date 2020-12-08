@@ -18,7 +18,9 @@
     import Big from 'big.js'
     import TransactionGroup from '../components/TransactionGroup.svelte';
     import type {Transaction} from '../types';
-    import FooterAdmin from "../notus/Footers/FooterAdmin.svelte";
+    import FooterAdmin from '../notus/Footers/FooterAdmin.svelte';
+    import AuthenticatedLayout from '../components/AuthenticatedLayout.svelte';
+    import HeaderStats from '../notus/Headers/HeaderStats.svelte';
 
     const {page, session} = stores();
 
@@ -101,21 +103,28 @@
 </script>
 
 
-<div class="px-4 md:px-10 mx-auto w-full -m-24">
-    <div>
-        <h1>Journals</h1>
-        <div>
-            <Button on:click={toggle}>new</Button>
-            <NewTransactionModal isOpen={newTransactionStatus} toggle={toggle}/>
+
+
+
+
+<AuthenticatedLayout>
+    <div class="">
+        <div class="px-4 md:px-10 mx-auto w-full">
+            <div>
+                <h1>Journals</h1>
+                <div>
+                    <Button on:click={toggle}>new</Button>
+                    <NewTransactionModal isOpen={newTransactionStatus} toggle={toggle}/>
+                </div>
+            </div>
+
+            {#each sortedJournals as datedGroup,i }
+
+                <TransactionGroup data={datedGroup}/>
+            {/each}
+            <FooterAdmin/>
         </div>
     </div>
 
-    {#each sortedJournals as datedGroup,i }
-
-        <TransactionGroup data={datedGroup}/>
-    {/each}
-
-
-    <FooterAdmin/>
-</div>
+</AuthenticatedLayout>
 

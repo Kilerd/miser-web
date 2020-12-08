@@ -6,7 +6,7 @@
 </script>
 <div>
     <Sidebar />
-    <div class="relative md:ml-64 bg-gray-200">
+    <div class="relative md:ml-64 bg-gray-200 flex flex-col">
         <AdminNavbar/>
         <slot/>
     </div>
