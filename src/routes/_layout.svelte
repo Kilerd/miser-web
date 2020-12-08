@@ -16,20 +16,28 @@
 
 <script lang="ts">
 
-    import Nav from "../components/Nav.svelte";
 
     import {onMount} from "svelte";
     import {stores} from "@sapper/app";
     import {getCookie} from "../http";
-    import {accounts, currentLedger, entries} from "../stores";
+    import {accounts, currentLedger, entries, segment as storedSegment} from "../stores";
+    import AuthenticatedLayout from "../components/AuthenticatedLayout.svelte";
 
     export let segment;
     const {session} = stores();
+
+    storedSegment.update(n => segment);
+
+
+    const UNAUTHENTICATED_PAGE = [undefined, "login", "register"]
+    const needAuthenticated = !UNAUTHENTICATED_PAGE.includes(segment)
+
 
     onMount(async () => {
 
 
         console.log("onmount", $session);
+        console.log("needAuthenticated", needAuthenticated, segment);
         if ($session.authenticated) {
 
             let currentLedgerId: string = undefined;
@@ -59,7 +67,6 @@
             }
             accounts.update(n => a);
         }
-
     });
 </script>
 
@@ -85,17 +92,6 @@
     }
 </style>
 
-<!--<svelte:head>-->
-<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">-->
-<!--</svelte:head>-->
-<!--<section>-->
-<!--    <side>-->
-<!--        <Nav {segment}/>-->
-<!--    </side>-->
+<slot segment={segment}/>
 
-<!--    <main>-->
-<!--        <slot/>-->
-<!--    </main>-->
 
-<!--</section>-->
-<slot/>

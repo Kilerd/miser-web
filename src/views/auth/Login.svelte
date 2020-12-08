@@ -102,7 +102,7 @@
           </a>
         </div>
         <div class="w-1/2 text-right">
-          <a use:link href="/auth/register" class="text-gray-300">
+          <a  href="/auth/register" class="text-gray-300">
             <small>Create new account</small>
           </a>
         </div>

@@ -14,6 +14,7 @@
     import {commodities, currentLedger} from "../stores";
     import {Button, Table} from "sveltestrap/src";
     import NewCommodityModal from "../components/NewCommodityModal.svelte";
+    import FooterAdmin from "../notus/Footers/FooterAdmin.svelte";
 
     const {page, session} = stores();
 
@@ -38,35 +39,41 @@
     let newCommodityStatus = false;
     const toggle = () => (newCommodityStatus = !newCommodityStatus);
 </script>
-<div>
-    <h1>Commodities</h1>
+
+
+
+<div class="px-4 md:px-10 mx-auto w-full -m-24">
     <div>
-        <Button on:click={toggle}>new</Button>
-        <NewCommodityModal isOpen={newCommodityStatus} toggle={toggle}/>
+        <h1>Commodities</h1>
+        <div>
+            <Button on:click={toggle}>new</Button>
+            <NewCommodityModal isOpen={newCommodityStatus} toggle={toggle}/>
+        </div>
     </div>
-</div>
 
 
-<Table bordered>
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Last Price</th>
-        <th>Last price update time</th>
-    </tr>
-    </thead>
-    <tbody>
-    {#each Object.values($commodities) as commodity }
-
+    <Table bordered>
+        <thead>
         <tr>
-            <th scope="row">{commodity.name}</th>
-            <td>{commodity.last_price}</td>
-            <td>{commodity.last_price_update_time}</td>
+            <th>Name</th>
+            <th>Last Price</th>
+            <th>Last price update time</th>
         </tr>
-    {/each}
+        </thead>
+        <tbody>
+        {#each Object.values($commodities) as commodity }
+
+            <tr>
+                <th scope="row">{commodity.name}</th>
+                <td>{commodity.last_price}</td>
+                <td>{commodity.last_price_update_time}</td>
+            </tr>
+        {/each}
 
 
-    </tbody>
-</Table>
+        </tbody>
+    </Table>
 
 
+    <FooterAdmin/>
+</div>

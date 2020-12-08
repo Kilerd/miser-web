@@ -18,6 +18,7 @@
     import Big from 'big.js'
     import TransactionGroup from '../components/TransactionGroup.svelte';
     import type {Transaction} from '../types';
+    import FooterAdmin from "../notus/Footers/FooterAdmin.svelte";
 
     const {page, session} = stores();
 
@@ -98,17 +99,23 @@
     let newTransactionStatus = false;
     const toggle = () => (newTransactionStatus = !newTransactionStatus);
 </script>
-<div>
-    <h1>Journals</h1>
+
+
+<div class="px-4 md:px-10 mx-auto w-full -m-24">
     <div>
-        <Button on:click={toggle}>new</Button>
-        <NewTransactionModal isOpen={newTransactionStatus} toggle={toggle}/>
+        <h1>Journals</h1>
+        <div>
+            <Button on:click={toggle}>new</Button>
+            <NewTransactionModal isOpen={newTransactionStatus} toggle={toggle}/>
+        </div>
     </div>
+
+    {#each sortedJournals as datedGroup,i }
+
+        <TransactionGroup data={datedGroup}/>
+    {/each}
+
+
+    <FooterAdmin/>
 </div>
-
-{#each sortedJournals as datedGroup,i }
-
-    <TransactionGroup data={datedGroup}/>
-{/each}
-
 
