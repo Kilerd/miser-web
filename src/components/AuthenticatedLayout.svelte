@@ -1,3 +1,4 @@
+
 <script lang="ts">
     import Sidebar from "../notus/Sidebar/Sidebar.svelte";
     import AdminNavbar from "../notus/Navbars/AdminNavbar.svelte";

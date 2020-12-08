@@ -1,3 +1,12 @@
+
+<script context="module" lang="ts">
+    export async function preload(page, session) {
+        if (!session.authenticated) {
+            return this.redirect(302, '/login')
+        }
+    }
+</script>
+
 <script lang="ts">
     import Dashboard from "../../src/views/admin/Dashboard.svelte";
     import HeaderStats from "../notus/Headers/HeaderStats.svelte";
