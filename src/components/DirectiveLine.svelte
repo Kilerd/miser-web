@@ -32,7 +32,7 @@
 </style>
 
 
-<tr>
+<tr class="border-b">
     <th class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-3 text-left flex flex-col items-baseline">
         <span class="ml-3 font-normal btext-gray-700 text-base">
             {#if directive.flag !== 'Complete'}<span>!</span>{/if}

@@ -30,7 +30,7 @@
         {link: 'dashboard', name: 'Dashboard'},
         {link: 'journals', name: 'Journals'},
         {link: 'commodities', name: 'Commodities'},
-        {link: 'account', name: 'Accounts'},
+        {link: 'accounts', name: 'Accounts'},
 
     ]
 </script>

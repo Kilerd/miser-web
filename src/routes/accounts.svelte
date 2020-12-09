@@ -17,6 +17,8 @@
     import NewTransactionModal from "../components/NewTransactionModal.svelte";
     import {isToday} from "../helper";
     import NewAccountModal from "../components/NewAccountModal.svelte";
+    import AuthenticatedLayout from "../components/AuthenticatedLayout.svelte";
+    import FooterAdmin from "../notus/Footers/FooterAdmin.svelte";
 
     const {page, session} = stores();
 
@@ -40,36 +42,48 @@
     let newTransactionStatus = false;
     const toggle = () => (newTransactionStatus = !newTransactionStatus);
 </script>
-<div>
-    <h1>Accounts</h1>
-    <div>
-        <Button on:click={toggle}>new</Button>
-        <NewAccountModal isOpen={newTransactionStatus} toggle={toggle}/>
+
+
+
+<AuthenticatedLayout title="Accounts">
+    <div class="">
+        <div class="px-4 md:px-10 mx-auto w-full">
+            <div>
+                <h1>Accounts</h1>
+                <div>
+                    <Button on:click={toggle}>new</Button>
+                    <NewAccountModal isOpen={newTransactionStatus} toggle={toggle}/>
+                </div>
+            </div>
+
+            <Table bordered>
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Status</th>
+                    <th>Name</th>
+                    <th>Alias</th>
+                    <th>Full Name</th>
+                    <th>Commodities</th>
+                </tr>
+                </thead>
+                <tbody>
+                {#each Object.values($accounts) as account }
+                    <tr>
+                        <th scope="row">{account.id}</th>
+                        <td>{account.status}</td>
+                        <td>{account.name}</td>
+                        <td>{account.alias}</td>
+                        <td>{account.full_name}</td>
+                        <td>{account.commodities}</td>
+                    </tr>
+                {/each}
+
+                </tbody>
+            </Table>
+
+            <FooterAdmin/>
+        </div>
     </div>
-</div>
 
-<Table bordered>
-    <thead>
-    <tr>
-        <th>#</th>
-        <th>Status</th>
-        <th>Name</th>
-        <th>Alias</th>
-        <th>Full Name</th>
-        <th>Commodities</th>
-    </tr>
-    </thead>
-    <tbody>
-    {#each Object.values($accounts) as account }
-        <tr>
-            <th scope="row">{account.id}</th>
-            <td>{account.status}</td>
-            <td>{account.name}</td>
-            <td>{account.alias}</td>
-            <td>{account.full_name}</td>
-            <td>{account.commodities}</td>
-        </tr>
-    {/each}
-
-    </tbody>
-</Table>
+</AuthenticatedLayout>

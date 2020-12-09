@@ -15,6 +15,8 @@
     import {Button, Table} from "sveltestrap/src";
     import NewCommodityModal from "../components/NewCommodityModal.svelte";
     import FooterAdmin from "../notus/Footers/FooterAdmin.svelte";
+    import AuthenticatedLayout from "../components/AuthenticatedLayout.svelte";
+    import NewTransactionModal from "../components/NewTransactionModal.svelte";
 
     const {page, session} = stores();
 
@@ -40,40 +42,43 @@
     const toggle = () => (newCommodityStatus = !newCommodityStatus);
 </script>
 
+<AuthenticatedLayout title="Journals">
+    <div class="">
+        <div class="px-4 md:px-10 mx-auto w-full">
+            <div>
+                <h1>Commodities</h1>
+                <div>
+                    <Button on:click={toggle}>new</Button>
+                    <NewCommodityModal isOpen={newCommodityStatus} toggle={toggle}/>
+                </div>
+            </div>
 
 
-<div class="px-4 md:px-10 mx-auto w-full -m-24">
-    <div>
-        <h1>Commodities</h1>
-        <div>
-            <Button on:click={toggle}>new</Button>
-            <NewCommodityModal isOpen={newCommodityStatus} toggle={toggle}/>
+            <Table bordered>
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Last Price</th>
+                    <th>Last price update time</th>
+                </tr>
+                </thead>
+                <tbody>
+                {#each Object.values($commodities) as commodity }
+
+                    <tr>
+                        <th scope="row">{commodity.name}</th>
+                        <td>{commodity.last_price}</td>
+                        <td>{commodity.last_price_update_time}</td>
+                    </tr>
+                {/each}
+
+
+                </tbody>
+            </Table>
+
+
+            <FooterAdmin/>
         </div>
     </div>
 
-
-    <Table bordered>
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Last Price</th>
-            <th>Last price update time</th>
-        </tr>
-        </thead>
-        <tbody>
-        {#each Object.values($commodities) as commodity }
-
-            <tr>
-                <th scope="row">{commodity.name}</th>
-                <td>{commodity.last_price}</td>
-                <td>{commodity.last_price_update_time}</td>
-            </tr>
-        {/each}
-
-
-        </tbody>
-    </Table>
-
-
-    <FooterAdmin/>
-</div>
+</AuthenticatedLayout>
