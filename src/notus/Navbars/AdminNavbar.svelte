@@ -1,6 +1,8 @@
-<script>
+<script lang="ts">
   // core components
   import UserDropdown from "../Dropdowns/UserDropdown.svelte";
+
+  export let title: string;
 </script>
 
 <!-- Navbar -->
@@ -15,7 +17,7 @@
       class="text-white text-sm uppercase hidden lg:inline-block font-semibold"
       href="#pablo" on:click={(e) => e.preventDefault()}
     >
-      Dashboard
+      {title}
     </a>
     <!-- Form -->
     <form

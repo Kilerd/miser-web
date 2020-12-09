@@ -1,5 +1,6 @@
 <script lang="ts">
     import type {Transaction} from "../types";
+    import TableDropdown from "../notus/Dropdowns/TableDropdown.svelte";
 
     export let directive: Transaction;
 </script>
@@ -30,24 +31,27 @@
     }
 </style>
 
-<div class="directive-line">
-    <div class="header">
-        <div class="left">
-            <div class="name">
-                <div>
-                    {#if directive.flag !== 'Complete'}<span>!</span>{/if}
-                    {directive.payee}
-                    {directive.narration}
-                </div>
+
+<tr>
+    <th class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-3 text-left flex flex-col items-baseline">
+        <span class="ml-3 font-normal btext-gray-700 text-base">
+            {#if directive.flag !== 'Complete'}<span>!</span>{/if}
+            {directive.payee}
+            {directive.narration}
+        </span>
+        {#if directive.tags.length > 0}
+            <div class="meta ml-3">
+                {#each directive.tags as line}
+                    <span class="text-xs font-semibold inline-block px-2 rounded text-gray-600 bg-gray-200 last:mr-0 mr-1">
+                        {line}
+                    </span>
+                {/each}
+
             </div>
-            <div class="meta">
-                <span class="tag">Journals</span>
-                <span class="tag">Success</span>
-            </div>
-        </div>
-        <div class="right">
-            <div class="statics" />
-            <div class="action" />
-        </div>
-    </div>
-</div>
+        {/if}
+    </th>
+    <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-3 text-right">
+        <TableDropdown/>
+    </td>
+</tr>
+
