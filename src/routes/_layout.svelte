@@ -21,7 +21,6 @@
     import {stores} from "@sapper/app";
     import {getCookie} from "../http";
     import {accounts, currentLedger, entries, segment as storedSegment} from "../stores";
-    import AuthenticatedLayout from "../components/AuthenticatedLayout.svelte";
 
     export let segment;
     const {session} = stores();
@@ -34,10 +33,6 @@
 
 
     onMount(async () => {
-
-
-        console.log("onmount", $session);
-        console.log("needAuthenticated", needAuthenticated, segment);
         if ($session.authenticated) {
 
             let currentLedgerId: string = undefined;

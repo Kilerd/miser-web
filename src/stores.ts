@@ -7,7 +7,7 @@ export const directives = writable<{ [date: string]: Transaction[] }>({});
 
 export const entries = writable<{ [id: string]: Entry }>({});
 
-export const currentLedger = writable<string>("");
+export const currentLedger = writable<string | undefined>(undefined);
 
 export const accounts = (() => {
     const {subscribe, set, update} = writable<{ [id: number]: Account }>({});
@@ -27,4 +27,4 @@ export const accounts = (() => {
 
 export const commodities = writable<{ [name: string]: Commodity }>({});
 
-export const segment = writable<string|undefined>(undefined);
+export const segment = writable<string | undefined>(undefined);

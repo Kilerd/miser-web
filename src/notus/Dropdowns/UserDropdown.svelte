@@ -4,7 +4,7 @@
 
   // core components
 
-  const image = "../assets/img/team-1-800x800.jpg";
+  const image = "https://secure.gravatar.com/avatar/0ef2d17d4b179f70e13b35ec11a185bb";
 
   let dropdownPopoverShow = false;
 

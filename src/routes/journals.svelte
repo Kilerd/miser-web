@@ -12,25 +12,21 @@
     import {stores} from '@sapper/app';
     import {onMount} from 'svelte';
     import {accounts, currentLedger, directives} from '../stores';
-    import {Button} from 'sveltestrap/src';
-    import NewTransactionModal from '../components/NewTransactionModal.svelte';
     import dayjs from 'dayjs';
     import Big from 'big.js'
     import TransactionGroup from '../components/TransactionGroup.svelte';
     import type {Transaction} from '../types';
     import FooterAdmin from '../notus/Footers/FooterAdmin.svelte';
     import AuthenticatedLayout from '../components/AuthenticatedLayout.svelte';
-    import HeaderStats from '../notus/Headers/HeaderStats.svelte';
+    import Modal from 'svelte-simple-modal';
+    import ModalButton from "../components/ModalButton.svelte";
 
     const {page, session} = stores();
-
     onMount(async () => {
         currentLedger.subscribe(async id => {
             if (id !== undefined) {
                 let raw_directives = (await api.getJournal()).data.data;
-
                 let groupedTransactions: { [key: string]: Transaction[] } = {}
-
                 for (let it of raw_directives) {
                     const date = dayjs(it.create_time).format('YYYY-MM-DD');
                     if (groupedTransactions[date] === undefined) {
@@ -55,7 +51,6 @@
                 const accountId = line.account;
                 const type = $accounts[accountId].full_name.split(':')[0];
                 const cost = new Big(line.cost[0]);
-                console.log(cost, cost.s);
                 switch (type) {
                     case 'Income':
                         // if (cost.s === 1) {
@@ -99,22 +94,18 @@
     });
 
     let newTransactionStatus = false;
-    const toggle = () => (newTransactionStatus = !newTransactionStatus);
+
 </script>
-
-
-
-
 
 
 <AuthenticatedLayout title="Journals">
     <div class="">
         <div class="px-4 md:px-10 mx-auto w-full">
             <div>
-                <h1>Journals</h1>
                 <div>
-                    <Button on:click={toggle}>new</Button>
-                    <NewTransactionModal isOpen={newTransactionStatus} toggle={toggle}/>
+                    <Modal>
+                        <ModalButton/>
+                    </Modal>
                 </div>
             </div>
 

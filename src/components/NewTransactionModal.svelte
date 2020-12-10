@@ -5,10 +5,6 @@
     import {api} from '../http'
     import type {Account} from '../types';
 
-
-    export let isOpen: boolean;
-    export let toggle: () => boolean;
-
     interface AccountSelectItem {
         id: number,
         keyword: string,
@@ -64,7 +60,6 @@
 
         await api.createTransaction(date, payee, narration, [], [], lines)
         isSubmit = false;
-        toggle()
     }
 
     function itemShow(item: Account) {
@@ -84,9 +79,7 @@
     }
 </style>
 
-<Modal isOpen={isOpen} centered={true} fade={true} backdrop={false} size="lg" {toggle} transitionOptions={{}}>
-    <ModalHeader {toggle}>New Transaction</ModalHeader>
-    <ModalBody>
+
         <div>
             <div class="line">
                 <FormGroup>
@@ -138,8 +131,6 @@
         </div>
 
 
-    </ModalBody>
-    <ModalFooter>
         <Button color="primary" disabled={submitDisable} on:click={submit}>
             {#if isSubmit}
                 <Spinner color="light" size="sm"/>
@@ -147,6 +138,5 @@
                 Create
             {/if}
         </Button>
-        <Button color="secondary" on:click={toggle}>Cancel</Button>
-    </ModalFooter>
-</Modal>
+        <Button color="secondary">Cancel</Button>
+
