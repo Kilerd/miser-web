@@ -326,7 +326,7 @@
                     well). any bug, recommendation, feedback or features are welcome.
                 </p>
                 <div class="sm:block flex flex-col mt-10">
-                    <a href="mailto://blove694@gmail.com" target="_blank"
+                    <a href="mailto:blove694@gmail.com" target="_blank"
                        class="get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-2 bg-red-500 active:bg-red-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150"
                     >
                         Mail to me!
