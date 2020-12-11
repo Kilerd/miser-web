@@ -18,7 +18,7 @@ export const accounts = (() => {
         getAlias: (accountId: number) => {
             let innerAccount = `${accountId}`;
             subscribe((accountsEntity) => {
-                innerAccount = accountsEntity[accountId]?.alias || accountsEntity[accountId]?.name;
+                innerAccount = accountsEntity[accountId]?.alias || accountsEntity[accountId]?.full_name;
             });
             return innerAccount;
         }
