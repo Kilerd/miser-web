@@ -2607,7 +2607,12 @@ video {
 .-right-100 {
     right: -100%;
 }
-
+.-right-75 {
+    right: -100%;
+}
+.-top-750-px {
+    top: -750px;
+}
 .-top-225-px {
     top: -225px;
 }

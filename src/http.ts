@@ -1,7 +1,7 @@
 import axios, {AxiosInstance, AxiosPromise, AxiosResponse} from 'axios';
 import type {Transaction} from './types';
 
-const BASE_URL = process.env.NODE_ENV === 'development'
+export const BASE_URL = process.env.NODE_ENV === 'development'
     ? 'http://localhost:8000'
     : 'https://miser.3min.work';
 
