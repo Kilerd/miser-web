@@ -60,7 +60,7 @@
           <svg width="12" height="12" fill="#38A169" class="inline-block">
             <path d="M 10 5.4 L 10 6.6 H 0 V 5.4 z"></path>
         </svg>
-            ${outAmount.mul(-1).toFixed(2)}
+            ¥{outAmount.mul(-1).toFixed(2)}
                 <svg width="12" height="12" fill="#38A169" class="inline-block">
             <path d="M9.703 5.4L6.061 1.757 6.909.91 12 6l-.424.424-4.667 4.667-.848-.848L9.703 6.6H0V5.4h9.703z"></path>
         </svg>
