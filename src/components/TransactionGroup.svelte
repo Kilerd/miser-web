@@ -49,17 +49,17 @@
             <h6 class="text-xl font-normal leading-normal mt-0 mb-2 text-gray-800">
                 {#if isToday(date)}Today{:else}{date}{/if}
             </h6>
-            {#if isToday(date)}
-                <h6 class="font-normal leading-normal mt-0 mb-2 text-gray-500 ml-2">
-                    {date}
+            {#if !debit.eq(0)}
+                <h6 class="font-normal leading-normal mt-0 mb-2 text-gray-800 ml-2">
+                    Debit:{debit}
                 </h6>
             {/if}
-            <h6 class="font-normal leading-normal mt-0 mb-2 text-gray-800 ml-2">
-                Debit:{debit}
-            </h6>
-            <h6 class="font-normal leading-normal mt-0 mb-2 text-gray-800 ml-2">
-                Credit:{credit}
-            </h6>
+            {#if !credit.eq(0)}
+                <h6 class="font-normal leading-normal mt-0 mb-2 text-gray-800 ml-2">
+                    Credit:{credit}
+                </h6>
+            {/if}
+
         </div>
 
         <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white">
@@ -68,9 +68,9 @@
                 <!-- Projects table -->
                 <table class="items-center w-full bg-transparent border-collapse">
                     <tbody>
-                            {#each content as directive}
-                                <DirectiveLine directive={directive}/>
-                            {/each}
+                    {#each content as directive}
+                        <DirectiveLine directive={directive}/>
+                    {/each}
 
                     </tbody>
                 </table>
