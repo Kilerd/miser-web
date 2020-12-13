@@ -1,8 +1,10 @@
 <script lang="ts">
-    import type {Transaction} from "../types";
-    import TableDropdown from "../notus/Dropdowns/TableDropdown.svelte";
+    import type {Transaction} from '../types';
+    import TableDropdown from '../notus/Dropdowns/TableDropdown.svelte';
     import Big from 'big.js'
-    import {accounts} from "../stores";
+    import {accounts} from '../stores';
+    import {getContext} from 'svelte';
+    import TransactionDetail from './TransactionDetail.svelte'
 
     export let directive: Transaction;
     $: outAccounts = directive.lines
@@ -28,13 +30,18 @@
         .map(value => value.cost[0])
         .reduce((sum, cur) => sum.add(cur), new Big(0))
 
+    const {open} = getContext("transaction-detail");
+
+    function openDetail() {
+        open(TransactionDetail, {transaction: directive})
+    }
 </script>
 
 
 <tr class="border-b">
     <th class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-2 text-left flex flex-col items-baseline">
 
-            <span class="ml-3 font-normal btext-gray-700 text-base">
+        <span class="ml-3 font-normal btext-gray-700 text-base" on:click={openDetail}>
             {#if directive.flag !== 'Complete'}<span>!</span>{/if}
                 {directive.payee}
                 {directive.narration}

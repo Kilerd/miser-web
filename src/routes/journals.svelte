@@ -109,10 +109,11 @@
                 </div>
             </div>
 
-            {#each sortedJournals as datedGroup,i }
-
-                <TransactionGroup data={datedGroup}/>
-            {/each}
+            <Modal key="transaction-detail">
+                {#each sortedJournals as datedGroup,i }
+                    <TransactionGroup data={datedGroup}/>
+                {/each}
+            </Modal>
             <FooterAdmin/>
         </div>
     </div>
