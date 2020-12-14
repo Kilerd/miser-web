@@ -37,13 +37,27 @@
     }
 </script>
 
+<style>
+    span.separator {
+        display: inline-block;
+        width: 4px;
+        height: 4px;
+        padding: 2px;
+        margin: 0 6px;
+        background-color: hsl(0, 0%, 33%);
+    }
+</style>
+
 
 <tr class="border-b">
     <th class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-2 text-left flex flex-col items-baseline">
-
-        <span class="ml-3 font-normal btext-gray-700 text-base" on:click={openDetail}>
+        <span class="ml-3 font-normal btext-gray-700 text-base flex items-center" on:click={openDetail}>
             {#if directive.flag !== 'Complete'}<span>!</span>{/if}
-                {directive.payee}
+            {#if directive.payee}
+                <span class="font-ssemibold">{directive.payee}</span>
+                <span class="separator"></span>
+            {/if}
+
                 {directive.narration}
         </span>
         {#if directive.tags.length > 0}

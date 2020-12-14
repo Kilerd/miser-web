@@ -18,8 +18,9 @@
     import type {Transaction} from '../types';
     import FooterAdmin from '../notus/Footers/FooterAdmin.svelte';
     import AuthenticatedLayout from '../components/AuthenticatedLayout.svelte';
-    import Modal from 'svelte-simple-modal';
     import ModalButton from "../components/ModalButton.svelte";
+    import FileUploader from "../components/base/FileUploader.svelte";
+    import Modal from "../components/base/Modal.svelte";
 
     const {page, session} = stores();
     onMount(async () => {
@@ -95,6 +96,10 @@
 
     let newTransactionStatus = false;
 
+    function gotFiles(files) {
+        //do something with files
+        console.log("files", files);
+    }
 </script>
 
 
@@ -103,9 +108,12 @@
         <div class="px-4 md:px-10 mx-auto w-full">
             <div>
                 <div>
-                    <Modal>
+                    <Modal size="l">
                         <ModalButton/>
                     </Modal>
+
+                    <FileUploader on:input={gotFiles}>
+                    </FileUploader>
                 </div>
             </div>
 

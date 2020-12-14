@@ -1776,6 +1776,10 @@ video {
     font-weight: 400;
 }
 
+.font-ssemibold {
+    font-weight: 500;
+}
+
 .font-semibold {
     font-weight: 600;
 }
