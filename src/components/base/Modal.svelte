@@ -220,7 +220,7 @@
     >
         <div class="window-wrap" bind:this={wrap}>
             <div
-                    class="window {size}"
+                    class="window bg-gray-200 {size}"
                     role="dialog"
                     aria-modal="true"
                     bind:this={modalWindow}

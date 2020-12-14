@@ -1,12 +1,14 @@
 <script>
-    import { getContext } from 'svelte';
+    import {getContext} from 'svelte';
     import NewTransactionModal from "./NewTransactionModal.svelte";
 
-    const { open } = getContext('simple-modal');
+    const {open, close} = getContext('simple-modal');
 
     const showSurprise = () => {
-        open(NewTransactionModal, { message: "It's a modal!" });
+        open(NewTransactionModal, {modalClose: close});
     };
 </script>
 
-<p><button on:click={showSurprise}>Show me a surprise!</button></p>
+<p>
+    <button on:click={showSurprise}>new transaction</button>
+</p>
