@@ -95,11 +95,6 @@
     });
 
     let newTransactionStatus = false;
-
-    function gotFiles(files) {
-        //do something with files
-        console.log("files", files);
-    }
 </script>
 
 
@@ -112,8 +107,6 @@
                         <ModalButton/>
                     </Modal>
 
-                    <FileUploader on:input={gotFiles}>
-                    </FileUploader>
                 </div>
             </div>
 
