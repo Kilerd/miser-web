@@ -1,8 +1,35 @@
-import {writable} from 'svelte/store';
+import {derived, writable} from 'svelte/store';
 import type {Account, Commodity, Entry, Transaction} from './types';
 
+interface MapStoreItem<V> {
+    [key: string]: V
+}
 
-export const directives = writable<{ [date: string]: Transaction[] }>({});
+function createMapStore<V>(initial: MapStoreItem<V>) {
+    const store = writable(initial);
+    const results = derived(store, s => ({
+        keys: Object.keys(s),
+        values: Object.values(s),
+        entries: Object.entries(s),
+        set(k: string, v: V) {
+            store.update(s => Object.assign({}, s, {[k]: v}))
+        },
+        remove(k: string) {
+            store.update(s => {
+                delete s[k];
+                return s;
+            });
+        }
+    }));
+    return {
+        subscribe: results.subscribe,
+        set: store.set,
+        update: store.update
+    }
+}
+
+
+export const directives = createMapStore<Transaction[]>({});
 
 
 export const entries = writable<{ [id: string]: Entry }>({});

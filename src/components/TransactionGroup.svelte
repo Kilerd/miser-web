@@ -2,47 +2,50 @@
     import {isToday} from '../helper';
     import DirectiveLine from './DirectiveLine.svelte';
     import type {Transaction} from '../types';
-    import type Big from 'big.js';
-    import CardTable from '../notus/Cards/CardTable.svelte';
-    import CardSocialTraffic from '../notus/Cards/CardSocialTraffic.svelte';
-    import TableDropdown from "../notus/Dropdowns/TableDropdown.svelte";
+    import Big from 'big.js'
+    import {accounts} from '../stores';
 
-    export let data: { date: string, content: Transaction[], debit: Big, credit: Big };
-    let {date, content, debit, credit} = data;
+    export let date:string;
+    export let items: Transaction[] = [];
 
+    let debit = new Big(0.00);
+    let credit = new Big(0.00);
+    for (let it of items) {
+        for (let line of it.lines) {
+            const accountId = line.account;
+            const type = $accounts[accountId].full_name.split(':')[0];
+            const cost = new Big(line.cost[0]);
+            switch (type) {
+                case 'Income':
+                    break;
+                case 'Expenses':
+                    break;
+                case 'Liabilities':
+                    if (cost.s === 1) {
+                        debit = debit.add(cost)
+                    } else {
+                        credit = credit.add(cost.mul(-1))
+                    }
+                    break;
+                case 'Equity':
+                    break;
+                case 'Assets':
+                    if (cost.s === 1) {
+                        debit = debit.add(cost)
+                    } else {
+                        credit = credit.add(cost.mul(-1))
+                    }
+                    break;
+            }
+        }
+    }
 
-    const bootstrap = "../assets/img/bootstrap.jpg";
-    const angular = "../assets/img/angular.jpg";
-    const sketch = "../assets/img/sketch.jpg";
-    const react = "../assets/img/react.jpg";
-    const vue = "../assets/img/react.jpg";
-
-    const team1 = "../assets/img/team-1-800x800.jpg";
-    const team2 = "../assets/img/team-2-800x800.jpg";
-    const team3 = "../assets/img/team-3-800x800.jpg";
-    const team4 = "../assets/img/team-4-470x470.png";
-    export let color = "light";
+    export let color = 'light';
 </script>
 
 <style>
 </style>
 
-<!--<div class="group">-->
-<!--    <div class="header">-->
-<!--        <div class="date">-->
-<!--            {#if isToday(date)}Today <span>{date}</span>{:else}{date}{/if}-->
-<!--        </div>-->
-<!--        <div class="statics">-->
-<!--            <div class="item">Debit:{debit}</div>-->
-<!--            <div class="item">Credit:{credit}</div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--    <div class="lines">-->
-<!--        {#each content as directive}-->
-<!--            <DirectiveLine directive={directive}/>-->
-<!--        {/each}-->
-<!--    </div>-->
-<!--</div>-->
 <div class="flex flex-wrap">
     <div class="w-full px-4">
         <div class="flex items-end">
@@ -68,10 +71,9 @@
                 <!-- Projects table -->
                 <table class="items-center w-full bg-transparent border-collapse">
                     <tbody>
-                    {#each content as directive}
+                    {#each items as directive}
                         <DirectiveLine directive={directive}/>
                     {/each}
-
                     </tbody>
                 </table>
             </div>

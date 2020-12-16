@@ -11,15 +11,14 @@
 <script lang="ts">
     import {stores} from '@sapper/app';
     import {onMount} from 'svelte';
-    import {accounts, currentLedger, directives} from '../stores';
+    import {currentLedger, directives} from '../stores';
     import dayjs from 'dayjs';
-    import Big from 'big.js'
+
     import TransactionGroup from '../components/TransactionGroup.svelte';
     import type {Transaction} from '../types';
     import FooterAdmin from '../notus/Footers/FooterAdmin.svelte';
     import AuthenticatedLayout from '../components/AuthenticatedLayout.svelte';
     import ModalButton from "../components/ModalButton.svelte";
-    import FileUploader from "../components/base/FileUploader.svelte";
     import Modal from "../components/base/Modal.svelte";
 
     const {page, session} = stores();
@@ -41,60 +40,6 @@
             }
         })
     })
-    const today = dayjs().format('YYYY-MM-DD');
-
-    $: sortedJournals = Object.keys($directives).sort().reverse().map((date) => {
-        const dateTransactions = $directives[date];
-        let debit = new Big(0.00)
-        let credit = new Big(0.00)
-        for (let it of dateTransactions) {
-            for (let line of it.lines) {
-                const accountId = line.account;
-                const type = $accounts[accountId].full_name.split(':')[0];
-                const cost = new Big(line.cost[0]);
-                switch (type) {
-                    case 'Income':
-                        // if (cost.s === 1) {
-                        //     credit = credit.add(cost)
-                        // } else {
-                        //     debit = debit.add(cost.mul(-1))
-                        // }
-                        break;
-                    case 'Expenses':
-                        // if (cost.s === 1) {
-                        //     credit = credit.add(cost)
-                        // } else {
-                        //     debit = debit.add(cost.mul(-1))
-                        // }
-                        break;
-                    case 'Liabilities':
-                        if (cost.s === 1) {
-                            debit = debit.add(cost)
-                        } else {
-                            credit = credit.add(cost.mul(-1))
-                        }
-                        break;
-                    case 'Equity':
-                        break;
-                    case 'Assets':
-                        if (cost.s === 1) {
-                            debit = debit.add(cost)
-                        } else {
-                            credit = credit.add(cost.mul(-1))
-                        }
-                        break;
-                }
-            }
-        }
-        return {
-            date: date,
-            content: dateTransactions,
-            credit,
-            debit
-        }
-    });
-
-    let newTransactionStatus = false;
 </script>
 
 
@@ -111,8 +56,8 @@
             </div>
 
             <Modal key="transaction-detail">
-                {#each sortedJournals as datedGroup,i }
-                    <TransactionGroup data={datedGroup}/>
+                {#each $directives.entries as [key, value], i }
+                    <TransactionGroup date={key} items={value}/>
                 {/each}
             </Modal>
             <FooterAdmin/>
