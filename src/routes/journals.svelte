@@ -56,7 +56,7 @@
             </div>
 
             <Modal key="transaction-detail">
-                {#each $directives.entries as [key, value], i }
+                {#each $directives.entries.sort((a, b) => a[0] - b[0]).reverse() as [key, value], i }
                     <TransactionGroup date={key} items={value}/>
                 {/each}
             </Modal>
