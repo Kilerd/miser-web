@@ -169,6 +169,9 @@ class API {
             default_operating_commodity: defaultOperatingCommodity
         })
     }
+    async getDocumentByTransaction(transaction_id: number) {
+        return await this.axios.get(`/ledgers/${this.currentLedgerId}/transactions/${transaction_id}/documents`)
+    }
 }
 
 export const api = new API();
