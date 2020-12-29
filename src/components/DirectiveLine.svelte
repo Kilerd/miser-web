@@ -1,10 +1,10 @@
 <script lang="ts">
     import type {Transaction} from '../types';
-    import TableDropdown from '../notus/Dropdowns/TableDropdown.svelte';
     import Big from 'big.js'
     import {accounts} from '../stores';
     import {getContext} from 'svelte';
     import TransactionDetail from './TransactionDetail.svelte'
+    import EditTransactionModal from './EditTransactionModal.svelte'
 
     export let directive: Transaction;
     $: outAccounts = directive.lines
@@ -34,6 +34,9 @@
 
     function openDetail() {
         open(TransactionDetail, {transaction: directive})
+    }
+    function openEditModal() {
+        open(EditTransactionModal, {transaction: directive})
     }
 </script>
 
@@ -92,7 +95,11 @@
         </div>
     </td>
     <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-2 text-right w-5">
-        <TableDropdown/>
+        <div>
+            <a class="text-gray-600 py-1 px-3" on:click={openEditModal}>
+                <i class="fas fa-edit"></i>
+            </a>
+        </div>
     </td>
 </tr>
 
