@@ -13,7 +13,7 @@
     for (let it of items) {
         for (let line of it.lines) {
             const accountId = line.account;
-            const type = $accounts[accountId].full_name.split(':')[0];
+            const type = $accounts[accountId]?.full_name.split(':')[0];
             const cost = new Big(line.cost[0]);
             switch (type) {
                 case 'Income':
