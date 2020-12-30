@@ -127,6 +127,18 @@ class API {
         })
     }
 
+    async updateTransaction(transactionId: number, date: Date, payee: string, narration: string, tags: string[], links: string[], lines: any[]) {
+        return await this.axios.put(`/ledgers/${this.currentLedgerId}/transactions/${transactionId}`, {
+            flag: "Complete",
+            date,
+            payee,
+            narration,
+            tags,
+            links,
+            lines
+        })
+    }
+
     setCurrentLedgerId(currentLedgerId: string) {
         console.log("set current ledger id", currentLedgerId);
         this.currentLedgerId = currentLedgerId;
@@ -169,6 +181,7 @@ class API {
             default_operating_commodity: defaultOperatingCommodity
         })
     }
+
     async getDocumentByTransaction(transaction_id: number) {
         return await this.axios.get(`/ledgers/${this.currentLedgerId}/transactions/${transaction_id}/documents`)
     }

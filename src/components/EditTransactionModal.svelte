@@ -4,6 +4,7 @@
     import {accounts} from '../stores';
     import {api} from '../http'
     import type {Account} from '../types';
+    import {subscriptStore} from "../helper";
 
     export let modalClose;
 
@@ -15,17 +16,14 @@
         alias: string
     }
 
-    interface Line {
+    interface LineWithId {
+        id?: number,
         account?: AccountSelectItem,
         amount: string,
         currency: string,
     }
 
-    let accountList: Account[] = [];
-
-    accounts.subscribe((storeValue) => {
-        accountList = Object.values(storeValue);
-    })
+    let accountList = subscriptStore(accounts, [], newStore => Object.values(newStore));
 
     async function getItems(keyword: string) {
         return [
@@ -34,21 +32,20 @@
         ]
     }
 
-    let defaultDate = new Date();
-    defaultDate.setMinutes(defaultDate.getMinutes() - defaultDate.getTimezoneOffset());
+    let base = {
+        date: new Date(transaction.create_time).toJSON().slice(0, 10),
+        payee: transaction.payee,
+        narration: transaction.narration
+    };
 
-    let base = {date: defaultDate.toJSON().slice(0, 10), payee: '', narration: ''};
-    let lines: Line[] = [{
-        account: undefined,
-        amount: '',
-        currency: 'CNY'
-    }, {
-        account: undefined,
-        amount: '',
-        currency: 'CNY'
-    }]
+    let lines: LineWithId[] = transaction.lines.map(it => ({
+        id: it.id,
+        account: accountList.find(account => account.id === it.account),
+        amount: it.cost[0],
+        currency: it.cost[1]
+    }))
+
     let isSubmit = false;
-
     $: lineHasEmpty = lines.filter(it => it.account === undefined || it.amount === '' || it.amount === null).length > 0;
     $: canBeSubmit = !lineHasEmpty;
     $: submitDisable = !canBeSubmit || isSubmit;
@@ -58,13 +55,15 @@
         isSubmit = true;
 
         let lineRes = lines.map(it => ({
+            id: it.id,
             account: it.account.id,
-            amount: [it.amount, it.currency]
+            amount: [it.amount, it.currency],
+            description: "" // todo implement description
         }));
 
-        await api.createTransaction(base.date, base.payee, base.narration, [], [], lineRes)
+        await api.updateTransaction(transaction.id, new Date(base.date), base.payee, base.narration, [], [], lineRes)
         isSubmit = false;
-        modalClose();
+        modalClose()
     }
 
     function itemShow(item: Account) {
@@ -83,7 +82,7 @@
 <div class="relative flex flex-col min-w-0 break-words w-full shadow-lg rounded-lg bg-gray-200 border-0">
     <div class="rounded-t bg-white mb-0 px-6 py-6">
         <div class="text-center flex justify-between">
-            <h6 class="text-gray-800 text-xl font-bold">New Transaction</h6>
+            <h6 class="text-gray-800 text-xl font-bold">EDIT #{transaction.id}</h6>
         </div>
     </div>
     <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
@@ -161,15 +160,17 @@
 
             <div class="flex flex-wrap justify-end">
                 <button
-                        disabled={submitDisable}
+                        class="text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
+                        class:bg-gray-700={!canBeSubmit}
+                        class:bg-red-500={canBeSubmit}
+                        disabled='{submitDisable}'
                         on:click={submit}
-                        class="{canBeSubmit ? "bg-red-500": "bg-gray-700"} text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
                         type="button"
                 >
                     {#if isSubmit}
-                        Creating....
+                        Updating....
                     {:else}
-                        Create
+                        Update
                     {/if}
                 </button>
             </div>

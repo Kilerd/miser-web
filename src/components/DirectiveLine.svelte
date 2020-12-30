@@ -30,13 +30,14 @@
         .map(value => value.cost[0])
         .reduce((sum, cur) => sum.add(cur), new Big(0))
 
-    const {open} = getContext("transaction-detail");
+    const {open, close} = getContext("transaction-detail");
 
     function openDetail() {
-        open(TransactionDetail, {transaction: directive})
+        open(TransactionDetail, {transaction: directive, modalClose: close})
     }
+
     function openEditModal() {
-        open(EditTransactionModal, {transaction: directive})
+        open(EditTransactionModal, {transaction: directive, modalClose: close})
     }
 </script>
 
@@ -61,7 +62,7 @@
                 <span class="separator"></span>
             {/if}
 
-                {directive.narration}
+            {directive.narration}
         </span>
         {#if directive.tags.length > 0}
             <div class="meta ml-3">
