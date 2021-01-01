@@ -52,6 +52,7 @@ export interface AccountTree {
     expense: AccountTreeItem,
     equity: AccountTreeItem,
     assets: AccountTreeItem,
+    liabilities: AccountTreeItem,
 }
 
 export interface AccountTreeItem {

@@ -42,6 +42,12 @@
 
     })
     let accountTree: AccountTree = {
+        liabilities: {
+            name: 'Liabilities',
+            fullName: 'Liabilities',
+            isAvailable: false,
+            children: {}
+        },
         assets: {
             name: 'Assets',
             fullName: 'Assets',
@@ -66,6 +72,12 @@
     };
     accounts.subscribe(newStore => {
         let ret: AccountTree = {
+            liabilities: {
+                name: 'Liabilities',
+                fullName: 'Liabilities',
+                isAvailable: false,
+                children: {}
+            },
             assets: {
                 name: 'Assets',
                 fullName: 'Assets',
@@ -73,7 +85,7 @@
                 children: {}
             }, equity: {
                 name: 'Equity',
-                fullName: 'AsEquitysets',
+                fullName: 'Equity',
                 isAvailable: false,
                 children: {}
             }, expense: {
@@ -110,7 +122,7 @@
                 fullName: it.full_name,
                 isAvailable: true,
                 alias: it.alias,
-                commodities:it.commodities,
+                commodities: it.commodities,
                 id: it.id,
                 children: {}
             }
