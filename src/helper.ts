@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import type {Writable} from "svelte/store";
+import type {Writable} from 'svelte/store';
 
 export const isToday = (date: string): boolean => {
     const today = dayjs().format('YYYY-MM-DD');

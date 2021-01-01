@@ -9,38 +9,50 @@
       type: "bar",
       data: {
         labels: [
-          "January",
-          "February",
-          "March",
-          "April",
-          "May",
-          "June",
-          "July",
+          "2020-12-31",
+          "2020-12-21",
+          "2020-12-20",
+          "2020-12-12",
+          "2020-12-11",
+          "2020-12-10",
+          "2020-12-30",
+          "2020-12-30",
+          "2020-12-30",
+          "2020-12-30",
+          "2020-12-30",
+          "2020-12-30",
+          "2020-12-30",
+          "2020-12-30",
+          "2020-12-30",
+          "2020-12-30",
+          "2020-12-30",
+          "2020-12-30",
+          "2020-12-30",
+          "2020-12-30",
+          "2020-12-30",
+          "2020-12-30",
+          "2020-12-30",
+          "2020-12-30",
+          "2020-12-30",
+          "2020-12-30",
+          "2020-12-30",
         ],
         datasets: [
           {
             label: new Date().getFullYear(),
             backgroundColor: "#ed64a6",
             borderColor: "#ed64a6",
-            data: [30, 78, 56, 34, 100, 45, 13],
+            data: [30.2, 78, 56, 34, 100, 10000, 13.0, 13.0, 13.0, 13.0, 13.0, 13.0, 13.0, 13.0, 13.0, 13.0, 13.0, 13.0, 13.0, 13.0, 13.0, 13.0, 13.0, 13.0, 13.0, 13.0, 13.0],
             fill: false,
-            barThickness: 8
-          },
-          {
-            label: new Date().getFullYear() - 1,
-            fill: false,
-            backgroundColor: "#4c51bf",
-            borderColor: "#4c51bf",
-            data: [27, 68, 86, 74, 10, 4, 87],
             barThickness: 8
           }
         ]
       },
       options: {
-        maintainAspectRatio: false,
+        maintainAspectRatio: true,
         responsive: true,
         title: {
-          display: false,
+          display: true,
           text: "Orders Chart",
         },
         tooltips: {
@@ -61,18 +73,18 @@
         scales: {
           xAxes: [
             {
-              display: false,
+              display: true,
               scaleLabel: {
-                display: true,
+                display: false,
                 labelString: "Month",
               },
               gridLines: {
                 borderDash: [2],
-                borderDashOffset: [2],
+                borderDashOffset: [0],
                 color: "rgba(33, 37, 41, 0.3)",
                 zeroLineColor: "rgba(33, 37, 41, 0.3)",
                 zeroLineBorderDash: [2],
-                zeroLineBorderDashOffset: [2],
+                zeroLineBorderDashOffset: [0],
               },
             },
           ],
@@ -105,18 +117,6 @@
 <div
   class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded"
 >
-  <div class="rounded-t mb-0 px-4 py-3 bg-transparent">
-    <div class="flex flex-wrap items-center">
-      <div class="relative w-full max-w-full flex-grow flex-1">
-        <h6 class="uppercase text-gray-500 mb-1 text-xs font-semibold">
-          Performance
-        </h6>
-        <h2 class="text-gray-800 text-xl font-semibold">
-          Total orders
-        </h2>
-      </div>
-    </div>
-  </div>
   <div class="p-4 flex-auto">
     <div class="relative h-350-px">
       <canvas id="bar-chart"></canvas>

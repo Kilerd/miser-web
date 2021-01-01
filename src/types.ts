@@ -36,13 +36,30 @@ export interface Account {
     alias?: string,
     full_name: string,
     ledger_id: number,
-    status: string
+    status: string,
+    commodities: string[]
 }
-
 
 export interface Commodity {
     name: string,
     is_deleted: boolean,
     last_price?: string,
     last_price_update_time?: string
+}
+
+export interface AccountTree {
+    income: AccountTreeItem,
+    expense: AccountTreeItem,
+    equity: AccountTreeItem,
+    assets: AccountTreeItem,
+}
+
+export interface AccountTreeItem {
+    id?: number,
+    name: string,
+    fullName: string,
+    alias?: string,
+    isAvailable: boolean,
+    commodities?: string[],
+    children: { [name: string]: AccountTreeItem }
 }

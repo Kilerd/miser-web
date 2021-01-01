@@ -18,8 +18,9 @@
     import type {Transaction} from '../types';
     import FooterAdmin from '../notus/Footers/FooterAdmin.svelte';
     import AuthenticatedLayout from '../components/AuthenticatedLayout.svelte';
-    import ModalButton from "../components/ModalButton.svelte";
-    import Modal from "../components/base/Modal.svelte";
+    import ModalButton from '../components/ModalButton.svelte';
+    import Modal from '../components/base/Modal.svelte';
+    import CardBarChart from '../notus/Cards/CardBarChart.svelte';
 
     const {page, session} = stores();
     onMount(async () => {
@@ -44,8 +45,11 @@
 
 
 <AuthenticatedLayout title="Journals">
+
     <div class="">
-        <div class="px-4 md:px-10 mx-auto w-full">
+        <div class="relative bg-red-500 md:pt-2 pb-32 pt-2"></div>
+        <div class="px-4 md:px-10 mx-auto w-full -m-24">
+            <CardBarChart />
             <div>
                 <div>
                     <Modal size="l">
