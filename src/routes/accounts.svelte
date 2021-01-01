@@ -58,9 +58,9 @@
             fullName: 'AsEquitysets',
             isAvailable: false,
             children: {}
-        }, expense: {
-            name: 'Expense',
-            fullName: 'Expense',
+        }, expenses: {
+            name: 'Expenses',
+            fullName: 'Expenses',
             isAvailable: false,
             children: {}
         }, income: {
@@ -88,9 +88,9 @@
                 fullName: 'Equity',
                 isAvailable: false,
                 children: {}
-            }, expense: {
-                name: 'Expense',
-                fullName: 'Expense',
+            }, expenses: {
+                name: 'Expenses',
+                fullName: 'Expenses',
                 isAvailable: false,
                 children: {}
             }, income: {
