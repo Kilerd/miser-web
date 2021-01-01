@@ -49,7 +49,7 @@
         ]
       },
       options: {
-        maintainAspectRatio: true,
+        maintainAspectRatio: false,
         responsive: true,
         title: {
           display: true,
