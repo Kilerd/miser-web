@@ -55,3 +55,6 @@ export const accounts = (() => {
 export const commodities = writable<{ [name: string]: Commodity }>({});
 
 export const segment = writable<string | undefined>(undefined);
+
+
+export const test = writable(1);

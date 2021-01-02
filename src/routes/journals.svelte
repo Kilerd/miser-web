@@ -49,7 +49,7 @@
     <div class="">
         <div class="relative bg-red-500 md:pt-2 pb-32 pt-2"></div>
         <div class="px-4 md:px-10 mx-auto w-full -m-24">
-            <CardBarChart />
+            <CardBarChart transactions={$directives.entries} />
             <div>
                 <div>
                     <Modal size="l">

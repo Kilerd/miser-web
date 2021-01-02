@@ -4,7 +4,7 @@
     import {accounts} from '../stores';
     import {api} from '../http'
     import type {Account} from '../types';
-    import {subscriptStore} from "../helper";
+    import {subscriptStore} from '../helper';
 
     export let modalClose;
 
@@ -38,7 +38,7 @@
         narration: transaction.narration
     };
 
-    let lines: LineWithId[] = transaction.lines.map(it => ({
+    let lines = transaction.lines.map(it => ({
         id: it.id,
         account: accountList.find(account => account.id === it.account),
         amount: it.cost[0],
@@ -58,7 +58,7 @@
             id: it.id,
             account: it.account.id,
             amount: [it.amount, it.currency],
-            description: "" // todo implement description
+            description: '' // todo implement description
         }));
 
         await api.updateTransaction(transaction.id, new Date(base.date), base.payee, base.narration, [], [], lineRes)
