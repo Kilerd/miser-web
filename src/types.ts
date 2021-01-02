@@ -48,11 +48,7 @@ export interface Commodity {
 }
 
 export interface AccountTree {
-    income: AccountTreeItem,
-    expenses: AccountTreeItem,
-    equity: AccountTreeItem,
-    assets: AccountTreeItem,
-    liabilities: AccountTreeItem,
+    [type: string]: AccountTreeItem,
 }
 
 export interface AccountTreeItem {
