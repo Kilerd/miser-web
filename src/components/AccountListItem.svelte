@@ -16,7 +16,11 @@
         </div>
         {#if item.commodities}
             <div>
-                {item.commodities}
+                {#each item.commodities as commodity}
+                    <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-orange-600 bg-orange-200 uppercase last:mr-0 mr-1">
+                        {commodity}
+                    </span>
+                {/each}
             </div>
         {/if}
     </div>

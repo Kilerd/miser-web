@@ -19,6 +19,8 @@
     import type {AccountTree, AccountTreeItem} from '../types';
     import AccountListItem from '../components/AccountListItem.svelte';
     import {accountTreeGenerator} from '../helper';
+    import Modal from '../components/base/Modal.svelte';
+    import ModalButton from '../components/ModalButton.svelte';
 
     const {page, session} = stores();
 
@@ -52,37 +54,11 @@
                 <h1>Accounts</h1>
 
                 <div>
-                    <Button on:click={toggle}>new</Button>
-                    <NewAccountModal isOpen={newTransactionStatus} toggle={toggle}/>
+                    <Modal key="newAccountModal" size="l">
+                        <ModalButton modalContext="newAccountModal" content={NewAccountModal} text="new Account"/>
+                    </Modal>
                 </div>
             </div>
-
-            <Table bordered>
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Status</th>
-                    <th>Name</th>
-                    <th>Alias</th>
-                    <th>Full Name</th>
-                    <th>Commodities</th>
-                </tr>
-                </thead>
-                <tbody>
-                {#each Object.values($accounts) as account }
-                    <tr>
-                        <th scope="row">{account.id}</th>
-                        <td>{account.status}</td>
-                        <td>{account.name}</td>
-                        <td>{account.alias}</td>
-                        <td>{account.full_name}</td>
-                        <td>{account.commodities}</td>
-                    </tr>
-                {/each}
-
-                </tbody>
-            </Table>
-
             {#each Object.values(accountTree) as one}
                 <AccountListItem item={one}/>
             {/each}

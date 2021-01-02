@@ -21,6 +21,7 @@
     import ModalButton from '../components/ModalButton.svelte';
     import Modal from '../components/base/Modal.svelte';
     import CardBarChart from '../notus/Cards/CardBarChart.svelte';
+    import NewTransactionModal from '../components/NewTransactionModal.svelte';
 
     const {page, session} = stores();
     onMount(async () => {
@@ -49,11 +50,12 @@
     <div class="">
         <div class="relative bg-red-500 md:pt-2 pb-32 pt-2"></div>
         <div class="px-4 md:px-10 mx-auto w-full -m-24">
-            <CardBarChart transactions={$directives.entries} />
+            <CardBarChart transactions={$directives.entries}/>
             <div>
                 <div>
-                    <Modal size="l">
-                        <ModalButton/>
+                    <Modal key="newTransactionModal" size="l">
+                        <ModalButton modalContext="newTransactionModal" content={NewTransactionModal}
+                                     text="new Transaction"/>
                     </Modal>
 
                 </div>
