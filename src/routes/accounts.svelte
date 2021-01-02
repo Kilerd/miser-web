@@ -51,8 +51,6 @@
     <div class="">
         <div class="px-4 md:px-10 mx-auto w-full">
             <div>
-                <h1>Accounts</h1>
-
                 <div>
                     <Modal key="newAccountModal" size="l">
                         <ModalButton modalContext="newAccountModal" content={NewAccountModal} text="new Account"/>
