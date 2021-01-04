@@ -51,7 +51,6 @@
     $: submitDisable = !canBeSubmit || isSubmit;
 
     async function submit() {
-        console.log(base, lines);
         isSubmit = true;
 
         let lineRes = lines.map(it => ({

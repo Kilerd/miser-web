@@ -18,7 +18,6 @@
 
         for (let [day, dayTransactions] of $directives.entries) {
             let targetDay = data[day];
-            console.log(day, dayTransactions, targetDay);
             if (targetDay !== undefined) {
                 for (let it of dayTransactions) {
                     for (let line of it.lines) {
@@ -138,7 +137,6 @@
 
             for (let [day, dayTransactions] of $directives.entries) {
                 let targetDay = data[day];
-                console.log(day, dayTransactions, targetDay);
                 if (targetDay !== undefined) {
                     for (let it of dayTransactions) {
                         for (let line of it.lines) {

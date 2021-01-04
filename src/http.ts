@@ -140,7 +140,6 @@ class API {
     }
 
     setCurrentLedgerId(currentLedgerId: string) {
-        console.log("set current ledger id", currentLedgerId);
         this.currentLedgerId = currentLedgerId;
     }
 

@@ -12,6 +12,8 @@
     import {goto, stores} from '@sapper/app';
     import AuthNavbar from '../notus/Navbars/AuthNavbar.svelte';
     import FooterSmall from '../notus/Footers/FooterSmall.svelte';
+    import {currentLedger, entries} from "../stores";
+    import {getCookie} from "../http";
 
     const {session} = stores();
 
@@ -32,6 +34,23 @@
             let axiosResponse1 = await api.getUserInfo();
             $session.user = axiosResponse1.data.data;
             $session.authenticated = true;
+
+            let currentLedgerId = getCookie("CURRENT_LEDGER_ID");
+            let fetchedEntries = (await api.getEntries()).data.data;
+            let t = {};
+            for (let entry of fetchedEntries) {
+                if (currentLedgerId === undefined) {
+                    currentLedgerId = entry.id.toString();
+                }
+                t[entry.id] = entry;
+            }
+            entries.update(n => t);
+
+            currentLedger.update(() => {
+                api.setCurrentLedgerId(currentLedgerId)
+                return currentLedgerId;
+            })
+
             await goto('/dashboard', {})
         } catch (e) {
             error = 'error on login'

@@ -1,6 +1,4 @@
 <script context="module" lang="ts">
-    import {api} from "../http";
-
     export async function preload(page, session) {
         if (!session.authenticated) {
             return this.redirect(302, "/login")
