@@ -59,9 +59,15 @@
 </style>
 
 <div>
+    <h1>NEW ACCOUNT</h1>
     <div class="line">
-            <input bind:value={name} placeholder="Name"/>
-            <input bind:value={alias} placeholder="alias"/>
+        <label for="name">Account name</label>
+        <input bind:value={name} placeholder="Name" id="name" class="input"/>
+
+    </div>
+    <div class="line">
+        <label for="alias">Alias</label>
+        <input bind:value={alias} placeholder="alias" id="alias" class="input"/>
     </div>
     <div class="line">
         {#each Object.keys(commoditiesSelectStatus) as commodity}
@@ -71,40 +77,41 @@
         {/each}
     </div>
     <div class="line">
-                <input type="checkbox" bind:checked={initChecked} on:click={() => initChecked = !initChecked}/>
-                init
+        <input type="checkbox" bind:checked={initChecked} on:click={() => initChecked = !initChecked} class="input"/>
+        init
     </div>
     {#if initChecked}
         <div class="line">
 
-                <input type="select" name="select" id="exampleSelect" bind:value={pad}>
-                    {#if pad === undefined}
-                        <option value="{undefined}">Pls select pad account</option>
-                    {/if}
-                    {#each Object.values($accounts) as account }
-                        <option value="{account.id}">[{account.name}] [{account.full_name}]</option>
-                    {/each}
+            <select name="select" id="exampleSelect" class="input" bind:value={pad}>
+                {#if pad === undefined}
+                    <option value="{undefined}">Pls select pad account</option>
+                {/if}
+                {#each Object.values($accounts) as account }
+                    <option value="{account.id}">[{account.name}] [{account.full_name}]</option>
+                {/each}
+            </select>
         </div>
         <div class="line">
 
-                <input bind:value={amount} pattern="[0-9]{4}"/>
+            <input bind:value={amount} pattern="[0-9]{4}" placeholder="init value" class="input"/>
 
         </div>
         <div class="line">
 
-                <input type="select" name="select" id="exampleSelect2" bind:value={commodity}>
-                    <option>CNY</option>
+            <select name="select" id="exampleSelect2" class="input" bind:value={commodity}>
+                <option>CNY</option>
+            </select>
         </div>
     {/if}
 </div>
 
 
-{initChecked} {pad} {amount} {commodity}
-<button color="primary" disabled={!canBeSubmit || isSubmitting} on:click={submit}>
+<button disabled={!canBeSubmit || isSubmitting} on:click={submit} class="button">
     {#if isSubmitting}
         loading....
     {:else}
         Create
     {/if}
 </button>
-<button color="secondary" on:click={toggle}>Cancel</button>
+<button color="secondary" on:click={toggle} class="button">Cancel</button>
