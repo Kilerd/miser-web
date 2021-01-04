@@ -1,5 +1,4 @@
 <script lang="ts">
-    import {Button, FormGroup, Input, Modal, ModalBody, ModalFooter, ModalHeader, Spinner} from 'sveltestrap/src'
     import AutoComplete from 'simple-svelte-autocomplete';
     import {accounts} from '../stores';
     import {api} from '../http'

@@ -1,7 +1,4 @@
 <script lang="ts">
-    import {Button, FormGroup, Input, Modal, ModalBody, ModalFooter, ModalHeader, Spinner} from 'sveltestrap/src'
-    import AutoComplete from 'simple-svelte-autocomplete';
-    import {accounts, entries} from '../stores';
     import {api} from '../http'
 
     export let isOpen: boolean;
@@ -33,27 +30,21 @@
     }
 </style>
 
-<Modal isOpen={isOpen} centered={true} fade={true} backdrop={false} size="lg" {toggle} transitionOptions={{}}>
-    <ModalHeader {toggle}>New Commodity</ModalHeader>
-    <ModalBody>
+
         <div>
             <div class="line">
-                <FormGroup>
-                    <Input bind:value={name} placeholder="Name"/>
-                </FormGroup>
+
+                    <input bind:value={name} placeholder="Name"/>
+
             </div>
         </div>
 
-
-    </ModalBody>
-    <ModalFooter>
-        <Button color="primary" disabled={!canBeSubmit || isSubmitting} on:click={submit}>
+        <button color="primary" disabled={!canBeSubmit || isSubmitting} on:click={submit}>
             {#if isSubmitting}
-                <Spinner color="light" size="sm"/>
+               loading...
             {:else}
                 Create
             {/if}
-        </Button>
-        <Button color="secondary" on:click={toggle}>Cancel</Button>
-    </ModalFooter>
-</Modal>
+        </button>
+        <button color="secondary" on:click={toggle}>Cancel</button>
+

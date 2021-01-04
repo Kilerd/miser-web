@@ -12,7 +12,6 @@
     import {stores} from "@sapper/app";
     import {onMount} from "svelte";
     import {commodities, currentLedger} from "../stores";
-    import {Button, Table} from "sveltestrap/src";
     import NewCommodityModal from "../components/NewCommodityModal.svelte";
     import FooterAdmin from "../notus/Footers/FooterAdmin.svelte";
     import AuthenticatedLayout from "../components/AuthenticatedLayout.svelte";
@@ -48,13 +47,13 @@
             <div>
                 <h1>Commodities</h1>
                 <div>
-                    <Button on:click={toggle}>new</Button>
+                    <button on:click={toggle}>new</button>
                     <NewCommodityModal isOpen={newCommodityStatus} toggle={toggle}/>
                 </div>
             </div>
 
 
-            <Table bordered>
+            <table>
                 <thead>
                 <tr>
                     <th>Name</th>
@@ -74,7 +73,7 @@
 
 
                 </tbody>
-            </Table>
+            </table>
 
 
             <FooterAdmin/>

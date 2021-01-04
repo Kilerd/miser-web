@@ -1,6 +1,6 @@
 <script lang="ts">
     import {stores} from '@sapper/app'
-    import {Nav, NavItem, NavLink} from 'sveltestrap/src';
+
     import {entries, currentLedger} from '../stores';
     import {api, setCookie} from '../http';
 
@@ -126,14 +126,4 @@
             </div>
         </div>
     </aside>
-
-{:else}
-    <Nav vertical>
-        <NavItem>
-            <NavLink href="/" active={segment===undefined}>Home</NavLink>
-        </NavItem>
-        <NavItem>
-            <NavLink href="/login" active={segment==='login'}>login</NavLink>
-        </NavItem>
-    </Nav>
 {/if}

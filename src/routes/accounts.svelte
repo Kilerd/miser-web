@@ -12,7 +12,6 @@
     import {stores} from '@sapper/app';
     import {onMount} from 'svelte';
     import {accounts, currentLedger, test} from '../stores';
-    import {Button, Table} from 'sveltestrap/src';
     import NewAccountModal from '../components/NewAccountModal.svelte';
     import AuthenticatedLayout from '../components/AuthenticatedLayout.svelte';
     import FooterAdmin from '../notus/Footers/FooterAdmin.svelte';
