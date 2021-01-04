@@ -1,5 +1,6 @@
 import {derived, writable} from 'svelte/store';
 import type {Account, Commodity, Entry, Transaction} from './types';
+import {api} from "./http";
 
 interface MapStoreItem<V> {
     [key: string]: V
@@ -56,5 +57,31 @@ export const commodities = writable<{ [name: string]: Commodity }>({});
 
 export const segment = writable<string | undefined>(undefined);
 
-
 export const test = writable(1);
+
+
+currentLedger.subscribe(async newLedgerId => {
+    if (newLedgerId !== undefined) {
+
+        // update account
+        let fetchedAccounts = (await api.getAccounts()).data.data;
+        let a: { [id: number]: Account } = {};
+        for (let it of fetchedAccounts) {
+            a[it.id] = it;
+        }
+        accounts.update(n => a);
+
+        // update commodities
+        let fetchedCommodities = (await api.getCommodities()).data.data;
+
+        let commoditiesMap: { [name: string]: Commodity } = {}
+
+        for (let it of fetchedCommodities) {
+            commoditiesMap[it.name] = it
+        }
+
+        commodities.update(() => {
+            return commoditiesMap;
+        })
+    }
+})

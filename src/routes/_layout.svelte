@@ -55,12 +55,7 @@
                 return currentLedgerId;
             })
 
-            let fetchedAccounts = (await api.getAccounts()).data.data;
-            let a = {};
-            for (let it of fetchedAccounts) {
-                a[it.id] = it;
-            }
-            accounts.update(n => a);
+
         }
     });
 </script>

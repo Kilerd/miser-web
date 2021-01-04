@@ -20,26 +20,7 @@
     import {accountTreeGenerator} from '../helper';
     import Modal from '../components/base/Modal.svelte';
     import ModalButton from '../components/ModalButton.svelte';
-
     const {page, session} = stores();
-
-    onMount(async () => {
-        currentLedger.subscribe(async id => {
-            if (id !== undefined) {
-                let fetchedAccount = (await api.getAccounts()).data.data;
-
-                let accountsMap = {}
-
-                for (let it of fetchedAccount) {
-                    accountsMap[it.id] = it
-                }
-                accounts.update(() => {
-                    return accountsMap;
-                })
-            }
-        })
-    })
-
     $: accountTree = accountTreeGenerator($accounts);
     let newTransactionStatus = false;
     const toggle = () => (newTransactionStatus = !newTransactionStatus);

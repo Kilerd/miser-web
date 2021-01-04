@@ -10,33 +10,13 @@
 
 <script lang="ts">
     import {stores} from "@sapper/app";
-    import {onMount} from "svelte";
     import {commodities, currentLedger} from "../stores";
     import NewCommodityModal from "../components/NewCommodityModal.svelte";
     import FooterAdmin from "../notus/Footers/FooterAdmin.svelte";
     import AuthenticatedLayout from "../components/AuthenticatedLayout.svelte";
-    import NewTransactionModal from "../components/NewTransactionModal.svelte";
 
     const {page, session} = stores();
 
-    onMount(async () => {
-        currentLedger.subscribe(async id => {
-            if (id !== undefined) {
-                let fetchedCommodities = (await api.getCommodities()).data.data;
-
-                let commoditiesMap = {}
-
-                for (let it of fetchedCommodities) {
-                    commoditiesMap[it.name] = it
-                }
-
-                commodities.update(() => {
-                    return commoditiesMap;
-                })
-            }
-        })
-
-    })
     let newCommodityStatus = false;
     const toggle = () => (newCommodityStatus = !newCommodityStatus);
 </script>
