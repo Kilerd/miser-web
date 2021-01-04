@@ -6,7 +6,7 @@
 </script>
 
 <div>
-    <div class="line flex border bg-white px-2 py-1">
+    <div class="line flex border bg-white px-2 py-1 justify-between">
         <div class="">
             {#if item.alias}
                 {item.alias} ({item.name})
@@ -14,17 +14,28 @@
                 {item.name}
             {/if}
         </div>
-        {#if item.commodities}
-            <div>
-                {#each item.commodities as commodity}
+        <div class="flex">
+            {#if item.commodities}
+                <div>
+                    {#each item.commodities as commodity}
                     <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-orange-600 bg-orange-200 uppercase last:mr-0 mr-1">
                         {commodity}
                     </span>
-                {/each}
+                    {/each}
+                </div>
+            {/if}
+            <div class="ml-3">
+                ****.** CNY
             </div>
-        {/if}
+            <div class="action ml-3">
+                <a class="text-gray-600 py-1 px-3">
+                    <i class="fas fa-edit"></i>
+                </a>
+            </div>
+        </div>
+
     </div>
-    <div class="child pl-4">
+    <div class="child pl-10">
         {#each Object.values(item.children) as child}
             <svelte:self item={child}/>
         {/each}

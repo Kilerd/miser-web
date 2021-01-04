@@ -52,29 +52,28 @@
                 </div>
             </div>
 
-
-            <table>
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Last Price</th>
-                    <th>Last price update time</th>
-                </tr>
-                </thead>
-                <tbody>
+            <div>
                 {#each Object.values($commodities) as commodity }
 
-                    <tr>
-                        <th scope="row">{commodity.name}</th>
-                        <td>{commodity.last_price}</td>
-                        <td>{commodity.last_price_update_time}</td>
-                    </tr>
+                    <div class="line flex border bg-white px-2 py-1 justify-between">
+                        <div class="">
+                            {commodity.name}
+                        </div>
+                        <div class="flex">
+
+                            <div class="ml-3">
+                                {commodity.last_price}
+                            </div>
+                            <div class="ml-3">{commodity.last_price_update_time}</div>
+                            <div class="action ml-3">
+                                <a class="text-gray-600 py-1 px-3">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 {/each}
-
-
-                </tbody>
-            </table>
-
+            </div>
 
             <FooterAdmin/>
         </div>
