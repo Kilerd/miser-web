@@ -21,6 +21,11 @@
     import Modal from '../components/base/Modal.svelte';
     import ModalButton from '../components/ModalButton.svelte';
     const {page, session} = stores();
+
+    onMount(async() => {
+        await accounts.fetchLatest();
+    })
+
     $: accountTree = accountTreeGenerator($accounts);
     let newTransactionStatus = false;
     const toggle = () => (newTransactionStatus = !newTransactionStatus);

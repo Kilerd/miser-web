@@ -49,11 +49,36 @@ export const accounts = (() => {
                 innerAccount = accountsEntity[accountId]?.alias || accountsEntity[accountId]?.full_name;
             });
             return innerAccount;
+        },
+        fetchLatest: async () => {
+            let fetchedAccounts = (await api.getAccounts()).data.data;
+            let a: { [id: number]: Account } = {};
+            for (let it of fetchedAccounts) {
+                a[it.id] = it;
+            }
+            update(n => a);
         }
     }
 })()
 
-export const commodities = writable<{ [name: string]: Commodity }>({});
+export const commodities = (() => {
+    const {subscribe, set, update} = writable<{ [name: string]: Commodity }>({});
+    return {
+        subscribe,
+        set,
+        update,
+        fetchLatest: async () => {
+            let fetchedCommodities = (await api.getCommodities()).data.data;
+            let commoditiesMap: { [name: string]: Commodity } = {}
+            for (let it of fetchedCommodities) {
+                commoditiesMap[it.name] = it
+            }
+            update(() => {
+                return commoditiesMap;
+            })
+        }
+    }
+})();
 
 export const segment = writable<string | undefined>(undefined);
 
@@ -62,26 +87,9 @@ export const test = writable(1);
 
 currentLedger.subscribe(async newLedgerId => {
     if (newLedgerId !== undefined) {
-
         // update account
-        let fetchedAccounts = (await api.getAccounts()).data.data;
-        let a: { [id: number]: Account } = {};
-        for (let it of fetchedAccounts) {
-            a[it.id] = it;
-        }
-        accounts.update(n => a);
-
+        await accounts.fetchLatest();
         // update commodities
-        let fetchedCommodities = (await api.getCommodities()).data.data;
-
-        let commoditiesMap: { [name: string]: Commodity } = {}
-
-        for (let it of fetchedCommodities) {
-            commoditiesMap[it.name] = it
-        }
-
-        commodities.update(() => {
-            return commoditiesMap;
-        })
+        await commodities.fetchLatest();
     }
 })

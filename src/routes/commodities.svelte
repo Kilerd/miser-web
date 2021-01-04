@@ -8,6 +8,7 @@
 
 <script lang="ts">
     import {stores} from "@sapper/app";
+    import {onMount} from 'svelte';
     import {commodities, currentLedger} from "../stores";
     import NewCommodityModal from "../components/NewCommodityModal.svelte";
     import FooterAdmin from "../notus/Footers/FooterAdmin.svelte";
@@ -15,8 +16,10 @@
 
     const {page, session} = stores();
 
-    let newCommodityStatus = false;
-    const toggle = () => (newCommodityStatus = !newCommodityStatus);
+    onMount(async () => {
+        await commodities.fetchLatest()
+    })
+
 </script>
 
 <AuthenticatedLayout title="Journals">
@@ -25,8 +28,7 @@
             <div>
                 <h1>Commodities</h1>
                 <div>
-                    <button on:click={toggle}>new</button>
-                    <NewCommodityModal isOpen={newCommodityStatus} toggle={toggle}/>
+                    <NewCommodityModal/>
                 </div>
             </div>
 
