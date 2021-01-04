@@ -71,13 +71,12 @@
     </div>
     <div class="line">
         {#each Object.keys(commoditiesSelectStatus) as commodity}
-            <div on:click={clickCommodity(commodity)}>{commodity}
-                {#if commoditiesSelectStatus[commodity]}yes{:else}no{/if}
-            </div>
+            <input type="checkbox" bind:checked={commoditiesSelectStatus[commodity]} class="input" id="commodity-{commodity}"> <label
+                for="commodity-{commodity}">{commodity}</label>
         {/each}
     </div>
     <div class="line">
-        <input type="checkbox" bind:checked={initChecked} on:click={() => initChecked = !initChecked} class="input"/>
+        <input type="checkbox" bind:checked={initChecked} class="input"/>
         init
     </div>
     {#if initChecked}
@@ -105,7 +104,6 @@
         </div>
     {/if}
 </div>
-
 
 <button disabled={!canBeSubmit || isSubmitting} on:click={submit} class="button">
     {#if isSubmitting}
