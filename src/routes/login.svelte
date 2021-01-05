@@ -23,9 +23,12 @@
     let email = '';
     let password = '';
     let error = null;
+    let isSubmitting = false;
 
+    $: canBeSubmit = email !== '' && password !== '' && isSubmitting === false;
 
     async function submit() {
+        isSubmitting = true;
         try {
             let axiosResponse = await api.login(email, password);
             const token = axiosResponse.data.data;
@@ -53,8 +56,9 @@
 
             await goto('/dashboard', {})
         } catch (e) {
-            error = 'error on login'
+            error = e.response.data.message
         }
+        isSubmitting = false;
 
     }
 </script>
@@ -159,12 +163,21 @@
                                     </div>
 
                                     <div class="text-center mt-6">
+                                        {#if error !== null}
+                                            {error}
+                                        {/if}
                                         <button
                                                 class="bg-gray-900 text-white active:bg-gray-700 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                                                 type="button"
                                                 on:click={submit}
-                                        >
-                                            Sign In
+                                                disabled={!canBeSubmit}
+                                                class:bg-red-500={canBeSubmit}
+                                                class:bg-gray-700={!canBeSubmit}>
+                                            {#if isSubmitting}
+                                                loading....
+                                            {:else}
+                                                Sign In
+                                            {/if}
                                         </button>
                                     </div>
                                 </form>
