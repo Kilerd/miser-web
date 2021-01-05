@@ -60,3 +60,13 @@ export interface AccountTreeItem {
     commodities?: string[],
     children: { [name: string]: AccountTreeItem }
 }
+
+
+export interface PeriodicBill {
+    id: number,
+    name: string,
+    description?:string,
+    periodic: "DAY" | "WEEK" | "MONTH" | "QUARTER" | "HALF_YEAR" | "YEAR",
+    amount: string,
+    commodity: string,
+}

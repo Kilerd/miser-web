@@ -31,6 +31,7 @@
         {link: 'journals', name: 'Journals'},
         {link: 'commodities', name: 'Commodities'},
         {link: 'accounts', name: 'Accounts'},
+        {link: 'periodic', name: 'Periodic Bills'},
 
     ]
 </script>

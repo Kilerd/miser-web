@@ -1,5 +1,5 @@
 import {derived, writable} from 'svelte/store';
-import type {Account, Commodity, Entry, Transaction} from './types';
+import type {Account, Commodity, Entry, PeriodicBill, Transaction} from './types';
 import {api} from "./http";
 
 interface MapStoreItem<V> {
@@ -20,6 +20,9 @@ function createMapStore<V>(initial: MapStoreItem<V>) {
                 delete s[k];
                 return s;
             });
+        },
+        updateAll(value: MapStoreItem<V>) {
+            store.update(() => value)
         }
     }));
     return {
@@ -83,6 +86,25 @@ export const commodities = (() => {
 export const segment = writable<string | undefined>(undefined);
 
 export const test = writable(1);
+
+export const periodicBills = createMapStore<PeriodicBill>({
+    "1": {
+        id: 1,
+        name: "Test Month Spent",
+        description: undefined,
+        periodic: "MONTH",
+        amount: "1.00",
+        commodity: "CNY",
+    },
+    "2": {
+        id: 2,
+        name: "Test Year Spent",
+        description: " test year spent description",
+        periodic: "YEAR",
+        amount: "1000.00",
+        commodity: "CNY",
+    }
+})
 
 
 currentLedger.subscribe(async newLedgerId => {
