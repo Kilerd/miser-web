@@ -1393,6 +1393,9 @@ video {
 .border-l-0 {
     border-left-width: 0;
 }
+.border-l {
+    border-left-width: 1px;
+}
 
 .border-t {
     border-top-width: 1px;

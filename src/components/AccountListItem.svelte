@@ -35,7 +35,7 @@
         </div>
 
     </div>
-    <div class="child pl-10">
+    <div class="child pl-10 ml-3 border-dotted border-l border-gray-600">
         {#each Object.values(item.children) as child}
             <svelte:self item={child}/>
         {/each}
