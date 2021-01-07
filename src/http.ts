@@ -102,7 +102,6 @@ class API {
     }
 
     async getJournal(): Promise<AxiosResponse<OkResponse<Transaction[]>>> {
-        console.log("current Ledger id", this.currentLedgerId);
         return await this.axios.get(
             `/ledgers/${this.currentLedgerId}/journals`,
         )

@@ -2,8 +2,7 @@
     import {accounts, commodities} from '../stores';
     import {api} from '../http'
 
-    export let isOpen: boolean;
-    export let toggle: () => boolean;
+    export let modalClose;
 
 
     let isSubmitting = false;
@@ -42,7 +41,8 @@
         const selectedCommodities = Object.keys(commoditiesSelectStatus).filter(key => commoditiesSelectStatus[key] === true);
         await api.createAccount(name, alias, selectedCommodities, initChecked, pad, amount, commodity)
         isSubmitting = false;
-        toggle()
+        accounts.fetchLatest();
+        modalClose();
     }
 
 </script>
@@ -112,4 +112,4 @@
         Create
     {/if}
 </button>
-<button color="secondary" on:click={toggle} class="button">Cancel</button>
+<button color="secondary" on:click={modalClose} class="button">Cancel</button>

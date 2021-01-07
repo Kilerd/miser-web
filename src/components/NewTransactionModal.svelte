@@ -1,6 +1,6 @@
 <script lang="ts">
     import AutoComplete from 'simple-svelte-autocomplete';
-    import {accounts} from '../stores';
+    import {accounts, directives} from '../stores';
     import {api} from '../http'
     import type {Account} from '../types';
 
@@ -60,6 +60,7 @@
 
         await api.createTransaction(base.date, base.payee, base.narration, [], [], lineRes)
         isSubmit = false;
+        directives.fetchLatest();
         modalClose();
     }
 

@@ -27,18 +27,7 @@
     onMount(async () => {
         currentLedger.subscribe(async id => {
             if (id !== undefined) {
-                let raw_directives = (await api.getJournal()).data.data;
-                let groupedTransactions: { [key: string]: Transaction[] } = {}
-                for (let it of raw_directives) {
-                    const date = dayjs(it.create_time).format('YYYY-MM-DD');
-                    if (groupedTransactions[date] === undefined) {
-                        groupedTransactions[date] = []
-                    }
-                    groupedTransactions[date].push(it)
-                }
-                directives.update(() => {
-                    return groupedTransactions;
-                })
+                await directives.fetchLatest();
             }
         })
     })

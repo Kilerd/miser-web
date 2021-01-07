@@ -1,8 +1,8 @@
 <script lang="ts">
     import {api} from '../http'
+    import {commodities} from "../stores";
 
-    export let isOpen: boolean;
-    export let toggle: () => boolean;
+    export let modalClose;
 
 
     let isSubmitting = false;
@@ -14,7 +14,8 @@
 
         await api.createCommodity(name)
         isSubmitting = false;
-        toggle()
+        commodities.fetchLatest();
+        modalClose()
     }
 
 </script>
@@ -34,17 +35,17 @@
         <div>
             <div class="line">
 
-                    <input bind:value={name} placeholder="Name"/>
+                    <input bind:value={name} placeholder="Name" class="input"/>
 
             </div>
         </div>
 
-        <button color="primary" disabled={!canBeSubmit || isSubmitting} on:click={submit}>
+        <button color="primary" disabled={!canBeSubmit || isSubmitting} on:click={submit} class="button">
             {#if isSubmitting}
                loading...
             {:else}
                 Create
             {/if}
         </button>
-        <button color="secondary" on:click={toggle}>Cancel</button>
+        <button color="secondary" on:click={modalClose} class="button">Cancel</button>
 

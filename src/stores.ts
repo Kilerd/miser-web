@@ -1,6 +1,7 @@
 import {derived, writable} from 'svelte/store';
 import type {Account, Commodity, Entry, PeriodicBill, Transaction} from './types';
 import {api} from "./http";
+import dayjs from "dayjs";
 
 interface MapStoreItem<V> {
     [key: string]: V
@@ -33,7 +34,29 @@ function createMapStore<V>(initial: MapStoreItem<V>) {
 }
 
 
-export const directives = createMapStore<Transaction[]>({});
+export const directives = (() => {
+    let {subscribe, set, update} = createMapStore<Transaction[]>({});
+
+    let fetchLatest = async () => {
+        let raw_directives = (await api.getJournal()).data.data;
+        let groupedTransactions: { [key: string]: Transaction[] } = {}
+        for (let it of raw_directives) {
+            const date = dayjs(it.create_time).format('YYYY-MM-DD');
+            if (groupedTransactions[date] === undefined) {
+                groupedTransactions[date] = []
+            }
+            groupedTransactions[date].push(it)
+        }
+        update(() => {
+            return groupedTransactions;
+        })
+    }
+
+    return {
+        subscribe, set, update,
+        fetchLatest,
+    }
+})()
 
 
 export const entries = writable<{ [id: string]: Entry }>({});

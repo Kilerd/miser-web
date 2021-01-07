@@ -13,6 +13,8 @@
     import NewCommodityModal from "../components/NewCommodityModal.svelte";
     import FooterAdmin from "../notus/Footers/FooterAdmin.svelte";
     import AuthenticatedLayout from "../components/AuthenticatedLayout.svelte";
+    import Modal from "../components/base/Modal.svelte";
+    import ModalButton from "../components/ModalButton.svelte";
 
     const {page, session} = stores();
 
@@ -28,7 +30,10 @@
             <div>
                 <h1>Commodities</h1>
                 <div>
-                    <NewCommodityModal/>
+                    <Modal key="new-commodity" size="l">
+                        <ModalButton modalContext="new-commodity" content={NewCommodityModal}
+                                     text="new Commodity"/>
+                    </Modal>
                 </div>
             </div>
 
