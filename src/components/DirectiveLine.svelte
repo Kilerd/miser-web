@@ -57,6 +57,7 @@
     <th class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-2 text-left flex flex-col items-baseline">
         <span class="ml-3 font-normal btext-gray-700 text-base flex items-center cursor-pointer" on:click={openDetail}>
             {#if directive.flag !== 'Complete'}<span>!</span>{/if}
+            {#if !directive.is_balance}<i class="fas fa-question-circle mr-3"></i>{/if}
             {#if directive.payee}
                 <span class="font-ssemibold">{directive.payee}</span>
                 <span class="separator"></span>

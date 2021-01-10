@@ -18,7 +18,8 @@ export interface Transaction {
     narration?: string,
     tags: string[],
     links: string[],
-    lines: TransactionLine[]
+    lines: TransactionLine[],
+    is_balance: boolean,
 }
 
 export interface TransactionLine {
