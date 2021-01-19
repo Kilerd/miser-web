@@ -2,8 +2,6 @@
     import type {AccountTreeItem} from '../types';
 
     export let item: AccountTreeItem;
-
-    console.log(item);
 </script>
 
 <div>
