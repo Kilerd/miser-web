@@ -81,6 +81,10 @@
         ]
     }
 
+    function deleteLine(idx: number) {
+        lines = lines.filter((value, i) => i !== idx)
+    }
+
 
 </script>
 
@@ -137,8 +141,9 @@
             <h6 class="text-gray-500 text-sm mt-3 mb-6 font-bold uppercase">
                 Detail <a on:click={addLine}><i class="fa fa-plus-circle"></i></a>
             </h6>
-            {#each lines as line}
-                <NewTransactionModalLIne bind:selectedItem={line.account} bind:amount={line.amount} commodity="CNY"/>
+            {#each lines as line, i}
+                <NewTransactionModalLIne bind:selectedItem={line.account} bind:amount={line.amount} commodity="CNY"
+                                         deleteLineCallback={()=>deleteLine(i)}/>
             {/each}
 
 

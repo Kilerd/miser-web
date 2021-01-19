@@ -6,6 +6,7 @@
     export let selectedItem: Account | undefined;
     export let amount;
     export let commodity;
+    export let deleteLineCallback;
 
 
     let accountList: Account[] = [];
@@ -48,11 +49,12 @@
         </div>
     </div>
     <div class="w-full lg:w-4/12 px-4">
-        <div class="relative w-full mb-3">
+        <div class="relative mb-3 flex items-center">
             <select name="select" id="exampleSelect"
                     class="px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:shadow-outline w-full ease-linear transition-all duration-150">
                 <option>CNY</option>
             </select>
+            <a on:click={deleteLineCallback}><i class="fa fa-trash"></i></a>
         </div>
     </div>
 </div>
