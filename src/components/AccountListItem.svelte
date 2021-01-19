@@ -3,6 +3,7 @@
 
     export let item: AccountTreeItem;
 
+    console.log(item);
 </script>
 
 <div>
@@ -25,7 +26,7 @@
                 </div>
             {/if}
             <div class="ml-3">
-                ****.** CNY
+                {item.amount} CNY
             </div>
             <div class="action ml-3">
                 <a class="text-gray-600 py-1 px-3">

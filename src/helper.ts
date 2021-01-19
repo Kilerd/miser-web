@@ -22,27 +22,32 @@ export function accountTreeGenerator(value: { [id: number]: Account }) {
             name: 'Liabilities',
             fullName: 'Liabilities',
             isAvailable: false,
+            amount: "0",
             children: {}
         },
         assets: {
             name: 'Assets',
             fullName: 'Assets',
             isAvailable: false,
+            amount: "0",
             children: {}
         }, equity: {
             name: 'Equity',
             fullName: 'Equity',
             isAvailable: false,
+            amount: "0",
             children: {}
         }, expenses: {
             name: 'Expenses',
             fullName: 'Expenses',
             isAvailable: false,
+            amount: "0",
             children: {}
         }, income: {
             name: 'Income',
             fullName: 'Income',
             isAvailable: false,
+            amount: "0",
             children: {}
         }
     };
@@ -57,6 +62,7 @@ export function accountTreeGenerator(value: { [id: number]: Account }) {
                     name: item,
                     fullName: strings.slice(0, i + 1).join(':'),
                     isAvailable: false,
+                    amount: "0",
                     children: {}
                 }
             }
@@ -69,6 +75,7 @@ export function accountTreeGenerator(value: { [id: number]: Account }) {
             isAvailable: true,
             alias: it.alias,
             commodities: it.commodities,
+            amount: it.amount,
             id: it.id,
             children: {}
         }

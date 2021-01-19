@@ -38,6 +38,7 @@ export interface Account {
     full_name: string,
     ledger_id: number,
     status: string,
+    amount: string,
     commodities: string[]
 }
 
@@ -59,6 +60,7 @@ export interface AccountTreeItem {
     alias?: string,
     isAvailable: boolean,
     commodities?: string[],
+    amount: string,
     children: { [name: string]: AccountTreeItem }
 }
 
@@ -66,7 +68,7 @@ export interface AccountTreeItem {
 export interface PeriodicBill {
     id: number,
     name: string,
-    description?:string,
+    description?: string,
     periodic: "DAY" | "WEEK" | "MONTH" | "QUARTER" | "HALF_YEAR" | "YEAR",
     amount: string,
     commodity: string,
