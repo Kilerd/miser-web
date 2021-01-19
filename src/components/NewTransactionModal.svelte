@@ -62,7 +62,6 @@
                 currency: 'CNY'
             }
         ]
-
     }
 
 
