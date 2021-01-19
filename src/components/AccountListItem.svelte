@@ -17,14 +17,18 @@
             {#if item.commodities}
                 <div>
                     {#each item.commodities as commodity}
-                    <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-orange-600 bg-orange-200 uppercase last:mr-0 mr-1">
+
+                    <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-gray-600 bg-gray-200 uppercase last:mr-0 mr-1">
                         {commodity}
                     </span>
                     {/each}
                 </div>
             {/if}
             <div class="ml-3">
-                {item.amount} CNY
+                <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-orange-600 bg-orange-200 uppercase last:mr-0 mr-1">
+                    {item.amount} CNY
+                </span>
+
             </div>
             <div class="action ml-3">
                 <a class="text-gray-600 py-1 px-3">
