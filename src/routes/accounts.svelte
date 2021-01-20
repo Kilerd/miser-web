@@ -20,9 +20,10 @@
     import {accountTreeGenerator} from '../helper';
     import Modal from '../components/base/Modal.svelte';
     import ModalButton from '../components/ModalButton.svelte';
+
     const {page, session} = stores();
 
-    onMount(async() => {
+    onMount(async () => {
         await accounts.fetchLatest();
     })
 
@@ -42,9 +43,11 @@
                     </Modal>
                 </div>
             </div>
-            {#each Object.values(accountTree) as one}
-                <AccountListItem item={one}/>
-            {/each}
+            <Modal key="account-edit" size="l">
+                {#each Object.values(accountTree) as one}
+                    <AccountListItem item={one}/>
+                {/each}
+            </Modal>
 
             <FooterAdmin/>
         </div>

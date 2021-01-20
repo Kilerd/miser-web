@@ -183,6 +183,15 @@ class API {
     async getDocumentByTransaction(transaction_id: number) {
         return await this.axios.get(`/ledgers/${this.currentLedgerId}/transactions/${transaction_id}/documents`)
     }
+
+    async updateAccount(accountId: number, name: string, alias: string, selectedCommodities: string[]) {
+        return await this.axios.put(`/ledgers/${this.currentLedgerId}/accounts/${accountId}`, {
+            account_type:"Expenses",
+            full_name: name,
+            alias: alias,
+            commodities: selectedCommodities
+        })
+    }
 }
 
 export const api = new API();

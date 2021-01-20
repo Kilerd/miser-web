@@ -1,7 +1,16 @@
 <script lang="ts">
     import type {AccountTreeItem} from '../types';
+    import {getContext} from "svelte";
+    import EditAccountModal from "./EditAccountModal.svelte";
 
     export let item: AccountTreeItem;
+
+
+    const {open, close} = getContext("account-edit");
+
+    function openEditModal() {
+        open(EditAccountModal, {account: item, modalClose: close})
+    }
 </script>
 
 <div>
@@ -31,9 +40,11 @@
 
             </div>
             <div class="action ml-3">
-                <a class="text-gray-600 py-1 px-3">
-                    <i class="fas fa-edit"></i>
-                </a>
+                {#if item.isAvailable}
+                    <a class="text-gray-600 py-1 px-3" on:click={openEditModal}>
+                        <i class="fas fa-edit"></i>
+                    </a>
+                {/if}
             </div>
         </div>
 
