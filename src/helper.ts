@@ -69,16 +69,25 @@ export function accountTreeGenerator(value: { [id: number]: Account }) {
             targetCategory = targetCategory.children[item];
         }
         let leafItem = strings[strings.length - 1];
-        targetCategory.children[leafItem] = {
-            name: leafItem,
-            fullName: it.full_name,
-            isAvailable: true,
-            alias: it.alias,
-            commodities: it.commodities,
-            amount: it.amount,
-            id: it.id,
-            children: {}
+        if (targetCategory.children[leafItem] === undefined) {
+            targetCategory.children[leafItem] = {
+                name: leafItem,
+                fullName: it.full_name,
+                isAvailable: true,
+                alias: it.alias,
+                commodities: it.commodities,
+                amount: it.amount,
+                id: it.id,
+                children: {}
+            }
+        }else {
+            targetCategory.children[leafItem].isAvailable = true;
+            targetCategory.children[leafItem].alias = it.alias;
+            targetCategory.children[leafItem].commodities = it.commodities;
+            targetCategory.children[leafItem].amount = it.amount;
+            targetCategory.children[leafItem].id = it.id;
         }
+
     })
     return ret;
 }
