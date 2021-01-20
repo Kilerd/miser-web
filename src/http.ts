@@ -115,7 +115,7 @@ class API {
         return await this.axios.get('/ledgers')
     }
 
-    async createTransaction(date: string, payee: string, narration: string, tags: string[], links: string[], lines: any[]) {
+    async createTransaction(date: Date, payee: string, narration: string, tags: string[], links: string[], lines: any[]) {
         return await this.axios.post(`/ledgers/${this.currentLedgerId}/transactions`, {
             date,
             payee,

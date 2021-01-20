@@ -31,9 +31,10 @@
             {id: -1, name: keyword, alias: keyword}
         ]
     }
-
+    let date = new Date(transaction.create_time);
+    date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
     let base = {
-        date: new Date(transaction.create_time).toJSON().slice(0, 10),
+        date: date.toISOString().substring(0, 16),
         payee: transaction.payee,
         narration: transaction.narration
     };
@@ -45,6 +46,7 @@
         currency: it.cost[1]
     }))
 
+    let inputTag = ""
     let isSubmit = false;
     $: lineHasEmpty = lines.filter(it => it.account === undefined || it.amount === '' || it.amount === null).length > 0;
     $: canBeSubmit = !lineHasEmpty;
@@ -60,7 +62,7 @@
             description: '' // todo implement description
         }));
 
-        await api.updateTransaction(transaction.id, new Date(base.date), base.payee, base.narration, [], [], lineRes)
+        await api.updateTransaction(transaction.id, new Date(base.date), base.payee, base.narration, transaction.tags, [], lineRes)
         isSubmit = false;
         directives.fetchLatest();
         modalClose()
@@ -83,6 +85,21 @@
 
     function deleteLine(idx: number) {
         lines = lines.filter((value, i) => i !== idx)
+    }
+
+    function handleInputTag(e) {
+        if (e.code == 'Enter') {
+            if (inputTag.trim() !== '') {
+                if (transaction.tags.indexOf(inputTag.trim()) === -1) {
+                    transaction.tags = [...transaction.tags, inputTag.trim()];
+                }
+                inputTag = ''
+            }
+        }
+    }
+
+    function deleteTag(value) {
+        transaction.tags = transaction.tags.filter((it) => it !== value)
     }
 
 
@@ -110,7 +127,7 @@
                 <div class="w-full lg:w-4/12 px-4">
                     <div class="relative w-full mb-3">
                         <input class="px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:shadow-outline w-full ease-linear transition-all duration-150"
-                               type="date"
+                               type="datetime-local"
                                name="date"
                                bind:value={base.date}
                                placeholder="2020-10-10"/>
@@ -136,6 +153,21 @@
 
             </div>
 
+            <hr class="mt-6 border-b-1 border-gray-400"/>
+            <h6 class="text-gray-500 text-sm mt-3 mb-6 font-bold uppercase">
+                Tags
+            </h6>
+            <div>
+                {#each transaction.tags as tag}
+                    <span class="text-xs font-semibold inline-block py-1 px-2 rounded-full text-orange-600 bg-orange-200 last:mr-0 mr-1">
+                        {tag} <a on:click={()=>deleteTag(tag)}><i class="fa fa-trash-alt"></i></a>
+                    </span>
+                {/each}
+            </div>
+            <div>
+                <input type="text" class="input" placeholder="please input new tag here..." bind:value={inputTag}
+                       on:keyup|preventDefault={handleInputTag}>
+            </div>
             <hr class="mt-6 border-b-1 border-gray-400"/>
 
             <h6 class="text-gray-500 text-sm mt-3 mb-6 font-bold uppercase">
