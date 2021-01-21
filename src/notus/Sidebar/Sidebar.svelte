@@ -7,6 +7,10 @@
     import {currentLedger, entries, segment} from '../../stores';
     import {stores} from '@sapper/app'
     import {api, setCookie} from '../../http';
+    import Modal from "../../components/base/Modal.svelte";
+    import ModalButton from "../../components/ModalButton.svelte";
+    import NewLedger from "../../components/NewLedger.svelte";
+
 
     let collapseShow = 'hidden';
 
@@ -111,6 +115,11 @@
             <!-- Heading -->
             <h6 class="md:min-w-full text-gray-600 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
                 Ledgers
+                <Modal key="newLedger" size="l">
+                    <ModalButton modalContext="newLedger" content={NewLedger}
+                                 text="new ledger"/>
+                </Modal>
+
             </h6>
             <!-- Navigation -->
             <ul class="md:flex-col md:min-w-full flex flex-col list-none">
