@@ -15,10 +15,11 @@
 
     const {page, session} = stores();
 
-    let name: string | undefined = undefined;
-    let default_operating_commodity: string | undefined = undefined;
+    let name: string = "undefined";
+    let default_operating_commodity: string = "";
 
-    $: canBeSumbit = name !== undefined && default_operating_commodity !== undefined;
+    $: canBeSumbit = name !== "" && default_operating_commodity !== "";
+
     async function submit() {
         let axiosResponse = await api.createLedger(name, default_operating_commodity);
     }

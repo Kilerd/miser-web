@@ -3515,6 +3515,11 @@ svelte-check@^1.1.17:
     svelte-preprocess "^4.0.0"
     typescript "*"
 
+svelte-notifications@^0.9.9:
+  version "0.9.9"
+  resolved "https://registry.yarnpkg.com/svelte-notifications/-/svelte-notifications-0.9.9.tgz#3d19c48ff5f6624c31ebca476309a5516dfc4bb7"
+  integrity sha512-UMcjqzuNeUGHd3ZzSzRFXn22Z06VlPrTS8CJwFkkE+qKWn2tVRgsG4b62zZBcR/7SMcufT/Ouxpv/gbA8LaQcQ==
+
 svelte-preprocess@^4.0.0, svelte-preprocess@^4.6.1:
   version "4.6.1"
   resolved "https://registry.yarnpkg.com/svelte-preprocess/-/svelte-preprocess-4.6.1.tgz#a7de4d91b32d5608b6637da960ee81e6089ae276"

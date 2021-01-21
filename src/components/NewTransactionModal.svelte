@@ -1,9 +1,10 @@
 <script lang="ts">
-    import AutoComplete from 'simple-svelte-autocomplete';
-    import {accounts, directives} from '../stores';
+    import {directives} from '../stores';
     import {api} from '../http'
-    import type {Account} from '../types';
     import NewTransactionModalLIne from './NewTransactionModalLIne.svelte';
+    import {getNotificationsContext} from 'svelte-notifications';
+
+    const {addNotification} = getNotificationsContext();
 
     export let modalClose;
 
@@ -54,6 +55,7 @@
         await api.createTransaction(new Date(base.date), base.payee, base.narration, tags, [], lineRes)
         isSubmit = false;
         directives.fetchLatest();
+        addNotification({text: 'Create Transaction Successfully', position: 'bottom-right', removeAfter: 4000})
         modalClose();
     }
 

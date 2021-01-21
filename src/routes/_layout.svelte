@@ -20,8 +20,8 @@
     import {onMount} from "svelte";
     import {stores} from "@sapper/app";
     import {getCookie} from "../http";
-    import {accounts, currentLedger, entries, segment as storedSegment} from "../stores";
-
+    import {currentLedger, entries, segment as storedSegment} from "../stores";
+    import Notifications from "svelte-notifications";
     export let segment;
     const {session} = stores();
 
@@ -82,6 +82,9 @@
     }
 </style>
 
-<slot segment={segment}/>
+<Notifications>
+    <slot segment={segment}/>
+</Notifications>
+
 
 
