@@ -1,8 +1,11 @@
 <script lang="ts">
-    import {directives} from '../stores';
+    import {accounts, directives} from '../stores';
     import {api} from '../http'
     import NewTransactionModalLIne from './NewTransactionModalLIne.svelte';
     import {getNotificationsContext} from 'svelte-notifications';
+    import type {Account} from "../types";
+    import AutoComplete from 'simple-svelte-autocomplete';
+    import Big from 'big.js'
 
     const {addNotification} = getNotificationsContext();
 
@@ -23,6 +26,9 @@
     let tags: string[] = [];
     let inputTag = '';
 
+    let isSimpleMode = true;
+    let simpleModeAmountInput = "";
+
     let defaultDate = new Date();
     defaultDate.setMinutes(defaultDate.getMinutes() - defaultDate.getTimezoneOffset());
 
@@ -42,6 +48,8 @@
     $: lineHasEmpty = lines.filter(it => it.account === undefined || it.amount === '' || it.amount === null).length > 0;
     $: canBeSubmit = !lineHasEmpty;
     $: submitDisable = !canBeSubmit || isSubmit;
+
+    $: canDeleteLine = lines.length > 2;
 
     async function submit() {
         isSubmit = true;
@@ -74,6 +82,13 @@
         lines = lines.filter((value, i) => i !== idx)
     }
 
+    function handleSimpleModeAmountInput(e) {
+        let big = new Big(e.target.value);
+        let negative = big.mul(-1);
+        lines[0].amount = negative.toFixed();
+        lines[1].amount = big.toFixed();
+    }
+
     function handleInputTag(e) {
         if (e.code == 'Enter') {
             if (inputTag.trim() !== '') {
@@ -87,6 +102,23 @@
 
     function deleteTag(value) {
         tags = tags.filter((it) => it !== value)
+    }
+
+
+    let accountList: Account[] = [];
+    accounts.subscribe((storeValue) => {
+        accountList = Object.values(storeValue);
+    })
+
+    async function getItems(keyword: string) {
+        return [
+            ...accountList,
+            {id: -1, name: keyword, alias: keyword}
+        ]
+    }
+
+    function itemShow(item?: Account) {
+        return `${item.alias || ''} [${item.full_name}]`
     }
 
 </script>
@@ -155,19 +187,70 @@
                        on:keyup|preventDefault={handleInputTag}>
             </div>
             <hr class="mt-6 border-b-1 border-gray-400"/>
+            <div>
+                <label>
+                    <input type="checkbox" bind:checked={isSimpleMode} disabled={canDeleteLine}>
+                    Simple Mode
+                </label>
+            </div>
+            {#if isSimpleMode}
 
-            <h6 class="text-gray-500 text-sm mt-3 mb-6 font-bold uppercase">
-                Detail
-                <a on:click={addLine}><i class="fa fa-plus-circle"></i></a>
-            </h6>
+                <div class="flex flex-wrap">
+                    <div class="w-full lg:w-6/12 px-4">
+                        <div class="relative w-full mb-3 flex items-center">
+                            <label> from: </label>
+                            <AutoComplete inputId="account1" className="account-input" items={accountList}
+                                          labelFunction={itemShow}
+                                          valueFieldName="name"
+                                          bind:selectedItem={lines[0].account}
+                                          searchFunction={getItems} showClear={true}/>
+                        </div>
+                    </div>
+                    <div class="w-full lg:w-6/12 px-4">
+                        <div class="relative w-full mb-3">
+                            <label> to: </label>
+                            <AutoComplete inputId="account1" className="account-input" items={accountList}
+                                          labelFunction={itemShow}
+                                          valueFieldName="name"
+                                          bind:selectedItem={lines[1].account}
+                                          searchFunction={getItems} showClear={true}/>
 
-            {#each lines as line, i}
+                        </div>
+                    </div>
+                </div>
 
-                <NewTransactionModalLIne bind:selectedItem={line.account} bind:amount={line.amount} commodity="CNY"
-                                         deleteLineCallback={()=>deleteLine(i)}/>
-            {/each}
+                <div class="flex flex-wrap">
+                    <div class="w-full lg:w-6/12 px-4">
+                        <label>
+                            Amount:
+                            <input on:keyup|preventDefault={handleSimpleModeAmountInput} type="number" bind:value={simpleModeAmountInput}
+                                   class="input"/>
+                        </label>
+                    </div>
+                    <div class="w-full lg:w-6/12 px-4">
+                        <div class="relative w-full mb-3">
+                            <select name="select" id="exampleSelect"
+                                    class="px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:shadow-outline w-full ease-linear transition-all duration-150">
+                                <option>CNY</option>
+                            </select>
 
+                        </div>
+                    </div>
+                </div>
 
+            {:else}
+                <h6 class="text-gray-500 text-sm mt-3 mb-6 font-bold uppercase">
+                    Detail
+                    <a on:click={addLine}><i class="fa fa-plus-circle"></i></a>
+                </h6>
+
+                {#each lines as line, i}
+
+                    <NewTransactionModalLIne bind:selectedItem={line.account} bind:amount={line.amount} commodity="CNY"
+                                             deleteLineCallback={()=>deleteLine(i)} bind:canDeleteLine={canDeleteLine}/>
+                {/each}
+
+            {/if}
             <hr class="mt-6 mb-2 border-b-1 border-gray-400"/>
 
             <div class="flex flex-wrap justify-end">

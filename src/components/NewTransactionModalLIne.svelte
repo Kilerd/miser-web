@@ -7,6 +7,7 @@
     export let amount;
     export let commodity;
     export let deleteLineCallback;
+    export let canDeleteLine : boolean;
 
 
     let accountList: Account[] = [];
@@ -22,9 +23,6 @@
     }
 
     function itemShow(item?: Account) {
-        if (item === undefined) {
-            return "please select"
-        }
         return `${item.alias || ''} [${item.full_name}]`
     }
 </script>
@@ -54,7 +52,9 @@
                     class="px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:shadow-outline w-full ease-linear transition-all duration-150">
                 <option>CNY</option>
             </select>
-            <a on:click={deleteLineCallback}><i class="fa fa-trash"></i></a>
+            {#if canDeleteLine}
+                <a on:click={deleteLineCallback}><i class="fa fa-trash"></i></a>
+            {/if}
         </div>
     </div>
 </div>
