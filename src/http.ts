@@ -3,7 +3,7 @@ import type {Transaction} from './types';
 
 export const BASE_URL = process.env.NODE_ENV === 'development'
     ? 'http://localhost:8000'
-    : 'https://miser.3min.work';
+    : 'https://miser.3min.work/api';
 
 // const BASE_URL = "https://miser.3min.work"
 
