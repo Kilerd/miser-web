@@ -1,8 +1,7 @@
 import {AccountListItemType} from "../types";
-import styles from './layout.module.scss'
 import React from "react";
 import Link from "next/link";
-import {Button, Card, Icon, Tag} from "@blueprintjs/core";
+import {Button, Tag} from "@blueprintjs/core";
 
 interface ModalStatus {
   openEditAccount: any

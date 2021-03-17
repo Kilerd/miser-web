@@ -5,6 +5,7 @@ import {useLedger} from "../contexts/ledger";
 import Big from 'big.js';
 import Select from 'react-select';
 import dayjs from "dayjs";
+import {Button, Classes, Dialog, Intent} from "@blueprintjs/core";
 
 export default function NewTransactionModal({modalStatus, setModalStatus}) {
   const ledgerContext = useLedger();
@@ -100,105 +101,114 @@ export default function NewTransactionModal({modalStatus, setModalStatus}) {
   }
 
   return (
-    <Modal
+    <Dialog
       isOpen={modalStatus}
-      // onRequestClose={()=> setIsOpen(false)}
-      contentLabel="Example Modal"
-      // style={customStyles}
+      title="New Transaction"
+      onClose={() => setModalStatus(false)}
     >
-      <button onClick={() => setModalStatus(false)}>close</button>
-      <h2>new Transaction</h2>
-      <div>
-        <label htmlFor="date" className="input">Date</label>
-        <input type="datetime-local" name="date" id="date" placeholder="2020-10-10" value={date}
-               onChange={e => setDate(e.target.value)}/>
+      {/*<Modal*/}
+      {/*  isOpen={modalStatus}*/}
+      {/*  // onRequestClose={()=> setIsOpen(false)}*/}
+      {/*  contentLabel="Example Modal"*/}
+      {/*  // style={customStyles}*/}
+      {/*>*/}
+      <div className={Classes.DIALOG_BODY}>
+        <div>
+          <label htmlFor="date" className="input">Date</label>
+          <input type="datetime-local" name="date" id="date" placeholder="2020-10-10" value={date}
+                 onChange={e => setDate(e.target.value)}/>
 
-        <label htmlFor="payee" className="input">Payee</label>
-        <input type="text" placeholder="Payee" id="payee" className="input" value={payee}
-               onChange={e => setPayee(e.target.value)}/>
+          <label htmlFor="payee" className="input">Payee</label>
+          <input type="text" placeholder="Payee" id="payee" className="input" value={payee}
+                 onChange={e => setPayee(e.target.value)}/>
 
-        <label htmlFor="narration" className="input">Narration</label>
-        <input type="text" placeholder="Narration" id="narration" className="input" value={narration}
-               onChange={e => setNarration(e.target.value)}/>
-      </div>
+          <label htmlFor="narration" className="input">Narration</label>
+          <input type="text" placeholder="Narration" id="narration" className="input" value={narration}
+                 onChange={e => setNarration(e.target.value)}/>
+        </div>
 
-      <div>
-        {tags.map(one => <span key={one}>{one}</span>)}
-      </div>
-      <div>
-        <input type="text" placeholder="New Tag" className="input" value={newTag}
-               onChange={e => setNewTag(e.target.value)} onKeyUp={handleNewTag}/>
-      </div>
+        <div>
+          {tags.map(one => <span key={one}>{one}</span>)}
+        </div>
+        <div>
+          <input type="text" placeholder="New Tag" className="input" value={newTag}
+                 onChange={e => setNewTag(e.target.value)} onKeyUp={handleNewTag}/>
+        </div>
 
-      <label htmlFor="enhancedMode">
-        <input id="enhancedMode" type="checkbox" checked={!simpleMode} onChange={() => setSimpleMode(!simpleMode)}
-               disabled={lines.length != 2}/>
-        enhanced mode
-      </label>
-      {simpleMode ? (
-          <div>
+        <label htmlFor="enhancedMode">
+          <input id="enhancedMode" type="checkbox" checked={!simpleMode} onChange={() => setSimpleMode(!simpleMode)}
+                 disabled={lines.length != 2}/>
+          enhanced mode
+        </label>
+        {simpleMode ? (
             <div>
-              <Select
+              <div>
+                <Select
 
-                defaultValue={lines[0].account}
-                options={accountOptions}
-                onChange={(inputValue, actionMeta) => handleAccountChange(inputValue, 0)}
-              />
-              <Select
-                defaultValue={lines[1].account}
-                options={accountOptions}
-                onChange={(inputValue, actionMeta) => handleAccountChange(inputValue, 1)}
+                  defaultValue={lines[0].account}
+                  options={accountOptions}
+                  onChange={(inputValue, actionMeta) => handleAccountChange(inputValue, 0)}
+                />
+                <Select
+                  defaultValue={lines[1].account}
+                  options={accountOptions}
+                  onChange={(inputValue, actionMeta) => handleAccountChange(inputValue, 1)}
 
-              />
+                />
 
+              </div>
+              <div>
+                <input type="number" placeholder="Amount" className="input" value={lines[1].amount}
+                       onChange={e => handleSimpleModeAmountInput(e)}/>
+
+                <select name="select" id="exampleSelect"
+                        defaultValue={lines[0].commodity} onChange={(e) => {
+                  handleLineChange(e, 0, 'commodity');
+                  handleLineChange(e, 1, 'commodity');
+                }}>
+                  {lines[0].commodity_candidates.filter(it => lines[1].commodity_candidates.indexOf(it) !== -1).map(candidate =>
+                    <option key={`${candidate}`} value={candidate}>{candidate}</option>
+                  )}
+                </select>
+              </div>
             </div>
-            <div>
-              <input type="number" placeholder="Amount" className="input" value={lines[1].amount}
-                     onChange={e => handleSimpleModeAmountInput(e)}/>
+          ) :
+          <>
+            <h3>Lines</h3>
+            <button onClick={newLine}>new Lines</button>
+            {lines.map((one, index) =>
+              <div key={index}>
 
-              <select name="select" id="exampleSelect"
-                      defaultValue={lines[0].commodity} onChange={(e) => {
-                handleLineChange(e, 0, 'commodity');
-                handleLineChange(e, 1, 'commodity');
-              }}>
-                {lines[0].commodity_candidates.filter(it => lines[1].commodity_candidates.indexOf(it) !== -1).map(candidate =>
-                  <option key={`${candidate}`} value={candidate}>{candidate}</option>
-                )}
-              </select>
-            </div>
-          </div>
-        ) :
-        <>
-          <h3>Lines</h3>
-          <button onClick={newLine}>new Lines</button>
-          {lines.map((one, index) =>
-            <div key={index}>
+                <Select
+                  defaultValue={one.account}
+                  options={accountOptions}
+                  onChange={(inputValue, actionMeta) => handleAccountChange(inputValue, index)}
+                />
+                <input type="number" placeholder="Amount" className="input" value={one.amount}
+                       onChange={e => handleLineChange(e, index, "amount")}/>
 
-              <Select
-                defaultValue={one.account}
-                options={accountOptions}
-                onChange={(inputValue, actionMeta) => handleAccountChange(inputValue, index)}
-              />
-              <input type="number" placeholder="Amount" className="input" value={one.amount}
-                     onChange={e => handleLineChange(e, index, "amount")}/>
+                <select name="select" id="exampleSelect"
+                        defaultValue={one.commodity} onChange={(e) => handleLineChange(e, index, 'commodity')}>
+                  {one.commodity_candidates.map(candidate =>
+                    <option key={`${index}-${candidate}`} value={candidate}>{candidate}</option>
+                  )}
+                </select>
+                {canDeleteLine &&
+                <button onClick={() => deleteLine(index)}>delete</button>
+                }
 
-              <select name="select" id="exampleSelect"
-                      defaultValue={one.commodity} onChange={(e) => handleLineChange(e, index, 'commodity')}>
-                {one.commodity_candidates.map(candidate =>
-                  <option key={`${index}-${candidate}`} value={candidate}>{candidate}</option>
-                )}
-              </select>
-              {canDeleteLine &&
-              <button onClick={() => deleteLine(index)}>delete</button>
-              }
+              </div>
+            )}
+          </>
+        }
+      </div>
+      <div className={Classes.DIALOG_FOOTER}>
+        <div className={Classes.DIALOG_FOOTER_ACTIONS}>
+          <Button onClick={() => setModalStatus(false)}>Close</Button>
+          <Button intent={Intent.PRIMARY} disabled={!canBeSubmit} onClick={submit}>Create</Button>
+        </div>
+      </div>
 
-            </div>
-          )}
-        </>
-      }
-
-
-      <button disabled={!canBeSubmit} onClick={submit}> create</button>
-    </Modal>
+    </Dialog>
   )
 }
