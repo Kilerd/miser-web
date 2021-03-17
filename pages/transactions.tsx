@@ -8,6 +8,7 @@ import NewTransactionModal from "../components/NewTransactionModal";
 import EditTransactionModal from "../components/EditTransactionModal";
 import dayjs from "dayjs";
 import {State, stateWrapper} from "../store";
+import {H1} from "@blueprintjs/core";
 
 export const getServerSideProps = stateWrapper.getServerSideProps(({store, req, res, ...etc}) => {
   store.dispatch({type: 'TICK', payload: 'was set in other page'});

@@ -1,3 +1,7 @@
+import "../node_modules/@blueprintjs/popover2/lib/css/blueprint-popover2.css";
+import "../node_modules/@blueprintjs/core/lib/css/blueprint.css";
+import "../node_modules/@blueprintjs/icons/lib/css/blueprint-icons.css";
+import "../node_modules/normalize.css/normalize.css";
 import React, {FC} from 'react';
 import {AppProps} from 'next/app'
 import {stateWrapper} from '../store';
@@ -5,7 +9,8 @@ import {useStore} from 'react-redux'
 import {AuthProvider} from "../contexts/auth";
 import {LedgerProvider} from "../contexts/ledger";
 import Head from "next/head";
-import Modal from 'react-modal'
+import Modal from 'react-modal';
+
 
 Modal.setAppElement("#__next")
 
@@ -23,11 +28,6 @@ const WrappedApp: FC<AppProps> = ({Component, pageProps}) => {
           <Component {...pageProps} />
         </LedgerProvider>
       </AuthProvider>
-      <style jsx global>{`
-        * {
-          font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-        }
-      `}</style>
     </>
   )
 };

@@ -1,61 +1,61 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
 
-label.input {
-    margin-bottom: 0.5rem;
-    font-size: 1rem;
-}
+/** {*/
+/*    margin: 0;*/
+/*    padding: 0;*/
+/*    box-sizing: border-box;*/
+/*}*/
 
-.input {
-    border: 1px solid #D5D5DA;
-    outline: none;
-    padding: 0 1rem;
-    border-radius: 3px;
-    font-size: 1.15rem;
-    line-height: 2.5rem;
-    margin-bottom: 1.5rem;
-}
+/*label.input {*/
+/*    margin-bottom: 0.5rem;*/
+/*    font-size: 1rem;*/
+/*}*/
 
-.input:focus {
-    border-color: #0072EF;
-    color: #2E3033;
-}
+/*.input {*/
+/*    border: 1px solid #D5D5DA;*/
+/*    outline: none;*/
+/*    padding: 0 1rem;*/
+/*    border-radius: 3px;*/
+/*    font-size: 1.15rem;*/
+/*    line-height: 2.5rem;*/
+/*    margin-bottom: 1.5rem;*/
+/*}*/
+
+/*.input:focus {*/
+/*    border-color: #0072EF;*/
+/*    color: #2E3033;*/
+/*}*/
 
 
-.button {
-    padding: 0 15px;
-    display: inline-block;
-    vertical-align: middle;
-    min-width: 60px;
-    height: 44px;
-    line-height: 44px;
-    box-sizing: content-box;
-    border: 1px solid #0072EF;
-    cursor: pointer;
-    transition-property: all;
-    text-decoration: none !important;
-    background-color: #0072EF;
-    color: #fff;
-    border-radius: 5px;
-    font-size: 1.1rem;
-}
-.button:disabled {
-    opacity: 0.5;
-    cursor: default;
-    pointer-events: none;
-}
-.button:hover {
-    background-color: #006de5;
-    border-color: #006de5;
-    color: #fff;
-}
+/*.button {*/
+/*    padding: 0 15px;*/
+/*    display: inline-block;*/
+/*    vertical-align: middle;*/
+/*    min-width: 60px;*/
+/*    height: 44px;*/
+/*    line-height: 44px;*/
+/*    box-sizing: content-box;*/
+/*    border: 1px solid #0072EF;*/
+/*    cursor: pointer;*/
+/*    transition-property: all;*/
+/*    text-decoration: none !important;*/
+/*    background-color: #0072EF;*/
+/*    color: #fff;*/
+/*    border-radius: 5px;*/
+/*    font-size: 1.1rem;*/
+/*}*/
+/*.button:disabled {*/
+/*    opacity: 0.5;*/
+/*    cursor: default;*/
+/*    pointer-events: none;*/
+/*}*/
+/*.button:hover {*/
+/*    background-color: #006de5;*/
+/*    border-color: #006de5;*/
+/*    color: #fff;*/
+/*}*/
 
 .container {
 
     max-width: 85%;
-    margin: 0 auto;
-    padding-top: 2rem;
+    margin: 0 auto 0;
 }

@@ -8,6 +8,7 @@ import React, {useCallback, useEffect, useState} from 'react'
 import {useDropzone} from 'react-dropzone'
 import {GetServerSideProps} from 'next'
 import Loadable from "../../components/Loadable";
+import {HTMLTable} from "@blueprintjs/core";
 
 
 function SingleTransactionPage() {
@@ -62,7 +63,7 @@ function SingleTransactionPage() {
 
           <div className="lines">
             <h2>lines</h2>
-            <table>
+            <HTMLTable bordered={true} striped={true} style={{width:"100%"}}>
               <thead>
               <tr>
                 <th>#</th>
@@ -79,7 +80,7 @@ function SingleTransactionPage() {
                 </tr>
               ))}
               </tbody>
-            </table>
+            </HTMLTable>
           </div>
           <div className="documents">
             <h2>documents</h2>

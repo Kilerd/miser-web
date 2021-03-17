@@ -1,16 +1,19 @@
 import React from "react";
 import TransactionLine from "./TransactionLine";
 import dayjs from "dayjs";
+import {Button, Card, Divider, Elevation} from "@blueprintjs/core";
 
 
 export default function TransactionGroup({date, items, setEditId}) {
 
-  const lines = items.map((one) => (<TransactionLine key={one.id} {...one} setEditId={setEditId} />))
+  const lines = items.map((one) => (<TransactionLine key={one.id} {...one} setEditId={setEditId}/>))
 
   const isToday = dayjs().isSame(dayjs(date), "day");
 
   return (
     <>
+
+
       <div className="group">
         <div className="head">
           {isToday ?
@@ -19,6 +22,7 @@ export default function TransactionGroup({date, items, setEditId}) {
             <h2>{date}</h2>
           }
         </div>
+
         <div className="lines">
           {lines}
         </div>
@@ -33,9 +37,11 @@ export default function TransactionGroup({date, items, setEditId}) {
 
           .head {
             padding-left: 0.5rem;
+
             h2 {
               font-weight: normal;
               font-size: 1.2rem;
+
               span {
                 font-size: 0.95rem;
                 color: #b1b1b1;

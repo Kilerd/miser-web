@@ -2,6 +2,7 @@ import {AccountListItemType} from "../types";
 import styles from './layout.module.scss'
 import React from "react";
 import Link from "next/link";
+import {Button, Card, Icon, Tag} from "@blueprintjs/core";
 
 interface ModalStatus {
   openEditAccount: any
@@ -19,7 +20,7 @@ export default function AccountListItem({
                                           children,
                                           openEditAccount
                                         }: AccountListItemType & ModalStatus) {
-  const commodities_map = commodities.map(one => <span key={one}>{one}</span>);
+  const commodities_map = commodities.map(one => <Tag style={{marginRight: "0.15rem"}} key={one}>{one}</Tag>);
   const childrenDOM = Object.values(children).map(one =>
     <AccountListItem key={one.fullName} {...one} openEditAccount={openEditAccount}/>
   )
@@ -39,7 +40,7 @@ export default function AccountListItem({
             <div className="amount">{amount} CNY</div>
             {id &&
             <span>
-              <a onClick={() => openEditAccount(id, fullName, alias, commodities)}>edit</a>
+              <a onClick={() => openEditAccount(id, fullName, alias, commodities)}><Button minimal icon="edit"/></a>
             </span>
             }
           </div>
@@ -62,7 +63,7 @@ export default function AccountListItem({
           .content {
             border: 1px solid #eee;
             border-radius: 5px;
-            background-color: rgba(0, 114, 239, 0.06);
+            //background-color: rgba(0, 114, 239, 0.06);
             display: flex;
             flex-direction: row;
             align-items: center;
