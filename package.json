@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@blueprintjs/core": "^3.41.0",
+    "@blueprintjs/datetime": "^3.21.2",
     "@blueprintjs/popover2": "^0.3.3",
     "axios": "^0.21.1",
     "big.js": "^6.0.3",

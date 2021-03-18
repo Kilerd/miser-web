@@ -2,6 +2,7 @@ import "../node_modules/@blueprintjs/popover2/lib/css/blueprint-popover2.css";
 import "../node_modules/@blueprintjs/core/lib/css/blueprint.css";
 import "../node_modules/@blueprintjs/icons/lib/css/blueprint-icons.css";
 import "../node_modules/normalize.css/normalize.css";
+import "../node_modules/@blueprintjs/datetime/lib/css/blueprint-datetime.css"
 import React, {FC} from 'react';
 import {AppProps} from 'next/app'
 import {stateWrapper} from '../store';

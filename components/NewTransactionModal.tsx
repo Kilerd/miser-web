@@ -5,16 +5,15 @@ import {useLedger} from "../contexts/ledger";
 import Big from 'big.js';
 import Select from 'react-select';
 import dayjs from "dayjs";
-import {Button, Classes, Dialog, Intent} from "@blueprintjs/core";
+import {Button, Classes, Dialog, FormGroup, InputGroup, Intent} from "@blueprintjs/core";
+import {DateInput, DatePicker, TimePrecision} from "@blueprintjs/datetime";
 
 export default function NewTransactionModal({modalStatus, setModalStatus}) {
   const ledgerContext = useLedger();
 
   const [simpleMode, setSimpleMode] = useState(true);
 
-  const [date, setDate] = useState(() => {
-    return dayjs().format("YYYY-MM-DDTHH:mm");
-  });
+  const [date, setDate] = useState(() => dayjs());
   const [payee, setPayee] = useState("");
   const [narration, setNarration] = useState("");
   const [newTag, setNewTag] = useState("");
@@ -85,7 +84,7 @@ export default function NewTransactionModal({modalStatus, setModalStatus}) {
       amount: [line.amount, line.commodity],
       description: ""
     }));
-    await api.createTransaction(new Date(date), payee, narration, tags, [], lineReq)
+    await api.createTransaction(date.toDate(), payee, narration, tags, [], lineReq)
     setLoading(false);
     setModalStatus(false);
     ledgerContext.update("TRANSACTIONS")
@@ -114,17 +113,39 @@ export default function NewTransactionModal({modalStatus, setModalStatus}) {
       {/*>*/}
       <div className={Classes.DIALOG_BODY}>
         <div>
-          <label htmlFor="date" className="input">Date</label>
-          <input type="datetime-local" name="date" id="date" placeholder="2020-10-10" value={date}
-                 onChange={e => setDate(e.target.value)}/>
+          <FormGroup
+            label="Date"
+          >
+            <DateInput
+              defaultValue={date.toDate()}
+              parseDate={(s) => new Date(s)}
+              formatDate={date => date.toLocaleString()}
+              highlightCurrentDay
+              shortcuts
+              showActionsBar
+              timePickerProps={{showArrowButtons: true}}
+              timePrecision={TimePrecision.MINUTE}
+              onChange={(date) => setDate(dayjs(date))}
+              fill
+            />
+          </FormGroup>
 
-          <label htmlFor="payee" className="input">Payee</label>
-          <input type="text" placeholder="Payee" id="payee" className="input" value={payee}
-                 onChange={e => setPayee(e.target.value)}/>
+          <FormGroup
+            label="Payee"
+            labelFor="text-payee"
+          >
+            <InputGroup id="text-payee" placeholder="Payee" value={payee}
+                        onChange={e => setPayee(e.target.value)}/>
+          </FormGroup>
 
-          <label htmlFor="narration" className="input">Narration</label>
-          <input type="text" placeholder="Narration" id="narration" className="input" value={narration}
-                 onChange={e => setNarration(e.target.value)}/>
+          <FormGroup
+            label="Narration"
+            labelFor="text-narration"
+          >
+            <InputGroup id="text-narration" placeholder="Narration" value={narration}
+                        onChange={e => setNarration(e.target.value)}/>
+          </FormGroup>
+
         </div>
 
         <div>
