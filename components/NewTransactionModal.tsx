@@ -1,12 +1,12 @@
 import React, {useState} from "react";
-import Modal from 'react-modal'
 import api from "../api";
 import {useLedger} from "../contexts/ledger";
 import Big from 'big.js';
 import Select from 'react-select';
 import dayjs from "dayjs";
-import {Button, Classes, Dialog, FormGroup, InputGroup, Intent} from "@blueprintjs/core";
-import {DateInput, DatePicker, TimePrecision} from "@blueprintjs/datetime";
+import {Button, Classes, Dialog, FormGroup, InputGroup, Intent, Switch, TagInput} from "@blueprintjs/core";
+import {DateInput, TimePrecision} from "@blueprintjs/datetime";
+
 
 export default function NewTransactionModal({modalStatus, setModalStatus}) {
   const ledgerContext = useLedger();
@@ -16,7 +16,6 @@ export default function NewTransactionModal({modalStatus, setModalStatus}) {
   const [date, setDate] = useState(() => dayjs());
   const [payee, setPayee] = useState("");
   const [narration, setNarration] = useState("");
-  const [newTag, setNewTag] = useState("");
   const [tags, setTags] = useState([]);
   const [lines, setLines] = useState([
     {account: null, amount: "", commodity: null, commodity_candidates: []},
@@ -25,20 +24,9 @@ export default function NewTransactionModal({modalStatus, setModalStatus}) {
 
 
   const [isLoading, setLoading] = useState(false);
-  const canBeSubmit = !isLoading;
-
-
-  const handleNewTag = (e) => {
-    if (e.code == 'Enter') {
-      const value = e.target.value.trim();
-      if (value !== '') {
-        if (tags.indexOf(value) === -1) {
-          setTags([...tags, value])
-        }
-        setNewTag("")
-      }
-    }
-  }
+  const canBeSubmit = !isLoading
+    && (payee !== "" || narration != "")
+    && lines.filter(it => it.account !== null && it.amount !== "" && it.amount !== null && it.commodity !== null).length === lines.length;
 
   const canDeleteLine = lines.length > 2;
   const handleLineChange = (e, index, fieldId) => {
@@ -76,7 +64,6 @@ export default function NewTransactionModal({modalStatus, setModalStatus}) {
     setLines(newLines);
   }
 
-
   const submit = async () => {
     setLoading(true);
     const lineReq = lines.map(line => ({
@@ -92,144 +79,146 @@ export default function NewTransactionModal({modalStatus, setModalStatus}) {
 
 
   function handleSimpleModeAmountInput(e: React.ChangeEvent<HTMLInputElement>) {
-    let big = new Big(e.target.value);
-    let negative = big.mul(-1);
-    lines[0].amount = negative.toFixed();
-    lines[1].amount = big.toFixed();
+    try {
+      let big = new Big(e.target.value);
+      let negative = big.mul(-1);
+      lines[0].amount = negative.toFixed();
+      lines[1].amount = big.toFixed();
+    } catch (e) {
+      lines[0].amount = ""
+      lines[1].amount = ""
+    }
     setLines([...lines]);
   }
 
   return (
-    <Dialog
-      isOpen={modalStatus}
-      title="New Transaction"
-      onClose={() => setModalStatus(false)}
-    >
-      {/*<Modal*/}
-      {/*  isOpen={modalStatus}*/}
-      {/*  // onRequestClose={()=> setIsOpen(false)}*/}
-      {/*  contentLabel="Example Modal"*/}
-      {/*  // style={customStyles}*/}
-      {/*>*/}
-      <div className={Classes.DIALOG_BODY}>
-        <div>
-          <FormGroup
-            label="Date"
-          >
-            <DateInput
-              defaultValue={date.toDate()}
-              parseDate={(s) => new Date(s)}
-              formatDate={date => date.toLocaleString()}
-              highlightCurrentDay
-              shortcuts
-              showActionsBar
-              timePickerProps={{showArrowButtons: true}}
-              timePrecision={TimePrecision.MINUTE}
-              onChange={(date) => setDate(dayjs(date))}
-              fill
-            />
-          </FormGroup>
+    <>
+      <Dialog
+        style={{width: "70vw"}}
+        isOpen={modalStatus}
+        title="New Transaction"
+        onClose={() => setModalStatus(false)}
+      >
+        <div className={Classes.DIALOG_BODY}>
+          <div>
+            <FormGroup
+              label="Date"
+            >
+              <DateInput
+                defaultValue={date.toDate()}
+                parseDate={(s) => new Date(s)}
+                formatDate={date => date.toLocaleString()}
+                highlightCurrentDay
+                shortcuts
+                showActionsBar
+                timePickerProps={{showArrowButtons: true}}
+                timePrecision={TimePrecision.MINUTE}
+                onChange={(date) => setDate(dayjs(date))}
+                fill
+              />
+            </FormGroup>
 
-          <FormGroup
-            label="Payee"
-            labelFor="text-payee"
-          >
-            <InputGroup id="text-payee" placeholder="Payee" value={payee}
-                        onChange={e => setPayee(e.target.value)}/>
-          </FormGroup>
+            <FormGroup
+              label="Payee"
+              labelFor="text-payee"
+            >
+              <InputGroup id="text-payee" placeholder="Payee" value={payee}
+                          onChange={e => setPayee(e.target.value)}/>
+            </FormGroup>
 
-          <FormGroup
-            label="Narration"
-            labelFor="text-narration"
-          >
-            <InputGroup id="text-narration" placeholder="Narration" value={narration}
-                        onChange={e => setNarration(e.target.value)}/>
-          </FormGroup>
+            <FormGroup label="Narration" labelFor="text-narration">
+              <InputGroup id="text-narration" placeholder="Narration" value={narration}
+                          onChange={e => setNarration(e.target.value)}/>
+            </FormGroup>
 
-        </div>
+            <FormGroup label="Tags">
+              <TagInput
+                values={tags}
+                placeholder="Separate tags with commas..."
+                onChange={(e) => setTags(e.filter((it, idx) => e.indexOf(it) === idx))}
+                rightElement={<Button
+                  icon="cross"
+                  minimal={true}
+                  onClick={() => setTags([])}
+                />}
+              />
+            </FormGroup>
 
-        <div>
-          {tags.map(one => <span key={one}>{one}</span>)}
-        </div>
-        <div>
-          <input type="text" placeholder="New Tag" className="input" value={newTag}
-                 onChange={e => setNewTag(e.target.value)} onKeyUp={handleNewTag}/>
-        </div>
+          </div>
 
-        <label htmlFor="enhancedMode">
-          <input id="enhancedMode" type="checkbox" checked={!simpleMode} onChange={() => setSimpleMode(!simpleMode)}
-                 disabled={lines.length != 2}/>
-          enhanced mode
-        </label>
-        {simpleMode ? (
-            <div>
+          <Switch checked={!simpleMode} label="Enhanced mode" onChange={() => setSimpleMode(!simpleMode)}
+                  disabled={lines.length != 2}/>
+          {simpleMode ? (
               <div>
-                <Select
+                <div>
+                  <Select
+                    defaultValue={lines[0].account}
+                    options={accountOptions}
+                    onChange={(inputValue, actionMeta) => handleAccountChange(inputValue, 0)}
+                  />
+                  <Select
+                    defaultValue={lines[1].account}
+                    options={accountOptions}
+                    onChange={(inputValue, actionMeta) => handleAccountChange(inputValue, 1)}
 
-                  defaultValue={lines[0].account}
-                  options={accountOptions}
-                  onChange={(inputValue, actionMeta) => handleAccountChange(inputValue, 0)}
-                />
-                <Select
-                  defaultValue={lines[1].account}
-                  options={accountOptions}
-                  onChange={(inputValue, actionMeta) => handleAccountChange(inputValue, 1)}
+                  />
+                </div>
+                <div>
+                  <input type="number" placeholder="Amount" className="input" value={lines[1].amount}
+                         onChange={e => handleSimpleModeAmountInput(e)}/>
 
-                />
-
+                  <select name="select" id="exampleSelect"
+                          defaultValue={lines[0].commodity} onChange={(e) => {
+                    handleLineChange(e, 0, 'commodity');
+                    handleLineChange(e, 1, 'commodity');
+                  }}>
+                    {lines[0].commodity_candidates.filter(it => lines[1].commodity_candidates.indexOf(it) !== -1).map(candidate =>
+                      <option key={`${candidate}`} value={candidate}>{candidate}</option>
+                    )}
+                  </select>
+                </div>
               </div>
-              <div>
-                <input type="number" placeholder="Amount" className="input" value={lines[1].amount}
-                       onChange={e => handleSimpleModeAmountInput(e)}/>
+            ) :
+            <>
+              <h3>Lines</h3>
+              <button onClick={newLine}>new Lines</button>
+              {lines.map((one, index) =>
+                <div className="line">
+                  <Select
+                    defaultValue={one.account}
+                    options={accountOptions}
+                    onChange={(inputValue, actionMeta) => handleAccountChange(inputValue, index)}
+                  />
+                  <input type="number" placeholder="Amount" className="input" value={one.amount}
+                         onChange={e => handleLineChange(e, index, "amount")}/>
 
-                <select name="select" id="exampleSelect"
-                        defaultValue={lines[0].commodity} onChange={(e) => {
-                  handleLineChange(e, 0, 'commodity');
-                  handleLineChange(e, 1, 'commodity');
-                }}>
-                  {lines[0].commodity_candidates.filter(it => lines[1].commodity_candidates.indexOf(it) !== -1).map(candidate =>
-                    <option key={`${candidate}`} value={candidate}>{candidate}</option>
-                  )}
-                </select>
-              </div>
-            </div>
-          ) :
-          <>
-            <h3>Lines</h3>
-            <button onClick={newLine}>new Lines</button>
-            {lines.map((one, index) =>
-              <div key={index}>
-
-                <Select
-                  defaultValue={one.account}
-                  options={accountOptions}
-                  onChange={(inputValue, actionMeta) => handleAccountChange(inputValue, index)}
-                />
-                <input type="number" placeholder="Amount" className="input" value={one.amount}
-                       onChange={e => handleLineChange(e, index, "amount")}/>
-
-                <select name="select" id="exampleSelect"
-                        defaultValue={one.commodity} onChange={(e) => handleLineChange(e, index, 'commodity')}>
-                  {one.commodity_candidates.map(candidate =>
-                    <option key={`${index}-${candidate}`} value={candidate}>{candidate}</option>
-                  )}
-                </select>
-                {canDeleteLine &&
-                <button onClick={() => deleteLine(index)}>delete</button>
-                }
-
-              </div>
-            )}
-          </>
-        }
-      </div>
-      <div className={Classes.DIALOG_FOOTER}>
-        <div className={Classes.DIALOG_FOOTER_ACTIONS}>
-          <Button onClick={() => setModalStatus(false)}>Close</Button>
-          <Button intent={Intent.PRIMARY} disabled={!canBeSubmit} onClick={submit}>Create</Button>
+                  <select name="select" id="exampleSelect"
+                          defaultValue={one.commodity}
+                          onChange={(e) => handleLineChange(e, index, 'commodity')}>
+                    {one.commodity_candidates.map(candidate =>
+                      <option key={`${index}-${candidate}`} value={candidate}>{candidate}</option>
+                    )}
+                  </select>
+                  {canDeleteLine &&
+                  <button onClick={() => deleteLine(index)}>delete</button>
+                  }
+                </div>
+              )}
+            </>
+          }
         </div>
-      </div>
+        <div className={Classes.DIALOG_FOOTER}>
+          <div className={Classes.DIALOG_FOOTER_ACTIONS}>
+            {canBeSubmit ? "true" : "false"}
+            <Button onClick={() => setModalStatus(false)}>Close</Button>
+            <Button intent={Intent.PRIMARY} disabled={!canBeSubmit} onClick={submit}> Create</Button>
+          </div>
+        </div>
 
-    </Dialog>
+      </Dialog>
+
+      <style jsx>{`
+      `}</style>
+    </>
   )
 }

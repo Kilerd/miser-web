@@ -11,6 +11,7 @@
     "@blueprintjs/core": "^3.41.0",
     "@blueprintjs/datetime": "^3.21.2",
     "@blueprintjs/popover2": "^0.3.3",
+    "@blueprintjs/select": "^3.15.8",
     "axios": "^0.21.1",
     "big.js": "^6.0.3",
     "classnames": "^2.2.6",
