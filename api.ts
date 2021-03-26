@@ -47,8 +47,10 @@ class Api {
     return ledger_map;
   }
 
-  async loadTransactions() {
-    const {data: trxRes} = await this.client.get(`/ledgers/${this.currentLedgerId}/journals`);
+  async loadTransactions(createTime: Date | null) {
+    const {data: trxRes} = await this.client.get(`/ledgers/${this.currentLedgerId}/journals`, {
+      params: {"create_time": createTime || new Date()}
+    });
     const transactions = trxRes.data;
 
     let trxMap: { [id: number]: any } = {}
@@ -163,7 +165,7 @@ class Api {
 
   async loadTransactionsByAccounts(id: string | string[]) {
     // todo
-    return this.loadTransactions();
+    return this.loadTransactions(new Date());
   }
 }
 

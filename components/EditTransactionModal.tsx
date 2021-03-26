@@ -5,19 +5,17 @@ import {useLedger} from "../contexts/ledger";
 import Big from 'big.js';
 import Select from 'react-select';
 import dayjs from "dayjs";
-import {Button, Classes, Dialog, Intent} from "@blueprintjs/core";
+import {Button, Classes, Dialog, FormGroup, InputGroup, Intent, Switch, TagInput} from "@blueprintjs/core";
+import {DateInput, TimePrecision} from "@blueprintjs/datetime";
 
 export default function EditTransactionModal({editId, modalStatus, setModalStatus}) {
   const ledgerContext = useLedger();
 
   const [simpleMode, setSimpleMode] = useState(true);
 
-  const [date, setDate] = useState(() => {
-    return dayjs().format("YYYY-MM-DDTHH:mm");
-  });
+  const [date, setDate] = useState(() => dayjs());
   const [payee, setPayee] = useState("");
   const [narration, setNarration] = useState("");
-  const [newTag, setNewTag] = useState("");
   const [tags, setTags] = useState([]);
   const [lines, setLines] = useState([
     {account: null, amount: "", commodity: null, commodity_candidates: []},
@@ -28,7 +26,7 @@ export default function EditTransactionModal({editId, modalStatus, setModalStatu
   useEffect(() => {
     const transaction = ledgerContext.transactions[editId];
     if (transaction !== undefined) {
-      setDate(dayjs(transaction.create_time).format("YYYY-MM-DDTHH:mm"));
+      setDate(dayjs(transaction.create_time));
       setPayee(transaction.payee);
       setNarration(transaction.narration);
       setTags(transaction.tags);
@@ -38,7 +36,7 @@ export default function EditTransactionModal({editId, modalStatus, setModalStatu
         return {
           account: {label: targetAccount.full_name, value: targetAccount.id},
           amount: it.cost[0],
-          commodity: it.cost[0],
+          commodity: it.cost[1],
           commodity_candidates: targetAccount.commodities
         }
       }))
@@ -46,20 +44,10 @@ export default function EditTransactionModal({editId, modalStatus, setModalStatu
   }, [editId])
 
   const [isLoading, setLoading] = useState(false);
-  const canBeSubmit = !isLoading;
+  const canBeSubmit = !isLoading
+    && (payee !== "" || narration != "")
+    && lines.filter(it => it.account !== null && it.amount !== "" && it.amount !== null && it.commodity !== null).length === lines.length;
 
-
-  const handleNewTag = (e) => {
-    if (e.code == 'Enter') {
-      const value = e.target.value.trim();
-      if (value !== '') {
-        if (tags.indexOf(value) === -1) {
-          setTags([...tags, value])
-        }
-        setNewTag("")
-      }
-    }
-  }
 
   const canDeleteLine = lines.length > 2;
   const handleLineChange = (e, index, fieldId) => {
@@ -105,7 +93,7 @@ export default function EditTransactionModal({editId, modalStatus, setModalStatu
       amount: [line.amount, line.commodity],
       description: ""
     }));
-    await api.updateTransaction(editId, new Date(date), payee, narration, tags, [], lineReq)
+    await api.updateTransaction(editId, date.toDate(), payee, narration, tags, [], lineReq)
     setLoading(false);
     setModalStatus(false);
     ledgerContext.update("TRANSACTIONS")
@@ -122,43 +110,64 @@ export default function EditTransactionModal({editId, modalStatus, setModalStatu
 
   return (
     <Dialog
+      style={{width: "70vw"}}
       isOpen={modalStatus}
       title="Update Transaction"
       onClose={() => setModalStatus(false)}
     >
       <div className={Classes.DIALOG_BODY}>
         <div>
-          <label htmlFor="date" className="input">Date</label>
-          <input type="datetime-local" name="date" id="date" placeholder="2020-10-10" value={date}
-                 onChange={e => setDate(e.target.value)}/>
+          <FormGroup
+            label="Date"
+          >
+            <DateInput
+              defaultValue={date.toDate()}
+              parseDate={(s) => new Date(s)}
+              formatDate={date => date.toLocaleString()}
+              highlightCurrentDay
+              shortcuts
+              showActionsBar
+              timePickerProps={{showArrowButtons: true}}
+              timePrecision={TimePrecision.MINUTE}
+              onChange={(date) => setDate(dayjs(date))}
+              fill
+            />
+          </FormGroup>
 
-          <label htmlFor="payee" className="input">Payee</label>
-          <input type="text" placeholder="Payee" id="payee" className="input" value={payee}
-                 onChange={e => setPayee(e.target.value)}/>
+          <FormGroup
+            label="Payee"
+            labelFor="text-payee"
+          >
+            <InputGroup id="text-payee" placeholder="Payee" value={payee}
+                        onChange={e => setPayee(e.target.value)}/>
+          </FormGroup>
 
-          <label htmlFor="narration" className="input">Narration</label>
-          <input type="text" placeholder="Narration" id="narration" className="input" value={narration}
-                 onChange={e => setNarration(e.target.value)}/>
+          <FormGroup label="Narration" labelFor="text-narration">
+            <InputGroup id="text-narration" placeholder="Narration" value={narration}
+                        onChange={e => setNarration(e.target.value)}/>
+          </FormGroup>
+
+          <FormGroup label="Tags">
+            <TagInput
+              values={tags}
+              placeholder="Separate tags with commas..."
+              onChange={(e) => setTags(e.filter((it, idx) => e.indexOf(it) === idx))}
+              rightElement={<Button
+                icon="cross"
+                minimal={true}
+                onClick={() => setTags([])}
+              />}
+            />
+          </FormGroup>
+
         </div>
 
-        <div>
-          {tags.map(one => <span key={one}>{one}</span>)}
-        </div>
-        <div>
-          <input type="text" placeholder="New Tag" className="input" value={newTag}
-                 onChange={e => setNewTag(e.target.value)} onKeyUp={handleNewTag}/>
-        </div>
-
-        <label htmlFor="enhancedMode">
-          <input id="enhancedMode" type="checkbox" checked={!simpleMode} onChange={() => setSimpleMode(!simpleMode)}
-                 disabled={lines.length != 2}/>
-          enhanced mode
-        </label>
+        <Switch checked={!simpleMode} label="Enhanced mode" onChange={() => setSimpleMode(!simpleMode)}
+                disabled={lines.length != 2}/>
         {simpleMode ? (
             <div>
               <div>
                 <Select
-
                   defaultValue={lines[0].account}
                   options={accountOptions}
                   onChange={(inputValue, actionMeta) => handleAccountChange(inputValue, 0)}
@@ -169,7 +178,6 @@ export default function EditTransactionModal({editId, modalStatus, setModalStatu
                   onChange={(inputValue, actionMeta) => handleAccountChange(inputValue, 1)}
 
                 />
-
               </div>
               <div>
                 <input type="number" placeholder="Amount" className="input" value={lines[1].amount}
@@ -191,8 +199,7 @@ export default function EditTransactionModal({editId, modalStatus, setModalStatu
             <h3>Lines</h3>
             <button onClick={newLine}>new Lines</button>
             {lines.map((one, index) =>
-              <div key={index}>
-
+              <div className="line">
                 <Select
                   defaultValue={one.account}
                   options={accountOptions}
@@ -202,7 +209,8 @@ export default function EditTransactionModal({editId, modalStatus, setModalStatu
                        onChange={e => handleLineChange(e, index, "amount")}/>
 
                 <select name="select" id="exampleSelect"
-                        defaultValue={one.commodity} onChange={(e) => handleLineChange(e, index, 'commodity')}>
+                        defaultValue={one.commodity}
+                        onChange={(e) => handleLineChange(e, index, 'commodity')}>
                   {one.commodity_candidates.map(candidate =>
                     <option key={`${index}-${candidate}`} value={candidate}>{candidate}</option>
                   )}
@@ -210,7 +218,6 @@ export default function EditTransactionModal({editId, modalStatus, setModalStatu
                 {canDeleteLine &&
                 <button onClick={() => deleteLine(index)}>delete</button>
                 }
-
               </div>
             )}
           </>
@@ -219,9 +226,10 @@ export default function EditTransactionModal({editId, modalStatus, setModalStatu
       <div className={Classes.DIALOG_FOOTER}>
         <div className={Classes.DIALOG_FOOTER_ACTIONS}>
           <Button onClick={() => setModalStatus(false)}>Close</Button>
-          <Button intent={Intent.PRIMARY} disabled={!canBeSubmit} onClick={submit}>Update</Button>
+          <Button intent={Intent.PRIMARY} disabled={!canBeSubmit} onClick={submit}>update</Button>
         </div>
       </div>
+
     </Dialog>
   )
 }

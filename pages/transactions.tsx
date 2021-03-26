@@ -8,7 +8,7 @@ import NewTransactionModal from "../components/NewTransactionModal";
 import EditTransactionModal from "../components/EditTransactionModal";
 import dayjs from "dayjs";
 import {State, stateWrapper} from "../store";
-import {H1} from "@blueprintjs/core";
+import {Button, H1} from "@blueprintjs/core";
 
 export const getServerSideProps = stateWrapper.getServerSideProps(({store, req, res, ...etc}) => {
   store.dispatch({type: 'TICK', payload: 'was set in other page'});
@@ -16,7 +16,7 @@ export const getServerSideProps = stateWrapper.getServerSideProps(({store, req, 
 
 
 function Transactions(state: State) {
-  const {ledger_id, transactions} = useLedger();
+  const {ledger_id, transactions, loadMoreTransaction} = useLedger();
 
 
   let groupedTransactions: { [key: string]: any } = {}
@@ -53,6 +53,10 @@ function Transactions(state: State) {
             const [date, trxs] = item;
             return <TransactionGroup key={date} date={date} items={trxs} setEditId={openEditTrxModal}/>
           })}
+
+          <div className="more">
+            <Button icon="more" onClick={loadMoreTransaction} minimal/>
+          </div>
         </div>
       </AuthenticationLayout>
       <style jsx>{`
@@ -60,6 +64,12 @@ function Transactions(state: State) {
           display: flex;
           flex-direction: row;
           justify-content: space-between;
+        }
+
+        div.more {
+          display: flex;
+          justify-content: center;
+          justify-items: center;
         }
       `}</style>
     </>

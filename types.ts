@@ -62,4 +62,23 @@ export interface Ledger {
   operating_commodity: string,
 }
 
+
+export interface Transaction {
+  id: number,
+  create_time: string,
+  flag: string,
+  has_document: boolean,
+  is_balance: boolean,
+  links: string[],
+  tags: string[],
+  narration: string,
+  payee: string,
+  lines: {
+    id: number,
+    flag: string,
+    account: number,
+    cost: [string, string]
+  }[]
+}
+
 export type RESOURCE_TYPE = "TRANSACTIONS" | "ACCOUNT" | "COMMODITY";

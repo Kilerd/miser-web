@@ -209,7 +209,6 @@ export default function NewTransactionModal({modalStatus, setModalStatus}) {
         </div>
         <div className={Classes.DIALOG_FOOTER}>
           <div className={Classes.DIALOG_FOOTER_ACTIONS}>
-            {canBeSubmit ? "true" : "false"}
             <Button onClick={() => setModalStatus(false)}>Close</Button>
             <Button intent={Intent.PRIMARY} disabled={!canBeSubmit} onClick={submit}> Create</Button>
           </div>
