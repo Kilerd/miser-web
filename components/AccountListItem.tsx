@@ -19,7 +19,7 @@ export default function AccountListItem({
                                           children,
                                           openEditAccount
                                         }: AccountListItemType & ModalStatus) {
-  const commodities_map = commodities.map(one => <Tag style={{marginRight: "0.15rem"}} key={one}>{one}</Tag>);
+  const commodities_map = commodities.map(one => <Tag minimal style={{marginRight: "0.15rem"}} key={one}>{one}</Tag>);
   const childrenDOM = Object.values(children).map(one =>
     <AccountListItem key={one.fullName} {...one} openEditAccount={openEditAccount}/>
   )
