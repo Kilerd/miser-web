@@ -8,7 +8,7 @@ import Link from "next/link";
 import {Popover2, Classes} from "@blueprintjs/popover2";
 import {Button, H5, Icon, Intent} from "@blueprintjs/core";
 
-export default function TransactionLine({id, flag, narration, payee, create_time, lines, is_balance, setEditId}) {
+export default function TransactionLine({id, flag, narration, payee, create_time, lines, is_balance, has_document, setEditId}) {
 
   const {getAccountAlias, update, accounts} = useLedger();
 
@@ -50,7 +50,7 @@ export default function TransactionLine({id, flag, narration, payee, create_time
       })}>
         <div className="left">
           <Link href={`/transactions/${id}`}>
-            <div className="info"><span>{payee}</span> {narration}</div>
+            <div className="info"><span>{payee}</span> {narration} {has_document && <Icon icon="document"/>}</div>
           </Link>
           <div className="time">{s}</div>
         </div>
