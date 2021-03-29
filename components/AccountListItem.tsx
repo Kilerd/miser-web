@@ -28,13 +28,22 @@ export default function AccountListItem({
     <>
       <div className="account">
         <div className="content">
-          <Link href={`/accounts/${id}`}>
+          {id ?
+            <Link href={`/accounts/${id}`}>
+              <div className="left pointer">
+                <div className="name">{alias || name}</div>
+                <div className="meta">{fullName}</div>
+                <div className="commodities">{commodities_map}</div>
+              </div>
+            </Link>
+            :
             <div className="left">
               <div className="name">{alias || name}</div>
               <div className="meta">{fullName}</div>
               <div className="commodities">{commodities_map}</div>
             </div>
-          </Link>
+          }
+
           <div className="right">
             <div className="amount">{amount} CNY</div>
             {id &&
@@ -68,6 +77,10 @@ export default function AccountListItem({
             align-items: center;
             justify-content: space-between;
             padding: 0.5rem 0.75rem;
+
+            .pointer {
+              cursor: pointer;
+            }
 
             .left {
               display: flex;

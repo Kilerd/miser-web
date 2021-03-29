@@ -163,9 +163,26 @@ class Api {
     })
   }
 
-  async loadTransactionsByAccounts(id: string | string[]) {
-    // todo
-    return this.loadTransactions(new Date());
+  async loadTransactionsByAccounts(id: string | string[], createTime: Date | null) {
+    const {data: trxRes} = await this.client.get(`/ledgers/${this.currentLedgerId}/accounts/${id}/journals`, {
+      params: {"create_time": createTime || new Date()}
+    });
+    const transactions = trxRes.data;
+
+    let trxMap: { [id: number]: any } = {}
+    for (let transaction of transactions) {
+      trxMap[transaction.id] = transaction;
+    }
+    return trxMap;
+  }
+
+  async newAccountBalance(id: string, date: Date, padAccount: unknown, amount: string, commodity: string) {
+    return await this.client.post(`/ledgers/${this.currentLedgerId}/accounts/${id}/balance`, {
+      time: date,
+      account: padAccount,
+      amount,
+      commodity
+    })
   }
 }
 
