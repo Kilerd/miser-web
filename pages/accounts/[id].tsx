@@ -10,6 +10,35 @@ import {Button} from "@blueprintjs/core";
 import Big from 'big.js';
 import GroupedTransactions from "../../components/GroupedTransactions";
 import {IdMap, Transaction} from "../../types";
+import {Line} from "react-chartjs-2";
+
+
+const data = {
+  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+  datasets: [
+    {
+      label: 'My First dataset',
+      fill: false,
+      lineTension: 0.1,
+      backgroundColor: 'rgba(75,192,192,0.4)',
+      borderColor: 'rgba(75,192,192,1)',
+      borderCapStyle: 'butt',
+      borderDash: [],
+      borderDashOffset: 0.0,
+      borderJoinStyle: 'miter',
+      pointBorderColor: 'rgba(75,192,192,1)',
+      pointBackgroundColor: '#fff',
+      pointBorderWidth: 1,
+      pointHoverRadius: 5,
+      pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+      pointHoverBorderColor: 'rgba(220,220,220,1)',
+      pointHoverBorderWidth: 2,
+      pointRadius: 1,
+      pointHitRadius: 10,
+      data: [65, 59, 80, 81, 56, 55, 40]
+    }
+  ]
+};
 
 function Page() {
   const router = useRouter();
@@ -22,12 +51,10 @@ function Page() {
     return <div>404</div>
   }
 
-
   const [padAccount, setPadAccount] = useState(null);
   const [amount, setAmount] = useState("");
   const [amountAvailable, setAmountAvailable] = useState(false);
   const [accountTransactions, setAccountTransactions] = useState({} as IdMap<Transaction>);
-
 
   const {result, loading, error} = useAsync(async () => {
     let res = await api.loadTransactionsByAccounts(id, null);
@@ -81,6 +108,7 @@ function Page() {
       <div className="container">
         <h1>{targetAccount.alias} {targetAccount.full_name}</h1>
 
+        <Line data={data} height={70}/>
         {(!loading && !error) &&
         <GroupedTransactions items={accountTransactions} loadMore={loadMore} openEditTrxModal={(id) => {
         }}/>
@@ -93,7 +121,7 @@ function Page() {
         />
         <input type="number" className="input" value={amount} onChange={handlePadAmountChange}
                placeholder="pad amount"/>
-        <Button onClick={submitBalance}>Submit</Button>
+        <Button disabled={!amountAvailable} onClick={submitBalance}>Submit</Button>
       </div>
     </AuthenticationLayout>
   )

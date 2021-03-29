@@ -6,8 +6,6 @@ import {useAsync} from "react-async-hook";
 import api from "../../api";
 import React, {useCallback, useEffect, useState} from 'react'
 import {useDropzone} from 'react-dropzone'
-import {GetServerSideProps} from 'next'
-import Loadable from "../../components/Loadable";
 import {HTMLTable, Tag} from "@blueprintjs/core";
 
 
