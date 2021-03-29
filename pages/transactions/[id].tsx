@@ -8,7 +8,7 @@ import React, {useCallback, useEffect, useState} from 'react'
 import {useDropzone} from 'react-dropzone'
 import {GetServerSideProps} from 'next'
 import Loadable from "../../components/Loadable";
-import {HTMLTable} from "@blueprintjs/core";
+import {HTMLTable, Tag} from "@blueprintjs/core";
 
 
 function SingleTransactionPage() {
@@ -57,13 +57,16 @@ function SingleTransactionPage() {
 
           <div className="tags">
             {targetTransaction.tags.map(it => (
-              <span key={it} className="tag">{it}</span>
+              <Tag key={it} style={{marginRight: "0.2rem"}}>{it}</Tag>
             ))}
+          </div>
+          <div className="desc">
+            {targetTransaction.description}
           </div>
 
           <div className="lines">
             <h2>lines</h2>
-            <HTMLTable bordered={true} striped={true} style={{width:"100%"}}>
+            <HTMLTable bordered={true} striped={true} style={{width: "100%"}}>
               <thead>
               <tr>
                 <th>#</th>
