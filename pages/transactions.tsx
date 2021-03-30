@@ -1,22 +1,13 @@
 import {ProtectRoute} from "../contexts/auth";
-import {connect} from 'react-redux'
 import React, {useState} from "react";
 import {useLedger} from "../contexts/ledger";
-import TransactionGroup from "../components/TransactionGroup";
 import AuthenticationLayout from "../components/AuthenticationLayout";
 import NewTransactionModal from "../components/NewTransactionModal";
 import EditTransactionModal from "../components/EditTransactionModal";
-import dayjs from "dayjs";
-import {State, stateWrapper} from "../store";
-import {Button, H1} from "@blueprintjs/core";
 import GroupedTransactions from "../components/GroupedTransactions";
 
-export const getServerSideProps = stateWrapper.getServerSideProps(({store, req, res, ...etc}) => {
-  store.dispatch({type: 'TICK', payload: 'was set in other page'});
-})
 
-
-function Transactions(state: State) {
+function Transactions() {
   const {ledger_id, transactions, loadMoreTransaction} = useLedger();
 
 
@@ -55,4 +46,4 @@ function Transactions(state: State) {
   )
 }
 
-export default connect(state => state)(ProtectRoute(Transactions))
+export default ProtectRoute(Transactions)

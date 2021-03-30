@@ -5,8 +5,6 @@ import "../node_modules/normalize.css/normalize.css";
 import "../node_modules/@blueprintjs/datetime/lib/css/blueprint-datetime.css"
 import React, {FC} from 'react';
 import {AppProps} from 'next/app'
-import {stateWrapper} from '../store';
-import {useStore} from 'react-redux'
 import {AuthProvider} from "../contexts/auth";
 import {LedgerProvider} from "../contexts/ledger";
 import Head from "next/head";
@@ -16,7 +14,6 @@ import Modal from 'react-modal';
 Modal.setAppElement("#__next")
 
 const WrappedApp: FC<AppProps> = ({Component, pageProps}) => {
-  const store = useStore();
   return (
     <>
       <Head>
@@ -33,4 +30,4 @@ const WrappedApp: FC<AppProps> = ({Component, pageProps}) => {
   )
 };
 
-export default stateWrapper.withRedux(WrappedApp);
+export default WrappedApp;

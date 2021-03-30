@@ -1,5 +1,4 @@
 import {ProtectRoute} from "../contexts/auth";
-import {connect} from 'react-redux'
 import React, {useState} from "react";
 import AuthenticationLayout from "../components/AuthenticationLayout";
 import {useLedger} from "../contexts/ledger";

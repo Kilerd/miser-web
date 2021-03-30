@@ -1,6 +1,4 @@
 import {ProtectRoute, useAuth} from "../contexts/auth";
-import {connect} from 'react-redux'
-import {State} from "../store";
 import React from "react";
 import AuthenticationLayout from "../components/AuthenticationLayout";
 import {Line} from 'react-chartjs-2';
@@ -31,7 +29,8 @@ const data = {
     }
   ]
 };
-function Dashboard(state: State) {
+
+function Dashboard() {
 
   const {user} = useAuth();
   return (
@@ -46,4 +45,4 @@ function Dashboard(state: State) {
 }
 
 
-export default connect(state => state)(ProtectRoute(Dashboard))
+export default ProtectRoute(Dashboard)
