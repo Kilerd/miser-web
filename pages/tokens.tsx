@@ -40,6 +40,18 @@ function Page() {
     <AuthenticationLayout>
       <div className="container">
         <H1>Tokens</H1>
+
+        <H3>New</H3>
+        {newToken && <div>
+            <p>please remember this token value, it would not be showed again.</p>
+            <p>value: {newToken.value}</p>
+        </div>}
+
+        <ControlGroup fill={false} vertical={false}>
+          <InputGroup placeholder="description" value={newTokenDescription} onChange={e=>setNewTokenDescription(e.target.value)} />
+          <Button icon="small-plus" onClick={createNewToken}>Create</Button>
+        </ControlGroup>
+
         {loading ? <p>loading...</p> :
           error ? <div>{error}</div> :
             <HTMLTable bordered={true} striped={true} style={{width: "100%"}}>
@@ -79,16 +91,7 @@ function Page() {
             </HTMLTable>
         }
 
-        <H3>New</H3>
-        {newToken && <div>
-            <p>please remember this token value, it would not be showed again.</p>
-            <p>value: {newToken.value}</p>
-        </div>}
 
-        <ControlGroup fill={false} vertical={false}>
-          <InputGroup placeholder="description" value={newTokenDescription} onChange={e=>setNewTokenDescription(e.target.value)} />
-          <Button icon="small-plus" onClick={createNewToken}>Create</Button>
-        </ControlGroup>
       </div>
 
     </AuthenticationLayout>
