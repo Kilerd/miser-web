@@ -107,7 +107,6 @@ function SingleTransactionPage() {
                   </tr>
                   </thead>
                   <tbody>
-                  {console.log(documents)}
                   {documents.data.data.map(it => (
                     <tr key={it.id}>
                       <td>{it.id}</td>

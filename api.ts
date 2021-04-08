@@ -184,6 +184,21 @@ class Api {
       commodity
     })
   }
+
+  async getTokens() {
+    return await this.client.get(`/tokens`)
+  }
+
+  async deleteToken(id: string) {
+    return await this.client.delete(`/tokens/${id}`)
+  }
+
+  async newToken(description: string) {
+    const axiosResponse = await this.client.post(`/tokens`, {
+      description
+    });
+    return axiosResponse.data.data
+  }
 }
 
 const api = new Api(null);

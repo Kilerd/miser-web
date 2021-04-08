@@ -48,6 +48,8 @@ export default function Nav() {
               <MenuDivider/>
               {elements}
               <MenuDivider/>
+              <Link href="/tokens"><MenuItem icon="person" text="Tokens"/></Link>
+              <MenuDivider/>
               <MenuItem icon="log-out" text="Sign out"/>
             </Menu>} position={Position.BOTTOM}>
               <Button className={Classes.MINIMAL} icon="user" text={user.username}/>
