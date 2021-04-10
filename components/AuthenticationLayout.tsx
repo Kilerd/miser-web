@@ -12,8 +12,16 @@ export default function AuthenticationLayout({children}) {
     </main>
 
     <style jsx>{`
-      .body {
-        margin-top: 4rem;
+      main {
+        display: flex;
+        flex-direction: row;
+        height: 100vh;
+      }
+
+      section.body {
+        padding: 1rem;
+        flex: 1;
+        overflow: scroll;
       }
     `}</style>
   </>
