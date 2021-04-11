@@ -15,37 +15,50 @@ export function accountTreeGenerator(value: { [id: number]: Account }) {
       fullName: 'Liabilities',
       isAvailable: false,
       amount: "0",
+      alias: null,
       children: {},
       commodities: [],
+      icon: "lightbulb"
     },
     assets: {
       name: 'Assets',
       fullName: 'Assets',
       isAvailable: false,
       amount: "0",
+      alias: null,
       children: {},
       commodities: [],
-    }, equity: {
+      icon: "briefcase",
+    },
+    equity: {
       name: 'Equity',
       fullName: 'Equity',
       isAvailable: false,
       amount: "0",
+      alias: null,
       children: {},
       commodities: [],
-    }, expenses: {
+      icon:"shop"
+    },
+    expenses: {
       name: 'Expenses',
       fullName: 'Expenses',
       isAvailable: false,
       amount: "0",
+      alias: null,
       children: {},
       commodities: [],
-    }, income: {
+      icon:"shopping-cart",
+    },
+    income: {
       name: 'Income',
       fullName: 'Income',
       isAvailable: false,
       amount: "0",
+      alias: null,
       children: {},
       commodities: [],
+      icon:"credit-card"
     }
   };
   Object.values(value).forEach(it => {
@@ -116,8 +129,7 @@ function Accounts() {
                             setModalStatus={setEditAccountModalStatus}/>
           <button onClick={() => setIsOpen(true)} className="button">new</button>
           {Object.values(accountTreeGenerator1).map(one =>
-
-            <AccountListItem key={one.fullName} {...one} openEditAccount={openEditAccount}/>
+            <AccountListItem key={one.fullName} {...one} level={0} openEditAccount={openEditAccount}/>
           )}
         </div>
       </AuthenticationLayout>

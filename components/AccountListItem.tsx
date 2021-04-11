@@ -1,10 +1,12 @@
 import {AccountListItemType} from "../types";
 import React from "react";
 import Link from "next/link";
-import {Button, Tag} from "@blueprintjs/core";
+import {Button, Icon, Tag} from "@blueprintjs/core";
+import {IconName} from "@blueprintjs/icons";
 
 interface ModalStatus {
   openEditAccount: any
+  level: number
 }
 
 
@@ -16,41 +18,50 @@ export default function AccountListItem({
                                           commodities,
                                           amount,
                                           id,
+                                          icon,
                                           children,
-                                          openEditAccount
+                                          openEditAccount,
+                                          level
                                         }: AccountListItemType & ModalStatus) {
-  const commodities_map = commodities.map(one => <Tag minimal style={{marginRight: "0.15rem"}} key={one}>{one}</Tag>);
   const childrenDOM = Object.values(children).map(one =>
-    <AccountListItem key={one.fullName} {...one} openEditAccount={openEditAccount}/>
+    <AccountListItem key={one.fullName} {...one} level={level + 1} openEditAccount={openEditAccount}/>
   )
+
+
+  let targetIcon = icon || "folder-close"
+
   return (
 
     <>
       <div className="account">
         <div className="content">
-          {id ?
+          {id
+            ?
             <Link href={`/accounts/${id}`}>
-              <div className="left pointer">
-                <div className="name">{alias || name}</div>
-                <div className="meta">{fullName}</div>
-                <div className="commodities">{commodities_map}</div>
+              <div className="left pointer" style={{paddingLeft: `${level * 1}rem`}}>
+                <div className="name">
+                  <Icon icon={targetIcon as IconName}/>
+                  {alias || name}
+                </div>
+                {alias && <div className="meta">{name}</div>}
               </div>
             </Link>
             :
-            <div className="left">
-              <div className="name">{alias || name}</div>
-              <div className="meta">{fullName}</div>
-              <div className="commodities">{commodities_map}</div>
+            <div className="left" style={{paddingLeft: `${level * 1}rem`}}>
+              <div className="name">
+                <Icon icon={targetIcon as IconName}/>
+                {alias || name}
+              </div>
+              {alias && <div className="meta">{name}</div>}
             </div>
           }
-
           <div className="right">
             <div className="amount">{amount} CNY</div>
-            {id &&
-            <span>
-              <a onClick={() => openEditAccount(id, fullName, alias, commodities)}><Button minimal icon="edit"/></a>
-            </span>
-            }
+            {/*{id &&*/}
+            {/*<span>*/}
+            {/*  <a onClick={() => openEditAccount(id, fullName, alias, commodities)}><Button minimal icon="edit"/></a>*/}
+            {/*</span>*/}
+            {/*}*/}
           </div>
         </div>
         {childrenDOM.length !== 0 &&
@@ -63,20 +74,25 @@ export default function AccountListItem({
 
       <style jsx>{`
         .account {
-          padding: 1rem 0 0 1.5rem;
+          //padding: 1rem 0 0 1.5rem;
           display: flex;
           flex-direction: column;
 
-
           .content {
-            border: 1px solid #eee;
+            //border: 1px solid #eee;
             border-radius: 5px;
             //background-color: rgba(0, 114, 239, 0.06);
             display: flex;
             flex-direction: row;
             align-items: center;
             justify-content: space-between;
-            padding: 0.5rem 0.75rem;
+            //margin: 0.25rem;
+            padding: 0.35rem 1rem;
+
+            &:hover {
+              background-color: #efefef;
+              border-radius: 5px;
+            }
 
             .pointer {
               cursor: pointer;

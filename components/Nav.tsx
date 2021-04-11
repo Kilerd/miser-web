@@ -48,7 +48,7 @@ export default function Nav() {
 
           <Link href="/dashboard">
             <div className="nav-btn">
-              <Icon className={Classes.MINIMAL} icon="new-grid-item"/>
+              <Icon className={Classes.MINIMAL} icon="control"/>
               <p>Dashboard</p>
             </div>
           </Link>

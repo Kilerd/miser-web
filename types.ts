@@ -14,6 +14,7 @@ export interface AccountListItemType {
   commodities: string[],
   amount: string,
   id?: number,
+  icon?: string,
   children: { [name: string]: AccountListItemType }
 }
 
