@@ -38,7 +38,7 @@ export function accountTreeGenerator(value: { [id: number]: Account }) {
       alias: null,
       children: {},
       commodities: [],
-      icon:"shop"
+      icon: "shop"
     },
     expenses: {
       name: 'Expenses',
@@ -48,7 +48,7 @@ export function accountTreeGenerator(value: { [id: number]: Account }) {
       alias: null,
       children: {},
       commodities: [],
-      icon:"shopping-cart",
+      icon: "shopping-cart",
     },
     income: {
       name: 'Income',
@@ -58,7 +58,7 @@ export function accountTreeGenerator(value: { [id: number]: Account }) {
       alias: null,
       children: {},
       commodities: [],
-      icon:"credit-card"
+      icon: "credit-card"
     }
   };
   Object.values(value).forEach(it => {
@@ -128,9 +128,12 @@ function Accounts() {
           <EditAccountModal {...editAccountData} modalStatus={editAccountModalStatus}
                             setModalStatus={setEditAccountModalStatus}/>
           <button onClick={() => setIsOpen(true)} className="button">new</button>
-          {Object.values(accountTreeGenerator1).map(one =>
-            <AccountListItem key={one.fullName} {...one} level={0} openEditAccount={openEditAccount}/>
-          )}
+
+          <AccountListItem {...accountTreeGenerator1.assets} level={0} openEditAccount={openEditAccount}/>
+          <AccountListItem {...accountTreeGenerator1.expenses} level={0} openEditAccount={openEditAccount}/>
+          <AccountListItem {...accountTreeGenerator1.income} level={0} openEditAccount={openEditAccount}/>
+          <AccountListItem {...accountTreeGenerator1.liabilities} level={0} openEditAccount={openEditAccount}/>
+          <AccountListItem {...accountTreeGenerator1.equity} level={0} openEditAccount={openEditAccount}/>
         </div>
       </AuthenticationLayout>
 
