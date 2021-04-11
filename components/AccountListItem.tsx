@@ -1,5 +1,5 @@
 import {AccountListItemType} from "../types";
-import React from "react";
+import React, {useState} from "react";
 import Link from "next/link";
 import {Button, Icon, Tag} from "@blueprintjs/core";
 import {IconName} from "@blueprintjs/icons";
@@ -23,12 +23,20 @@ export default function AccountListItem({
                                           openEditAccount,
                                           level
                                         }: AccountListItemType & ModalStatus) {
+
+  const [childrenOpen, setChildrenOpen] = useState(true);
+
+
   const childrenDOM = Object.values(children).map(one =>
     <AccountListItem key={one.fullName} {...one} level={level + 1} openEditAccount={openEditAccount}/>
   )
 
 
-  let targetIcon = icon || "folder-close"
+  let targetIcon = icon || (id ? childrenDOM.length < 1 ? "dot" : childrenOpen ? "small-minus" : "small-plus" : childrenOpen ? "folder-open" : "folder-close")
+
+  const openChildren = (e: any) => {
+    setChildrenOpen(!childrenOpen);
+  }
 
   return (
 
@@ -37,22 +45,22 @@ export default function AccountListItem({
         <div className="content">
           {id
             ?
-            <Link href={`/accounts/${id}`}>
-              <div className="left pointer" style={{paddingLeft: `${level * 1}rem`}}>
-                <div className="name">
-                  <Icon icon={targetIcon as IconName}/>
+            <div className="left" style={{paddingLeft: `${level}rem`}}>
+              <Icon icon={targetIcon as IconName} onClick={openChildren} className="account-icon"/>
+              <Link href={`/accounts/${id}`}>
+                <div className="name pointer">
                   {alias || name}
+                  {alias && <span>{name}</span>}
                 </div>
-                {alias && <div className="meta">{name}</div>}
-              </div>
-            </Link>
+              </Link>
+            </div>
             :
-            <div className="left" style={{paddingLeft: `${level * 1}rem`}}>
+            <div className="left" style={{paddingLeft: `${level}rem`}}>
+              <Icon icon={targetIcon as IconName} onClick={openChildren} className="account-icon"/>
               <div className="name">
-                <Icon icon={targetIcon as IconName}/>
                 {alias || name}
+                {alias && <span>{name}</span>}
               </div>
-              {alias && <div className="meta">{name}</div>}
             </div>
           }
           <div className="right">
@@ -64,7 +72,7 @@ export default function AccountListItem({
             {/*}*/}
           </div>
         </div>
-        {childrenDOM.length !== 0 &&
+        {childrenDOM.length !== 0 && childrenOpen &&
         <div className="children">
           {childrenDOM}
         </div>
