@@ -6,7 +6,10 @@ import {Button, Card, Divider, Elevation} from "@blueprintjs/core";
 
 export default function TransactionGroup({date, items, setEditId}) {
 
-  const lines = items.map((one) => (<TransactionLine key={one.id} {...one} setEditId={setEditId}/>))
+  const lines = items
+    .sort((a,b) =>new Date(a.create_time).getTime() - new Date(b.create_time).getTime())
+    .reverse()
+    .map((one) => (<TransactionLine key={one.id} {...one} setEditId={setEditId}/>))
 
   const isToday = dayjs().isSame(dayjs(date), "day");
 

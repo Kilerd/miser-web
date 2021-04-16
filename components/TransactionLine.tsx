@@ -61,7 +61,7 @@ export default function TransactionLine({
         <div className="left">
           <Link href={`/transactions/${id}`}>
             <div className="info">
-              {/*<span className="time">{s}</span>*/}
+              <span className="time">{s}</span>
               <span className="payee">{payee}</span>
               {narration} {has_document && <Icon icon="document"/>}
             </div>
