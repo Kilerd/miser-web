@@ -125,10 +125,12 @@ export default function TransactionLine({
 
               span.payee {
                 font-weight: 500;
+                margin-right: 0.3rem;
               }
 
               span.time {
                 color: #b1b1b1;
+                margin-right: 0.3rem;
               }
             }
 
