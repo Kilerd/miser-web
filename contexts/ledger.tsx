@@ -85,7 +85,7 @@ export const LedgerProvider = ({children}) => {
 
   const getAccountAlias = (id: number) => {
     let account = accounts.result[id];
-    return account?.alias || account?.full_name;
+    return account?.alias || account?.name;
   }
   const loadMoreTransaction = async () => {
     let sort = Object.values(transactions).sort((a, b) => new Date(a.create_time).getTime() - new Date(b.create_time).getTime());

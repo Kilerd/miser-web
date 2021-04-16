@@ -6,9 +6,19 @@ import dayjs from 'dayjs'
 import api from "../api";
 import Link from "next/link";
 import {Popover2, Classes} from "@blueprintjs/popover2";
-import {Button, H5, Icon, Intent} from "@blueprintjs/core";
+import {Button, H5, Icon, Intent, Tag} from "@blueprintjs/core";
 
-export default function TransactionLine({id, flag, narration, payee, create_time, lines, is_balance, has_document, setEditId}) {
+export default function TransactionLine({
+                                          id,
+                                          flag,
+                                          narration,
+                                          payee,
+                                          create_time,
+                                          lines,
+                                          is_balance,
+                                          has_document,
+                                          setEditId
+                                        }) {
 
   const {getAccountAlias, update, accounts} = useLedger();
 
@@ -30,7 +40,7 @@ export default function TransactionLine({id, flag, narration, payee, create_time
     }
   });
 
-  const color = amount.s === 1 ? 'green' : ''
+  const color = amount.s === 1 ? 'green' : 'red'
 
 
   const s = dayjs(create_time).format("HH:mm");
@@ -50,14 +60,20 @@ export default function TransactionLine({id, flag, narration, payee, create_time
       })}>
         <div className="left">
           <Link href={`/transactions/${id}`}>
-            <div className="info"><span>{payee}</span> {narration} {has_document && <Icon icon="document"/>}</div>
+            <div className="info">
+              {/*<span className="time">{s}</span>*/}
+              <span className="payee">{payee}</span>
+              {narration} {has_document && <Icon icon="document"/>}
+            </div>
           </Link>
-          <div className="time">{s}</div>
+          <div className="meta">
+            <div><Tag round minimal>{outAccount}</Tag></div> -{">"}
+            <div><Tag round minimal>{inAccount}</Tag></div>
+          </div>
         </div>
         <div className="right">
           <div className="info">
-            <div className={`amount ${color}`}>¥{outAmount.mul(-1).toFixed(2)}</div>
-            <div className="orientation">{outAccount} -{">"} {inAccount}</div>
+            <div className={`amount ${color}`}>{amount.toFixed(2)} CNY</div>
           </div>
           <div className="operation">
             <a onClick={() => setEditId(id)}><Button minimal icon="edit"/></a>
@@ -107,20 +123,28 @@ export default function TransactionLine({id, flag, narration, payee, create_time
               font-size: 1rem;
               cursor: pointer;
 
-              span {
+              span.payee {
                 font-weight: 500;
+              }
+
+              span.time {
+                color: #b1b1b1;
               }
             }
 
-            .time {
-              font-size: 0.85rem;
-              color: #b1b1b1;
+            .meta {
+
+              display: flex;
+              div {
+              margin-right: 0.25rem;
+              }
             }
           }
 
           .right {
             display: flex;
             align-items: center;
+
             .info {
               display: flex;
               flex-direction: column;
