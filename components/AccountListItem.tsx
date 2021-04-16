@@ -65,7 +65,7 @@ export default function AccountListItem({
             </div>
           }
           <div className="right">
-            <Amount amount={amount} currency={"CNY"}/>
+            <Amount amount={amount} prefix="¥"/>
             {/*{id &&*/}
             {/*<span>*/}
             {/*  <a onClick={() => openEditAccount(id, fullName, alias, commodities)}><Button minimal icon="edit"/></a>*/}

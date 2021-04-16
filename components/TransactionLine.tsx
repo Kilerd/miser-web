@@ -7,6 +7,7 @@ import api from "../api";
 import Link from "next/link";
 import {Popover2, Classes} from "@blueprintjs/popover2";
 import {Button, H5, Icon, Intent, Tag} from "@blueprintjs/core";
+import Amount from "./Amount";
 
 export default function TransactionLine({
                                           id,
@@ -40,7 +41,6 @@ export default function TransactionLine({
     }
   });
 
-  const color = amount.s === 1 ? 'green' : 'red'
 
 
   const s = dayjs(create_time).format("HH:mm");
@@ -67,13 +67,14 @@ export default function TransactionLine({
             </div>
           </Link>
           <div className="meta">
-            <div><Tag round minimal>{outAccount}</Tag></div> -{">"}
+            <div><Tag round minimal>{outAccount}</Tag></div>
+            -{">"}
             <div><Tag round minimal>{inAccount}</Tag></div>
           </div>
         </div>
         <div className="right">
           <div className="info">
-            <div className={`amount ${color}`}>{amount.toFixed(2)} CNY</div>
+            <div className={`amount`}><Amount amount={amount} prefix="¥" color/></div>
           </div>
           <div className="operation">
             <a onClick={() => setEditId(id)}><Button minimal icon="edit"/></a>
@@ -137,8 +138,9 @@ export default function TransactionLine({
             .meta {
 
               display: flex;
+
               div {
-              margin-right: 0.25rem;
+                margin-right: 0.25rem;
               }
             }
           }
@@ -156,14 +158,7 @@ export default function TransactionLine({
                 font-size: 1.25rem;
               }
 
-              .green {
-                color: green;
-              }
-
-              .red {
-                color: red;
-              }
-
+              
               .orientation {
                 font-size: 0.85rem;
               }
