@@ -3,6 +3,7 @@ import React, {useState} from "react";
 import Link from "next/link";
 import {Button, Icon, Tag} from "@blueprintjs/core";
 import {IconName} from "@blueprintjs/icons";
+import Amount from "./Amount";
 
 interface ModalStatus {
   openEditAccount: any
@@ -64,7 +65,7 @@ export default function AccountListItem({
             </div>
           }
           <div className="right">
-            <div className="amount">{amount} CNY</div>
+            <Amount amount={amount} currency={"CNY"}/>
             {/*{id &&*/}
             {/*<span>*/}
             {/*  <a onClick={() => openEditAccount(id, fullName, alias, commodities)}><Button minimal icon="edit"/></a>*/}
@@ -100,6 +101,14 @@ export default function AccountListItem({
             &:hover {
               background-color: #efefef;
               border-radius: 5px;
+
+              .left {
+                color: #535353;
+
+                .name {
+                  color: #535353;
+                }
+              }
             }
 
             .pointer {
@@ -109,9 +118,12 @@ export default function AccountListItem({
             .left {
               display: flex;
               align-items: center;
+              color: #7f878a;
 
               .name {
+                margin-left: 0.25rem;
                 font-size: 1rem;
+                color: #7f878a;
               }
 
               .meta {
