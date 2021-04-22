@@ -1,10 +1,11 @@
-import {ProtectRoute} from "../contexts/auth";
 import {useAsync} from "react-async-hook";
-import AuthenticationLayout from "../components/AuthenticationLayout";
-import api from "../api";
 import {Button, H1, HTMLTable} from "@blueprintjs/core";
 import React, {useState} from "react";
 import dayjs from "dayjs";
+import api from "../../api";
+import AuthenticationLayout from "../../components/AuthenticationLayout";
+import {ProtectRoute} from "../../contexts/auth";
+import Link from "next/link";
 
 
 function Page() {
@@ -33,6 +34,8 @@ function Page() {
     <AuthenticationLayout>
       <div className="container">
         <H1>Schedulers</H1>
+
+        <Link href="/schedulers/new"> new</Link>
 
         {loading ? <p>loading...</p> :
           error ? <div>{error}</div> :

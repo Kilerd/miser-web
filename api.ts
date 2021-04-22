@@ -201,17 +201,17 @@ class Api {
   }
 
   async getSchedulerSummaries() {
-    const axiosResponse = await this.client.get(`/schedulers`);
+    const axiosResponse = await this.client.get(`/ledgers/${this.currentLedgerId}/schedulers`);
     return axiosResponse.data.data
   }
 
   async deactivateSchedulerTask(id: string) {
-    const axiosResponse = await this.client.patch(`/schedulers/${id}:deactivate`);
+    const axiosResponse = await this.client.patch(`/ledgers/${this.currentLedgerId}/schedulers/${id}:deactivate`);
     return axiosResponse.data.data
   }
 
   async activateSchedulerTask(id: string) {
-    const axiosResponse = await this.client.patch(`/schedulers/${id}:activate`);
+    const axiosResponse = await this.client.patch(`/ledgers/${this.currentLedgerId}/schedulers/${id}:activate`);
     return axiosResponse.data.data
   }
 }
