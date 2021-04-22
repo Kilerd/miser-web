@@ -69,6 +69,11 @@ export default function Nav() {
               <Icon className={`${Classes.MINIMAL} nav-btn`} icon="euro"/> <p>Commodities</p>
             </div>
           </Link>
+          <Link href="/schedulers">
+            <div className="nav-btn">
+              <Icon className={`${Classes.MINIMAL} nav-btn`} icon="euro"/> <p>Schedulers</p>
+            </div>
+          </Link>
         </div>
         <div className="bottom">
           <Link href="/tokens">

@@ -199,6 +199,21 @@ class Api {
     });
     return axiosResponse.data.data
   }
+
+  async getSchedulerSummaries() {
+    const axiosResponse = await this.client.get(`/schedulers`);
+    return axiosResponse.data.data
+  }
+
+  async deactivateSchedulerTask(id: string) {
+    const axiosResponse = await this.client.patch(`/schedulers/${id}:deactivate`);
+    return axiosResponse.data.data
+  }
+
+  async activateSchedulerTask(id: string) {
+    const axiosResponse = await this.client.patch(`/schedulers/${id}:activate`);
+    return axiosResponse.data.data
+  }
 }
 
 const api = new Api(null);
