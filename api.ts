@@ -214,6 +214,11 @@ class Api {
     const axiosResponse = await this.client.patch(`/ledgers/${this.currentLedgerId}/schedulers/${id}:activate`);
     return axiosResponse.data.data
   }
+
+  async createNewSchedulerTask(param: { payee: string; end_flag: number; schedule_rule: string; narration: string; name: string; description: string; links: any[]; lines: { amount: (string | null)[]; account: null }[]; tags: any[] }) {
+    const axiosResponse = await this.client.post(`/ledgers/${this.currentLedgerId}/schedulers`, param);
+    return axiosResponse.data.data
+  }
 }
 
 const api = new Api(null);

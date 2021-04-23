@@ -6,10 +6,12 @@ import {DateInput, TimePrecision} from "@blueprintjs/datetime";
 import dayjs from "dayjs";
 import Select from 'react-select';
 import {useLedger} from "../../contexts/ledger";
+import api from "../../api";
+import {useRouter} from "next/router";
 
 
 function Page() {
-
+  let router = useRouter();
   let ledgerContext = useLedger();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -24,6 +26,7 @@ function Page() {
 
 
   const canDeleteLine = lines.length > 2;
+  const canBeSubmit = name.trim() !== "" && parseInt(times) > 0 && crontab.trim() !== "" && !(payee.trim() === "" && narration === "");
   const handleLineChange = (e, index, fieldId) => {
     const newLines = [...lines]
     newLines[index][fieldId] = e.target.value;
@@ -59,6 +62,26 @@ function Page() {
     setLines(newLines);
   }
 
+  const submit = async () => {
+    let linesReq = lines.map(it=> ({
+      account: it.account.value,
+      amount: [it.amount, it.commodity]
+    }));
+    await api.createNewSchedulerTask({
+      name,
+      description,
+      end_flag: parseInt(times),
+      schedule_rule: crontab,
+      payee,
+      narration,
+      tags: [],
+      links: [],
+      lines: linesReq
+    })
+    await router.push("/schedulers");
+  }
+
+
   return (
     <AuthenticationLayout>
       <div className="container">
@@ -81,15 +104,6 @@ function Page() {
             <InputGroup id="text-times" placeholder="times" value={times}
                         onChange={e => setTimes(e.target.value)}/>
           </FormGroup>
-          <FormGroup label="crontab" labelFor="text-crontab">
-            <InputGroup id="text-crontab" placeholder="crontab" value={crontab}
-                        onChange={e => setCrontab(e.target.value)}/>
-          </FormGroup>
-          <FormGroup label="crontab" labelFor="text-crontab">
-            <InputGroup id="text-crontab" placeholder="crontab" value={crontab}
-                        onChange={e => setCrontab(e.target.value)}/>
-          </FormGroup>
-
           <FormGroup label="crontab" labelFor="text-crontab">
             <InputGroup id="text-crontab" placeholder="crontab" value={crontab}
                         onChange={e => setCrontab(e.target.value)}/>
@@ -128,7 +142,7 @@ function Page() {
               }
             </div>
           )}
-
+          <Button disabled={!canBeSubmit} onClick={submit}>Create</Button>
         </div>
 
       </div>
