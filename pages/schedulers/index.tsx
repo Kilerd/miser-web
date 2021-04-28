@@ -46,6 +46,7 @@ function Page() {
                 <th>description</th>
                 <th>active</th>
                 <th>End flag</th>
+                <th>rule</th>
                 <th>last schedule at</th>
                 <th>schedule times</th>
                 <th/>
@@ -58,6 +59,7 @@ function Page() {
                   <td>{it.description}</td>
                   <td>{it.active.toString()}</td>
                   <td>{it.end_flag} {it.end_date} {it.end_times}</td>
+                  <td>{it.schedule_rule}</td>
                   <td>{it.last_schedule_time === null ? "" : dayjs(it.last_schedule_time).format()}</td>
                   <td>{it.schedule_times}</td>
                   <td>

@@ -7,6 +7,7 @@ const urls = {
   production: "https://miser.3min.work/api"
 }
 
+export const BASE_URL = urls[process.env.NODE_ENV];
 
 class Api {
 
@@ -218,6 +219,14 @@ class Api {
   async createNewSchedulerTask(param: { payee: string; end_flag: number; schedule_rule: string; narration: string; name: string; description: string; links: any[]; lines: { amount: (string | null)[]; account: null }[]; tags: any[] }) {
     const axiosResponse = await this.client.post(`/ledgers/${this.currentLedgerId}/schedulers`, param);
     return axiosResponse.data.data
+  }
+
+  async github_auth(code: string | string[], state: string | string[]) {
+    return await this.client.get("/oauth/github/callback", {
+      params: {
+        code: code, state: state
+      }
+    })
   }
 }
 

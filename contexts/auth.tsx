@@ -16,6 +16,8 @@ export interface AuthContextType {
   register(email: string, username: string, password: string): void,
 
   logout(): void,
+
+  loginWithToken(token: string): void;
 }
 
 const UNAUTHENTICATED_ROUTE = ["login", 'register']
@@ -47,11 +49,14 @@ export const AuthProvider = ({children}) => {
   const login = async (email, password) => {
     const token = await api.login(email, password)
     if (token) {
+      await loginWithToken(token)
+    }
+  }
+  const loginWithToken = async (token) => {
       Cookies.set('token', token, {expires: 60})
       api.client.defaults.headers.Authorization = `Bearer ${token}`
       const userData = await api.getUserInfo()
       setUser(userData)
-    }
   }
 
   const register = async (email, username, password) => {
@@ -71,7 +76,7 @@ export const AuthProvider = ({children}) => {
   }
 
   return (
-    <AuthContext.Provider value={{isAuthenticated: !!user, user, login, loading, logout, register}}>
+    <AuthContext.Provider value={{isAuthenticated: !!user, user, login, loading, logout, register, loginWithToken}}>
       {children}
     </AuthContext.Provider>
   )

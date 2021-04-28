@@ -11,6 +11,7 @@ import Head from "next/head";
 import Modal from 'react-modal';
 import * as Sentry from "@sentry/react";
 import {Integrations} from "@sentry/tracing";
+import {useRouter} from "next/router";
 
 Sentry.init({
   dsn: "https://d829aee775074f1f82198901506dbc42@o90957.ingest.sentry.io/5730812",
@@ -25,6 +26,20 @@ Sentry.init({
 Modal.setAppElement("#__next")
 
 const WrappedApp: FC<AppProps> = ({Component, pageProps}) => {
+  let router = useRouter();
+  if (router.asPath.startsWith("/oauth")) {
+    return (
+      <>
+        <Head>
+          <title>Miser - A double-entry accounting tool</title>
+          <link rel="icon" href="/favicon.ico"/>
+          <link rel="stylesheet" href="/style.css"/>
+        </Head>
+        <Component {...pageProps} />
+      </>
+    )
+
+  }
   return (
     <>
       <Head>

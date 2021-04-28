@@ -27,6 +27,7 @@ export default function Home() {
         <section>
           <h1>Miser</h1>
           <Login/>
+
         </section>
 
       </main>
