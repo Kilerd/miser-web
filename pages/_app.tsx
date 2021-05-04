@@ -3,8 +3,7 @@ import "../node_modules/@blueprintjs/core/lib/css/blueprint.css";
 import "../node_modules/@blueprintjs/icons/lib/css/blueprint-icons.css";
 import "../node_modules/normalize.css/normalize.css";
 import "../node_modules/@blueprintjs/datetime/lib/css/blueprint-datetime.css"
-import React, {FC} from 'react';
-import {AppProps} from 'next/app'
+import * as React from 'react';
 import {AuthProvider} from "../contexts/auth";
 import {LedgerProvider} from "../contexts/ledger";
 import Head from "next/head";
@@ -23,9 +22,9 @@ Sentry.init({
   tracesSampleRate: 1.0,
 });
 
-Modal.setAppElement("#__next")
+Modal.setAppElement("#__next");
 
-const WrappedApp: FC<AppProps> = ({Component, pageProps}) => {
+const WrappedApp = ({Component, pageProps}) => {
   let router = useRouter();
   if (router.asPath.startsWith("/oauth")) {
     return (
