@@ -8,19 +8,7 @@ import {AuthProvider} from "../contexts/auth";
 import {LedgerProvider} from "../contexts/ledger";
 import Head from "next/head";
 import Modal from 'react-modal';
-import * as Sentry from "@sentry/react";
-import {Integrations} from "@sentry/tracing";
 import {useRouter} from "next/router";
-
-Sentry.init({
-  dsn: "https://d829aee775074f1f82198901506dbc42@o90957.ingest.sentry.io/5730812",
-  integrations: [new Integrations.BrowserTracing()],
-
-  // Set tracesSampleRate to 1.0 to capture 100%
-  // of transactions for performance monitoring.
-  // We recommend adjusting this value in production
-  tracesSampleRate: 1.0,
-});
 
 Modal.setAppElement("#__next");
 
