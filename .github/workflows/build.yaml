@@ -27,4 +27,4 @@ jobs:
           port: ${{ secrets.DEPLOY_PORT }}
           envs: GITHUB_SHA
           script: |
-            sh /root/deploy/miser/update-frontend.sh $GITHUB_SHA
+            sh /root/deploy/miser/update_frontend.sh $GITHUB_SHA
