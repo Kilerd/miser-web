@@ -6,11 +6,13 @@ import AuthenticationLayout from "../../components/AuthenticationLayout";
 import {useLedger} from "../../contexts/ledger";
 import React, {useState} from "react";
 import Select from 'react-select';
-import {Button} from "@blueprintjs/core";
+import {Button, FormGroup} from "@blueprintjs/core";
 import Big from 'big.js';
 import GroupedTransactions from "../../components/GroupedTransactions";
 import {IdMap, Transaction} from "../../types";
 import {Line} from "react-chartjs-2";
+import {DateInput, TimePrecision} from "@blueprintjs/datetime";
+import dayjs from "dayjs";
 
 
 const data = {
@@ -50,7 +52,7 @@ function Page() {
   if (targetAccount === undefined) {
     return <div>404</div>
   }
-
+  const [date, setDate] = useState(() => dayjs());
   const [padAccount, setPadAccount] = useState(null);
   const [amount, setAmount] = useState("");
   const [amountAvailable, setAmountAvailable] = useState(false);
@@ -100,7 +102,7 @@ function Page() {
   }
 
   async function submitBalance() {
-    await api.newAccountBalance(id, new Date(), padAccount, amount, "CNY")
+    await api.newAccountBalance(id, date.toDate(), padAccount, amount, "CNY")
   }
 
   return (
@@ -115,6 +117,22 @@ function Page() {
         }
 
         <h2>Balance</h2>
+        <FormGroup
+          label="Date"
+        >
+          <DateInput
+            defaultValue={date.toDate()}
+            parseDate={(s) => new Date(s)}
+            formatDate={date => date.toLocaleString()}
+            highlightCurrentDay
+            shortcuts
+            showActionsBar
+            timePickerProps={{showArrowButtons: true}}
+            timePrecision={TimePrecision.MINUTE}
+            onChange={(date) => setDate(dayjs(date))}
+            fill
+          />
+        </FormGroup>
         <Select
           options={accountOptions}
           onChange={(inputValue, actionMeta) => handleAccountChange(inputValue)}
