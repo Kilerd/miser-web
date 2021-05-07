@@ -27,12 +27,11 @@
 
 
 .button {
-    padding: 0 15px;
+    padding: 0 1rem;
     display: inline-block;
     vertical-align: middle;
     min-width: 60px;
-    height: 44px;
-    line-height: 44px;
+    line-height: 2.5rem;
     box-sizing: content-box;
     border: 1px solid #204969;
     cursor: pointer;
@@ -40,8 +39,8 @@
     text-decoration: none !important;
     background-color: #204969;
     color: #fff;
-    border-radius: 5px;
-    font-size: 1.1rem;
+    border-radius: 3px;
+    font-size: 1.15rem;
 }
 .button:disabled {
     opacity: 0.5;
