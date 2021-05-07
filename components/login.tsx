@@ -4,7 +4,7 @@ import {useRouter} from "next/router";
 import Link from "next/link";
 import {Button} from "@blueprintjs/core";
 import {BASE_URL} from "../api";
-import {ImageLoader} from 'next/image'
+import Image from 'next/image'
 
 const loginTab = (myUrl): Promise<string> => {
   const windowArea = {
@@ -67,7 +67,7 @@ const Login = () => {
       <div className="center">
         <div className="login-register-form">
           <div className="logo">
-            <img src="/images/logo.png" alt="logo" className="logo"/>
+            <Image src="/images/logo.png" alt="logo" className="logo" width={100} height={100}/>
           </div>
           <div className="form">
             <input type="text" placeholder="Email" id="email" className="input" value={email}
