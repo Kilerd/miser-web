@@ -16,7 +16,7 @@ import {
 import Link from "next/link";
 
 export default function Nav() {
-  const {user} = useAuth();
+  const {user, logout} = useAuth();
   const ledgerContext = useLedger();
 
   const ledgerChange = (newLedgerId) => {
@@ -24,6 +24,8 @@ export default function Nav() {
       ledgerContext.changeLedgerId(newLedgerId.toString())
     }
   }
+
+
   const name = ledgerContext.ledgers[ledgerContext.ledger_id]?.name;
   const elements = Object.values(ledgerContext.ledgers).map(ledger =>
     <MenuItem active={ledger.id.toString() === ledgerContext.ledger_id} key={ledger.id} icon="bank-account"
@@ -82,12 +84,10 @@ export default function Nav() {
               <p>Setting</p>
             </div>
           </Link>
-          <Link href="/signout">
-            <div className="nav-btn">
-              <Icon className={Classes.MINIMAL} icon="small-minus"/>
-              <p>Sign out</p>
-            </div>
-          </Link>
+          <div className="nav-btn" onClick={logout}>
+            <Icon className={Classes.MINIMAL} icon="small-minus"/>
+            <p>Sign out</p>
+          </div>
         </div>
 
       </nav>

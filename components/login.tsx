@@ -4,7 +4,7 @@ import {useRouter} from "next/router";
 import Link from "next/link";
 import {Button} from "@blueprintjs/core";
 import {BASE_URL} from "../api";
-
+import {ImageLoader} from 'next/image'
 
 const loginTab = (myUrl): Promise<string> => {
   const windowArea = {
@@ -51,6 +51,7 @@ const Login = () => {
   const authContextType = useAuth();
   const router = useRouter();
 
+  const disabled = email === "" || password === ""
   async function handleLogin() {
     await authContextType.login(email, password);
     await router.push("/dashboard");
@@ -63,41 +64,64 @@ const Login = () => {
 
   return (
     <>
-      <div className="login-register-form">
-        <div className="title">Login</div>
-        <p className="recommendation">Thank you for getting back to Miser</p>
-        <label htmlFor="email" className="input">Email</label>
-        <input type="text" placeholder="Email" id="email" className="input" value={email}
-               onChange={e => setEmail(e.target.value)}/>
+      <div className="center">
+        <div className="login-register-form">
+          <div className="logo">
+            <img src="/images/logo.png" alt="logo" className="logo"/>
+          </div>
+          <div className="form">
+            <input type="text" placeholder="Email" id="email" className="input" value={email}
+                   onChange={e => setEmail(e.target.value)}/>
 
-        <label htmlFor="password" className="input">Password</label>
-        <input type="password" placeholder="Password" id="password" className="input" value={password}
-               onChange={e => setPassword(e.target.value)}/>
+            <input type="password" placeholder="Password" id="password" className="input" value={password}
+                   onChange={e => setPassword(e.target.value)}/>
 
-        <button className="button" onClick={handleLogin}>Sign in</button>
-
-        <p className="tips">Don't have an account yet? <Link href="/register">Join Us</Link></p>
-        <p><Button onClick={handleGithubLogin}>Login In with Github</Button></p>
+            <button className="button" disabled={disabled} onClick={handleLogin}>Sign in</button>
+          </div>
+          <div className="more">
+            <p className="tips">Don't have an account yet? <Link href="/register">Join Us</Link></p>
+          </div>
+          <div className="more">
+            <Button  onClick={handleGithubLogin}>Login In with Github</Button>
+          </div>
+        </div>
       </div>
 
 
       <style jsx>{`
+        div.center {
+          width: 100vw;
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+
+        }
 
         div.login-register-form {
+          border: 1px solid #dadada;
+          border-radius: 5px;
+          padding: 1rem;
+          margin: 0 auto;
+          max-width: 450px;
           display: flex;
           flex-direction: column;
+
+          div.logo {
+            width: 100%;
+            padding: 2rem 0;
+            img.logo {
+              width: 30%;
+            }
+
+            display: flex;
+            justify-content: center;
+          }
+          div.form {
+          display: flex;
+          flex-direction: column;
+          }
         }
 
-        div.title {
-          font-size: 1.5rem;
-          margin-bottom: 1rem;
-        }
-
-        p.recommendation {
-          margin-bottom: 4rem;
-          font-size: 1rem;
-          color: #aaa;
-        }
       `}</style>
     </>
 
