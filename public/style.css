@@ -12,7 +12,7 @@
 
 .input {
     border: 1px solid #D5D5DA;
-    outline: none;
+    outline: 0;
     padding: 0 1rem;
     border-radius: 3px;
     font-size: 1.15rem;
@@ -23,6 +23,7 @@
 .input:focus {
     border-color: #0072EF;
     color: #2E3033;
+    outline: 0;
 }
 
 
@@ -41,6 +42,7 @@
     color: #fff;
     border-radius: 3px;
     font-size: 1.15rem;
+    outline: 0;
 }
 .button:disabled {
     opacity: 0.5;
@@ -51,6 +53,7 @@
     background-color: #006de5;
     border-color: #006de5;
     color: #fff;
+    outline: 0;
 }
 
 .container {
