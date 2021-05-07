@@ -67,7 +67,7 @@ const Login = () => {
       <div className="center">
         <div className="login-register-form">
           <div className="logo">
-            <Image src="/images/logo.png" alt="logo" className="logo" width={100} height={100}/>
+            <img src="/images/logo.png" alt="logo" className="logo"/>
           </div>
           <div className="form">
             <input type="text" placeholder="Email" id="email" className="input" value={email}
@@ -110,7 +110,8 @@ const Login = () => {
             width: 100%;
             padding: 2rem 0;
             img.logo {
-              width: 30%;
+              width: 100px;
+              height: 100px;
             }
 
             display: flex;
