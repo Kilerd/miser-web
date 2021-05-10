@@ -11,7 +11,7 @@ import {DateInput, TimePrecision} from "@blueprintjs/datetime";
 export default function EditTransactionModal({editId, modalStatus, setModalStatus}) {
   const ledgerContext = useLedger();
 
-  const [simpleMode, setSimpleMode] = useState(true);
+  const [simpleMode, setSimpleMode] = useState(false);
 
   const [date, setDate] = useState(() => dayjs());
   const [payee, setPayee] = useState("");
@@ -40,6 +40,7 @@ export default function EditTransactionModal({editId, modalStatus, setModalStatu
           commodity_candidates: targetAccount.commodities
         }
       }))
+      setSimpleMode(transaction.lines.length === 2)
     }
   }, [editId])
 

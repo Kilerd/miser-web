@@ -61,6 +61,11 @@ class Api {
     return trxMap;
   }
 
+  async newLedger(name:string, default_operating_commodity: string) {
+    const axiosResponse = await this.client.post("/ledgers", {name, default_operating_commodity});
+    return axiosResponse.data.data;
+  }
+
   async loadAccount() {
     const {data: accountRes} = await this.client.get(`/ledgers/${this.currentLedgerId}/accounts`);
     const accountsData = accountRes.data;
