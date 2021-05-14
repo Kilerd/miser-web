@@ -8,7 +8,6 @@ import React, {useState} from "react";
 import Select from 'react-select';
 import {Button, FormGroup} from "@blueprintjs/core";
 import Big from 'big.js';
-import GroupedTransactions from "../../components/GroupedTransactions";
 import {IdMap, Transaction} from "../../types";
 import {Line} from "react-chartjs-2";
 import {DateInput, TimePrecision} from "@blueprintjs/datetime";
@@ -58,10 +57,10 @@ function Page() {
   const [amountAvailable, setAmountAvailable] = useState(false);
   const [accountTransactions, setAccountTransactions] = useState({} as IdMap<Transaction>);
 
-  const {result, loading, error} = useAsync(async () => {
-    let res = await api.loadTransactionsByAccounts(id, null);
-    setAccountTransactions(res)
-  }, [id]);
+  // const {result, loading, error} = useAsync(async () => {
+  //   let res = await api.loadTransactionsByAccounts(id, null);
+  //   setAccountTransactions(res)
+  // }, [id]);
 
   const accountOptions = Object.values(Object.values(ledgerContext.accounts)
     .reduce((ret, it) => {
@@ -111,10 +110,10 @@ function Page() {
         <h1>{targetAccount.alias} {targetAccount.full_name}</h1>
 
         <Line data={data} height={70}/>
-        {(!loading && !error) &&
-        <GroupedTransactions items={accountTransactions} openEditTrxModal={(id) => {
-        }}/>
-        }
+        {/*{(!loading && !error) &&*/}
+        {/*<GroupedTransactions items={accountTransactions} openEditTrxModal={(id) => {*/}
+        {/*}}/>*/}
+        {/*}*/}
 
         <h2>Balance</h2>
         <FormGroup
