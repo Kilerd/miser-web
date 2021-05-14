@@ -112,7 +112,7 @@ function Page() {
 
         <Line data={data} height={70}/>
         {(!loading && !error) &&
-        <GroupedTransactions items={accountTransactions} loadMore={loadMore} openEditTrxModal={(id) => {
+        <GroupedTransactions items={accountTransactions} openEditTrxModal={(id) => {
         }}/>
         }
 
