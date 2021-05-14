@@ -2,28 +2,24 @@ import AuthenticationLayout from "../../components/AuthenticationLayout";
 import {ProtectRoute} from "../../contexts/auth";
 import {useRouter} from "next/router";
 import {useLedger} from "../../contexts/ledger";
-import {useAsync} from "react-async-hook";
-import api from "../../api";
+import api, {get} from "../../api";
 import React, {useCallback, useEffect, useState} from 'react'
 import {useDropzone} from 'react-dropzone'
-import {HTMLTable, Tag} from "@blueprintjs/core";
+import {HTMLTable, Spinner, Tag} from "@blueprintjs/core";
+import useSWR from "swr";
 
 
 function SingleTransactionPage() {
   const router = useRouter()
   const id = router.query.id as string;
-  const ledgerContext = useLedger();
-  const targetTransaction = ledgerContext.transactions[id];
-  if (targetTransaction === undefined) {
-    return <div>404</div>
-  }
+  const {ledger_id, getAccountAlias} = useLedger();
+
+  const {isValidating, data: transaction} = useSWR(`/ledgers/${ledger_id}/transactions/${id}`, get);
 
   const {
-    result: documents,
-    loading,
-    error,
-    execute
-  } = useAsync(async () => await api.getDocuments(targetTransaction.id), [targetTransaction.id]);
+    isValidating: documentValidating,
+    data: documents
+  } = useSWR(`/ledgers/${ledger_id}/transactions/${id}/documents`, get);
 
 
   const [file, setFile] = useState(undefined);
@@ -33,9 +29,8 @@ function SingleTransactionPage() {
     (async () => {
       if (file !== undefined) {
         setLoading(true);
-        await api.uploadDocument(targetTransaction.id, file);
+        await api.uploadDocument(transaction.id, file);
         setLoading(false);
-        await execute();
       }
     })()
   }, [file])
@@ -50,53 +45,57 @@ function SingleTransactionPage() {
     <AuthenticationLayout>
       <div className="container">
         <div className="transaction">
-          <h1>#{targetTransaction.id} {targetTransaction.payee} {targetTransaction.narration} </h1>
-          <p className="desc">{targetTransaction.description}</p>
+          {isValidating ? <Spinner/> :
+            <>
+              <h1>#{transaction.id} {transaction.payee} {transaction.narration} </h1>
+              <p className="desc">{transaction.description}</p>
 
-          <div className="tags">
-            {targetTransaction.tags.map(it => (
-              <Tag key={it} style={{marginRight: "0.2rem"}}>{it}</Tag>
-            ))}
-          </div>
-          <div className="desc">
-            {targetTransaction.description}
-          </div>
-
-          <div className="lines">
-            <h2>lines</h2>
-            <HTMLTable bordered={true} striped={true} style={{width: "100%"}}>
-              <thead>
-              <tr>
-                <th>#</th>
-                <th>ACCOUNT</th>
-                <th>COST</th>
-              </tr>
-              </thead>
-              <tbody>
-              {targetTransaction.lines.map(it => (
-                <tr key={it.id}>
-                  <td>{it.id}</td>
-                  <td>{ledgerContext.getAccountAlias(it.account)}</td>
-                  <td>{it.cost[0]} {it.cost[1]}</td>
-                </tr>
-              ))}
-              </tbody>
-            </HTMLTable>
-          </div>
-          <div className="documents">
-            <h2>documents</h2>
-            {fileLoading ? <div>uploading...</div> :
-              <div {...getRootProps()}>
-                <input {...getInputProps()} />
-                {
-                  isDragActive ?
-                    <p>Drop the files here ...</p> :
-                    <p>Drag 'n' drop some files here, or click to select files</p>
-                }
+              <div className="tags">
+                {transaction.tags.map(it => (
+                  <Tag key={it} style={{marginRight: "0.2rem"}}>{it}</Tag>
+                ))}
               </div>
-            }
-            {loading ? <p>loading...</p> :
-              error ? <div>{error}</div> :
+              <div className="desc">
+                {transaction.description}
+              </div>
+
+              <div className="lines">
+                <h2>lines</h2>
+                <HTMLTable bordered={true} striped={true} style={{width: "100%"}}>
+                  <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>ACCOUNT</th>
+                    <th>COST</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {transaction.lines.map(it => (
+                    <tr key={it.id}>
+                      <td>{it.id}</td>
+                      <td>{getAccountAlias(it.account)}</td>
+                      <td>{it.cost[0]} {it.cost[1]}</td>
+                    </tr>
+                  ))}
+                  </tbody>
+                </HTMLTable>
+              </div>
+            </>
+          }
+          {documentValidating ? <Spinner/> :
+            <div className="documents">
+              <h2>documents</h2>
+              {fileLoading ? <div>uploading...</div> :
+                <div {...getRootProps()}>
+                  <input {...getInputProps()} />
+                  {
+                    isDragActive ?
+                      <p>Drop the files here ...</p> :
+                      <p>Drag 'n' drop some files here, or click to select files</p>
+                  }
+                </div>
+              }
+              {isValidating ? <Spinner/> :
                 <table>
                   <thead>
                   <tr>
@@ -107,7 +106,7 @@ function SingleTransactionPage() {
                   </tr>
                   </thead>
                   <tbody>
-                  {documents.data.data.map(it => (
+                  {documents.map(it => (
                     <tr key={it.id}>
                       <td>{it.id}</td>
                       <td>{it.filename}</td>
@@ -117,8 +116,8 @@ function SingleTransactionPage() {
                   ))}
                   </tbody>
                 </table>
-            }
-          </div>
+              }
+            </div>}
         </div>
       </div>
 

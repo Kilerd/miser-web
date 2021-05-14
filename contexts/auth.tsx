@@ -4,6 +4,7 @@ import {useRouter} from 'next/router'
 import api from '../api'
 import {User} from "../types";
 import {useLedger} from "./ledger";
+import {Spinner} from "@blueprintjs/core";
 
 
 export interface AuthContextType {
@@ -53,10 +54,10 @@ export const AuthProvider = ({children}) => {
     }
   }
   const loginWithToken = async (token) => {
-      Cookies.set('token', token, {expires: 60})
-      api.client.defaults.headers.Authorization = `Bearer ${token}`
-      const userData = await api.getUserInfo()
-      setUser(userData)
+    Cookies.set('token', token, {expires: 60})
+    api.client.defaults.headers.Authorization = `Bearer ${token}`
+    const userData = await api.getUserInfo()
+    setUser(userData)
   }
 
   const register = async (email, username, password) => {
@@ -74,7 +75,9 @@ export const AuthProvider = ({children}) => {
     delete api.client.defaults.headers.Authorization
     window.location.pathname = '/'
   }
-
+  if (loading) {
+    return <div>auth loading</div>
+  }
   return (
     <AuthContext.Provider value={{isAuthenticated: !!user, user, login, loading, logout, register, loginWithToken}}>
       {children}
@@ -90,11 +93,11 @@ export const ProtectRoute = (ChildComponent) => (args) => {
   const router = useRouter();
 
   if (loading || initLoading) {
-    return <div>loading</div>
+    return <Spinner />
   }
   if (!isAuthenticated && !UNAUTHENTICATED_ROUTE.includes(router.asPath)) {
     router.push("/");
-    return <div>loading</div>;
+    return <Spinner />;
   }
   return <ChildComponent {...args} />;
 };

@@ -9,7 +9,7 @@ import dayjs from "dayjs";
 
 interface LedgerContext {
   ledger_id: string | undefined,
-  transactions: IdMap<any>,
+  // transactions: IdMap<any>,
   ledgers: IdMap<Ledger>,
   accounts: IdMap<Account>,
   commodities: NameMap<Commodity>
@@ -20,7 +20,7 @@ interface LedgerContext {
 
   update(type: RESOURCE_TYPE): void;
 
-  loadMoreTransaction(): void;
+  // loadMoreTransaction(): void;
 
   initLoading: boolean
 }
@@ -33,7 +33,7 @@ function initCurrentLedger(user: User | undefined): string | undefined {
 function initContext(): LedgerContext {
   return {
     ledger_id: Cookies.get("CURRENT_LEDGER_ID"),
-    transactions: {}
+    // transactions: {}
   } as LedgerContext
 }
 
@@ -48,13 +48,13 @@ export const LedgerProvider = ({children}) => {
   api.setLedgerId(initialState);
 
   const [ledgerId, setLedgerId] = useState(initialState);
-  const [transactions, setTransactions] = useState<IdMap<Transaction>>({});
+  // const [transactions, setTransactions] = useState<IdMap<Transaction>>({});
   const ledgers = useAsync(async () => api.loadLedgers(), []);
 
-  const transactionsR = useAsync(async () => {
-    const res = ledgerId !== undefined ? await api.loadTransactions(null) : {};
-    setTransactions(res);
-  }, [ledgerId]);
+  // const transactionsR = useAsync(async () => {
+  //   const res = ledgerId !== undefined ? await api.loadTransactions(null) : {};
+  //   setTransactions(res);
+  // }, [ledgerId]);
 
   const commodities = useAsync(async () => ledgerId !== undefined ? api.loadCommodities() : {}, [ledgerId]);
   const accounts = useAsync(async () => ledgerId !== undefined ? api.loadAccount() : {}, [ledgerId]);
@@ -62,7 +62,7 @@ export const LedgerProvider = ({children}) => {
   const update = async (type: RESOURCE_TYPE) => {
     switch (type) {
       case "TRANSACTIONS":
-        await transactionsR.execute();
+        // await transactionsR.execute();
         break;
       case "ACCOUNT":
         await accounts.execute();
@@ -77,7 +77,7 @@ export const LedgerProvider = ({children}) => {
     Cookies.set("CURRENT_LEDGER_ID", id, {expires: 60})
     api.setLedgerId(id);
     setLedgerId(id);
-    transactionsR.execute();
+    // transactionsR.execute();
     commodities.execute();
     accounts.execute();
 
@@ -87,29 +87,31 @@ export const LedgerProvider = ({children}) => {
     let account = accounts.result[id];
     return account?.alias || account?.name;
   }
-  const loadMoreTransaction = async () => {
-    let sort = Object.values(transactions).sort((a, b) => new Date(a.create_time).getTime() - new Date(b.create_time).getTime());
-    console.log(sort);
-    let sortElement = sort[0];
-    let moreRes = await api.loadTransactions(sortElement.create_time);
-    let newTransactionMap = {...transactions};
-    for (let moreResKey in moreRes) {
-      newTransactionMap[moreResKey] = moreRes[moreResKey];
-    }
-    console.log("new", newTransactionMap);
-    setTransactions(newTransactionMap);
+  // const loadMoreTransaction = async () => {
+  //   let sort = Object.values(transactions).sort((a, b) => new Date(a.create_time).getTime() - new Date(b.create_time).getTime());
+  //   console.log(sort);
+  //   let sortElement = sort[0];
+  //   let moreRes = await api.loadTransactions(sortElement.create_time);
+  //   let newTransactionMap = {...transactions};
+  //   for (let moreResKey in moreRes) {
+  //     newTransactionMap[moreResKey] = moreRes[moreResKey];
+  //   }
+  //   console.log("new", newTransactionMap);
+  //   setTransactions(newTransactionMap);
+  // }
+  if (accounts.loading || commodities.loading || ledgers.loading) {
+    return <div>ledger loading</div>
   }
-
   return (
     <LedgerContext.Provider
       value={{
-        initLoading: transactionsR.loading || accounts.loading || commodities.loading || ledgers.loading,
+        initLoading:  accounts.loading || commodities.loading || ledgers.loading,
         ledger_id: ledgerId,
-        transactions: transactions,
+        // transactions: transactions,
         ledgers: ledgers.result,
         accounts: accounts.result,
         commodities: commodities.result,
-        loadMoreTransaction,
+        // loadMoreTransaction,
         getAccountAlias,
         changeLedgerId,
         update

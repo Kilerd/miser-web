@@ -24,7 +24,7 @@ export default function EditTransactionModal({editId, modalStatus, setModalStatu
 
 
   useEffect(() => {
-    const transaction = ledgerContext.transactions[editId];
+    const transaction = undefined;
     if (transaction !== undefined) {
       setDate(dayjs(transaction.create_time));
       setPayee(transaction.payee);

@@ -4,13 +4,24 @@ import {useLedger} from "../contexts/ledger";
 import AuthenticationLayout from "../components/AuthenticationLayout";
 import NewTransactionModal from "../components/NewTransactionModal";
 import EditTransactionModal from "../components/EditTransactionModal";
-import GroupedTransactions from "../components/GroupedTransactions";
-import {Button, HTMLTable} from "@blueprintjs/core";
+import {Button, HTMLTable, Spinner} from "@blueprintjs/core";
+import {useSWRInfinite} from "swr";
+import {get} from "../api";
+import TransactionLine from "../components/TransactionLine";
 
 
 function Journals() {
-  const {ledger_id, transactions, loadMoreTransaction} = useLedger();
+  const {ledger_id,} = useLedger();
 
+  const getKey = (pageIndex, previousPageData) => {
+    console.log("pageIdex", pageIndex, "previ data", previousPageData)
+    if (previousPageData && !previousPageData.length) return null // reached the end
+    if (pageIndex === 0) {
+      return `/ledgers/${ledger_id}/journals`
+    }
+    return `/ledgers/${ledger_id}/journals?create_time=${previousPageData.last().create_time}`
+  }
+  const {isValidating, data: transactions, revalidate, setSize, size} = useSWRInfinite(getKey, get);
 
   const [newTrxStatus, setNewTrxStatus] = useState(false);
 
@@ -32,27 +43,35 @@ function Journals() {
             <h1>Journals</h1>
             <div className="right">
               <Button onClick={() => setNewTrxStatus(true)} icon="insert"/>
-              <Button onClick={() => setNewTrxStatus(true)} icon="refresh" />
+              <Button onClick={revalidate} icon="refresh"/>
             </div>
           </div>
 
-          <HTMLTable style={{width: "100%", borderCollapse: "collapse"}}>
-            <thead>
-            <tr>
-              <th>Date</th>
-              <th>Payee Narration</th>
-              <th>Source</th>
-              <th>Destination</th>
-              <th>Amount</th>
-              <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            <GroupedTransactions items={transactions} openEditTrxModal={openEditTrxModal}/>
-            </tbody>
-          </HTMLTable>
+          {isValidating ? <Spinner/> :
+            <HTMLTable style={{width: "100%", borderCollapse: "collapse"}}>
+              <thead>
+              <tr>
+                <th>Payee Narration</th>
+                <th>Date</th>
+                <th>Source</th>
+                <th>Destination</th>
+                <th>Amount</th>
+                <th/>
+              </tr>
+              </thead>
+              <tbody>
+              {transactions.map(batch => batch.map(one =>
+                  <TransactionLine key={one.id} {...one} setEditId={setEditId}/>
+                )
+              )}
+              </tbody>
+            </HTMLTable>}
+
           <div className="more">
-            <Button icon="more" onClick={loadMoreTransaction} minimal/>
+            <Button icon="more" minimal onClick={() => {
+              console.log("currentSize", size);
+              setSize(size + 1)
+            }}/>
           </div>
 
         </div>

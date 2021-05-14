@@ -95,12 +95,12 @@ export default function TransactionLine({
           {dayjs(create_time).format("MMM DD, YYYY")}
         </td>
         <td>{outAccounts.map(it => (
-          <Link href={`/accounts/${it.id}`}>
+          <Link href={`/accounts/${it.id}`} key={it.id}>
             <Tag round minimal interactive key={it.id}>{it.value}</Tag>
           </Link>
         ))}</td>
         <td>{inAccounts.map(it => (
-          <Link href={`/accounts/${it.id}`}>
+          <Link href={`/accounts/${it.id}`} key={it.id}>
             <Tag round minimal interactive key={it.id}>{it.value}</Tag>
           </Link>
         ))}</td>

@@ -12,7 +12,7 @@ export const BASE_URL = urls[process.env.NODE_ENV];
 class Api {
 
   private currentLedgerId: string
-  client: AxiosInstance;
+  public client: AxiosInstance;
 
   constructor(currentLdgerId: string) {
     this.client = Axios.create({
@@ -61,7 +61,7 @@ class Api {
     return trxMap;
   }
 
-  async newLedger(name:string, default_operating_commodity: string) {
+  async newLedger(name: string, default_operating_commodity: string) {
     const axiosResponse = await this.client.post("/ledgers", {name, default_operating_commodity});
     return axiosResponse.data.data;
   }
@@ -233,6 +233,8 @@ class Api {
       }
     })
   }
+
+
 }
 
 const api = new Api(null);
@@ -240,3 +242,17 @@ const api = new Api(null);
 export default api;
 
 
+export const getToIdMap = async (url) => {
+  const axiosResponse = await api.client.get(url);
+  let res = axiosResponse.data.data;
+  let idMap: { [id: number]: any } = {}
+  for (let item of res) {
+    idMap[item.id] = item;
+  }
+  return idMap;
+}
+
+export const get = async (url) => {
+  const axiosResponse = await api.client.get(url);
+  return axiosResponse.data.data;
+}
