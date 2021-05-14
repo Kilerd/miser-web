@@ -41,7 +41,7 @@ function Journals() {
               <th>Source</th>
               <th>Destination</th>
               <th>Amount</th>
-              <th>Action</th>
+              <th></th>
             </tr>
             </thead>
             <tbody>

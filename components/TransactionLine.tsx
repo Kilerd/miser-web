@@ -25,12 +25,21 @@ export default function TransactionLine({
 
 
   // todo multiple commodities
-  const outAccounts = lines.filter(value => new Big(value.cost[0]).s === -1).map(value => value.account);
-  const inAccounts = lines.filter(value => new Big(value.cost[0]).s === 1).map(value => value.account);
+  const outAccounts = lines
+    .filter(value => new Big(value.cost[0]).s === -1)
+    .map(value => value.account)
+    .map(it => ({
+      id: it,
+      value: getAccountAlias(it)
+    }));
+  const inAccounts = lines
+    .filter(value => new Big(value.cost[0]).s === 1)
+    .map(value => value.account)
+    .map(it => ({
+      id: it,
+      value: getAccountAlias(it)
+    }));
 
-  const outAccount = outAccounts.length !== 1 ? `${outAccounts.length} Accounts` : getAccountAlias(outAccounts[0])
-  const inAccount = inAccounts.length !== 1 ? `${inAccounts.length} Accounts` : getAccountAlias(inAccounts[0])
-  const outAmount = lines.filter(value => new Big(value.cost[0]).s === -1).map(value => value.cost[0]).reduce((sum, cur) => sum.add(cur), new Big(0));
   let amount = new Big(0);
   lines.forEach(it => {
     const targetAccount = accounts[it.account];
@@ -67,8 +76,8 @@ export default function TransactionLine({
         <td>
           {dayjs(create_time).format("MMM DD, YYYY")}
         </td>
-        <td>{outAccount}</td>
-        <td>{inAccount}</td>
+        <td>{outAccounts.map(it => (<Tag round minimal interactive key={it.id}>{it.value}</Tag>))}</td>
+        <td>{inAccounts.map(it => (<Tag round minimal interactive key={it.id}>{it.value}</Tag>))}</td>
         <td><Amount amount={amount} prefix="¥" color/></td>
         <td>
           <a onClick={() => setEditId(id)}><Button minimal icon="edit"/></a>
