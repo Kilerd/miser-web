@@ -1,12 +1,12 @@
-import React from "react";
+import React, {useState} from "react";
 import Big from 'big.js'
 import {useLedger} from "../contexts/ledger";
 import classNames from "classnames";
 import dayjs from 'dayjs'
 import api from "../api";
 import Link from "next/link";
-import {Popover2, Classes} from "@blueprintjs/popover2";
-import {Button, H5, Icon, Intent, Tag} from "@blueprintjs/core";
+import {Popover2} from "@blueprintjs/popover2";
+import {Alert, Button, Icon, Intent, Menu, MenuItem, Tag} from "@blueprintjs/core";
 import Amount from "./Amount";
 
 export default function TransactionLine({
@@ -59,8 +59,26 @@ export default function TransactionLine({
     // setLoading(false);
     update("TRANSACTIONS")
   }
+
+  const [deleteOpen, setDeleteOpen] = useState(false)
   return (
     <>
+
+
+      <Alert
+        cancelButtonText="Cancel"
+        confirmButtonText="Delete"
+        icon="trash"
+        intent={Intent.DANGER}
+        isOpen={deleteOpen}
+        onCancel={() => setDeleteOpen(false)}
+        onConfirm={() => deleteTrx(id)}
+      >
+        <p>
+          Confirm Delete？
+        </p>
+      </Alert>
+
       <tr className={classNames({
         error: flag !== "Complete",
         notBalance: !is_balance,
@@ -80,19 +98,11 @@ export default function TransactionLine({
         <td>{inAccounts.map(it => (<Tag round minimal interactive key={it.id}>{it.value}</Tag>))}</td>
         <td><Amount amount={amount} prefix="¥" color/></td>
         <td>
-          <a onClick={() => setEditId(id)}><Button minimal icon="edit"/></a>
-          <Popover2 content={<div key="text" style={{padding: "1rem"}}>
-            <H5>Confirm deletion</H5>
-            <div style={{display: "flex", justifyContent: "flex-end", marginTop: 15}}>
-              <Button className={Classes.POPOVER2_DISMISS} style={{marginRight: 10}}>
-                Cancel
-              </Button>
-              <Button intent={Intent.DANGER} onClick={() => deleteTrx(id)} className={Classes.POPOVER2_DISMISS}>
-                Delete
-              </Button>
-            </div>
-          </div>}>
-            <Button minimal icon="trash"/>
+          <Popover2 content={<Menu>
+            <MenuItem text="Edit" icon="edit" onClick={() => setEditId(id)}/>
+            <MenuItem text="Delete" icon="trash" onClick={() => setDeleteOpen(true)}/>
+          </Menu>}>
+            <Button minimal icon="more"/>
           </Popover2>
         </td>
       </tr>
