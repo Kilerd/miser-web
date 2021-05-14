@@ -94,8 +94,16 @@ export default function TransactionLine({
         <td>
           {dayjs(create_time).format("MMM DD, YYYY")}
         </td>
-        <td>{outAccounts.map(it => (<Tag round minimal interactive key={it.id}>{it.value}</Tag>))}</td>
-        <td>{inAccounts.map(it => (<Tag round minimal interactive key={it.id}>{it.value}</Tag>))}</td>
+        <td>{outAccounts.map(it => (
+          <Link href={`/accounts/${it.id}`}>
+            <Tag round minimal interactive key={it.id}>{it.value}</Tag>
+          </Link>
+        ))}</td>
+        <td>{inAccounts.map(it => (
+          <Link href={`/accounts/${it.id}`}>
+            <Tag round minimal interactive key={it.id}>{it.value}</Tag>
+          </Link>
+        ))}</td>
         <td><Amount amount={amount} prefix="¥" color/></td>
         <td>
           <Popover2 content={<Menu>
