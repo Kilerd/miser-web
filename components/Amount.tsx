@@ -44,7 +44,7 @@ export default function Amount(props: Props) {
         flex-direction: row;
         color: #535353;
         align-items: baseline;
-
+        justify-content: flex-end;
 
         .currency {
           margin-left: 0.5rem;

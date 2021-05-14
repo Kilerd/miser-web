@@ -7,7 +7,7 @@ import {Button, Card, Divider, Elevation} from "@blueprintjs/core";
 export default function TransactionGroup({date, items, setEditId}) {
 
   const lines = items
-    .sort((a,b) =>new Date(a.create_time).getTime() - new Date(b.create_time).getTime())
+    .sort((a, b) => new Date(a.create_time).getTime() - new Date(b.create_time).getTime())
     .reverse()
     .map((one) => (<TransactionLine key={one.id} {...one} setEditId={setEditId}/>))
 
@@ -16,22 +16,7 @@ export default function TransactionGroup({date, items, setEditId}) {
   return (
     <>
 
-
-      <div className="group">
-        <div className="head">
-          {isToday ?
-            <h2>Today <span>{date}</span></h2>
-            :
-            <h2>{date}</h2>
-          }
-        </div>
-
-        <div className="lines">
-          {lines}
-        </div>
-
-      </div>
-
+      {lines}
       <style jsx>{`
         .group {
           display: flex;

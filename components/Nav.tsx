@@ -54,10 +54,10 @@ export default function Nav() {
               <p>Dashboard</p>
             </div>
           </Link>
-          <Link href="/transactions">
+          <Link href="/journals">
             <div className="nav-btn">
               <Icon className={Classes.MINIMAL} icon="menu"/>
-              <p>Transaction</p>
+              <p>Journals</p>
             </div>
           </Link>
           <Link href="/accounts">

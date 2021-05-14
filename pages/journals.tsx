@@ -5,9 +5,10 @@ import AuthenticationLayout from "../components/AuthenticationLayout";
 import NewTransactionModal from "../components/NewTransactionModal";
 import EditTransactionModal from "../components/EditTransactionModal";
 import GroupedTransactions from "../components/GroupedTransactions";
+import {Button, HTMLTable} from "@blueprintjs/core";
 
 
-function Transactions() {
+function Journals() {
   const {ledger_id, transactions, loadMoreTransaction} = useLedger();
 
 
@@ -28,10 +29,28 @@ function Transactions() {
 
         <div className="container">
           <div className="header">
-            <h1>Transactions for ledger {ledger_id}</h1>
+            <h1>Journals</h1>
             <button onClick={() => setNewTrxStatus(true)} className="button"> new</button>
           </div>
-          <GroupedTransactions items={transactions} loadMore={loadMoreTransaction} openEditTrxModal={openEditTrxModal}/>
+
+          <HTMLTable style={{width: "100%", borderCollapse: "collapse"}}>
+            <thead>
+            <tr>
+              <th>Date</th>
+              <th>Payee Narration</th>
+              <th>Source</th>
+              <th>Destination</th>
+              <th>Amount</th>
+              <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <GroupedTransactions items={transactions} openEditTrxModal={openEditTrxModal}/>
+            </tbody>
+          </HTMLTable>
+          <div className="more">
+            <Button icon="more" onClick={loadMoreTransaction} minimal/>
+          </div>
 
         </div>
       </AuthenticationLayout>
@@ -41,9 +60,15 @@ function Transactions() {
           flex-direction: row;
           justify-content: space-between;
         }
+
+        div.more {
+          display: flex;
+          justify-content: center;
+          justify-items: center;
+        }
       `}</style>
     </>
   )
 }
 
-export default ProtectRoute(Transactions)
+export default ProtectRoute(Journals)

@@ -42,7 +42,6 @@ export default function TransactionLine({
   });
 
 
-
   const s = dayjs(create_time).format("HH:mm");
 
   const deleteTrx = async (id) => {
@@ -52,50 +51,65 @@ export default function TransactionLine({
     update("TRANSACTIONS")
   }
   return (
-
     <>
-      <div className={classNames("line", {
+      <tr className={classNames({
         error: flag !== "Complete",
         notBalance: !is_balance,
       })}>
-        <div className="left">
+        <td>
           <Link href={`/transactions/${id}`}>
             <div className="info">
-              <span className="time">{s}</span>
               <span className="payee">{payee}</span>
               {narration} {has_document && <Icon icon="document"/>}
             </div>
           </Link>
-          <div className="meta">
-            <div><Tag round minimal>{outAccount}</Tag></div>
-            -{">"}
-            <div><Tag round minimal>{inAccount}</Tag></div>
-          </div>
-        </div>
-        <div className="right">
-          <div className="info">
-            <div className={`amount`}><Amount amount={amount} prefix="¥" color/></div>
-          </div>
-          <div className="operation">
-            <a onClick={() => setEditId(id)}><Button minimal icon="edit"/></a>
-            <Popover2 content={<div key="text" style={{padding: "1rem"}}>
-              <H5>Confirm deletion</H5>
-              <div style={{display: "flex", justifyContent: "flex-end", marginTop: 15}}>
-                <Button className={Classes.POPOVER2_DISMISS} style={{marginRight: 10}}>
-                  Cancel
-                </Button>
-                <Button intent={Intent.DANGER} onClick={() => deleteTrx(id)} className={Classes.POPOVER2_DISMISS}>
-                  Delete
-                </Button>
-              </div>
-            </div>}>
-              <Button minimal icon="trash"/>
-            </Popover2>
+        </td>
+        <td>
+          {dayjs(create_time).format("MMM DD, YYYY")}
+        </td>
+        <td>{outAccount}</td>
+        <td>{inAccount}</td>
+        <td><Amount amount={amount} prefix="¥" color/></td>
+        <td>
+          <a onClick={() => setEditId(id)}><Button minimal icon="edit"/></a>
+          <Popover2 content={<div key="text" style={{padding: "1rem"}}>
+            <H5>Confirm deletion</H5>
+            <div style={{display: "flex", justifyContent: "flex-end", marginTop: 15}}>
+              <Button className={Classes.POPOVER2_DISMISS} style={{marginRight: 10}}>
+                Cancel
+              </Button>
+              <Button intent={Intent.DANGER} onClick={() => deleteTrx(id)} className={Classes.POPOVER2_DISMISS}>
+                Delete
+              </Button>
+            </div>
+          </div>}>
+            <Button minimal icon="trash"/>
+          </Popover2>
+        </td>
+      </tr>
 
-          </div>
-        </div>
-      </div>
       <style jsx>{`
+
+        tr {
+          border-bottom: 1px solid #dadada;
+          border-left: 3px solid rgba(255, 255, 255, 0);
+
+          td {
+            vertical-align: middle;
+          }
+        }
+
+        .info {
+          //font-size: 1rem;
+          display: inline-block;
+          cursor: pointer;
+
+          span.payee {
+            font-weight: 500;
+          }
+
+        }
+
         .line {
           display: flex;
           align-items: center;
@@ -120,20 +134,6 @@ export default function TransactionLine({
             display: flex;
             flex-direction: column;
 
-            .info {
-              font-size: 1rem;
-              cursor: pointer;
-
-              span.payee {
-                font-weight: 500;
-                margin-right: 0.3rem;
-              }
-
-              span.time {
-                color: #b1b1b1;
-                margin-right: 0.3rem;
-              }
-            }
 
             .meta {
 
@@ -158,7 +158,7 @@ export default function TransactionLine({
                 font-size: 1.25rem;
               }
 
-              
+
               .orientation {
                 font-size: 0.85rem;
               }

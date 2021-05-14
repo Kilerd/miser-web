@@ -9,11 +9,9 @@ interface Props {
   items: IdMap<Transaction>
 
   openEditTrxModal(id): void
-
-  loadMore(): void
 }
 
-export default function GroupedTransactions({items, openEditTrxModal, loadMore}: Props) {
+export default function GroupedTransactions({items, openEditTrxModal}: Props) {
 
   let groupedTransactions: { [key: string]: any } = {}
   for (let it of Object.values(items)) {
@@ -31,17 +29,11 @@ export default function GroupedTransactions({items, openEditTrxModal, loadMore}:
         return <TransactionGroup key={date} date={date} items={trxs} setEditId={openEditTrxModal}/>
       })}
 
-      <div className="more">
-        <Button icon="more" onClick={loadMore} minimal/>
-      </div>
+
 
 
       <style jsx>{`
-        div.more {
-          display: flex;
-          justify-content: center;
-          justify-items: center;
-        }
+        
       `}</style>
     </>
 
