@@ -30,7 +30,10 @@ function Journals() {
         <div className="container">
           <div className="header">
             <h1>Journals</h1>
-            <button onClick={() => setNewTrxStatus(true)} className="button"> new</button>
+            <div className="right">
+              <Button onClick={() => setNewTrxStatus(true)} icon="insert"/>
+              <Button onClick={() => setNewTrxStatus(true)} icon="refresh" />
+            </div>
           </div>
 
           <HTMLTable style={{width: "100%", borderCollapse: "collapse"}}>
