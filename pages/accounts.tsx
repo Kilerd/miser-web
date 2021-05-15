@@ -6,7 +6,7 @@ import AccountListItem from "../components/AccountListItem";
 import {Account, AccountListItemType} from "../types";
 import NewAccountModal from "../components/NewAccountModal";
 import EditAccountModal from "../components/EditAccountModal";
-
+import Big from 'big.js'
 
 export function accountTreeGenerator(value: { [id: number]: Account }) {
   let ret: { [name: string]: AccountListItemType } = {
@@ -14,7 +14,7 @@ export function accountTreeGenerator(value: { [id: number]: Account }) {
       name: 'Liabilities',
       fullName: 'Liabilities',
       isAvailable: false,
-      amount: "0",
+      amount: new Big(0),
       alias: null,
       children: {},
       commodities: [],
@@ -24,7 +24,7 @@ export function accountTreeGenerator(value: { [id: number]: Account }) {
       name: 'Assets',
       fullName: 'Assets',
       isAvailable: false,
-      amount: "0",
+      amount: new Big(0),
       alias: null,
       children: {},
       commodities: [],
@@ -34,7 +34,7 @@ export function accountTreeGenerator(value: { [id: number]: Account }) {
       name: 'Equity',
       fullName: 'Equity',
       isAvailable: false,
-      amount: "0",
+      amount: new Big(0),
       alias: null,
       children: {},
       commodities: [],
@@ -44,7 +44,7 @@ export function accountTreeGenerator(value: { [id: number]: Account }) {
       name: 'Expenses',
       fullName: 'Expenses',
       isAvailable: false,
-      amount: "0",
+      amount: new Big(0),
       alias: null,
       children: {},
       commodities: [],
@@ -54,7 +54,7 @@ export function accountTreeGenerator(value: { [id: number]: Account }) {
       name: 'Income',
       fullName: 'Income',
       isAvailable: false,
-      amount: "0",
+      amount: new Big(0),
       alias: null,
       children: {},
       commodities: [],
@@ -65,6 +65,7 @@ export function accountTreeGenerator(value: { [id: number]: Account }) {
     let strings = it.full_name.split(':');
     let accountType = strings[0].toLocaleLowerCase();
     let targetCategory = ret[accountType];
+    let parents = [targetCategory];
     for (let i = 1; i < strings.length - 1; i++) {
       let item = strings[i];
       if (!(item in targetCategory.children)) {
@@ -72,12 +73,13 @@ export function accountTreeGenerator(value: { [id: number]: Account }) {
           name: item,
           fullName: strings.slice(0, i + 1).join(':'),
           isAvailable: false,
-          amount: "0",
+          amount: new Big(0),
           commodities: [],
           children: {}
         }
       }
       targetCategory = targetCategory.children[item];
+      parents.push(targetCategory);
     }
     let leafItem = strings[strings.length - 1];
     if (targetCategory.children[leafItem] === undefined) {
@@ -87,7 +89,7 @@ export function accountTreeGenerator(value: { [id: number]: Account }) {
         isAvailable: true,
         alias: it.alias,
         commodities: it.commodities,
-        amount: it.amount,
+        amount: new Big(it.amount),
         id: it.id,
         children: {}
       }
@@ -95,9 +97,13 @@ export function accountTreeGenerator(value: { [id: number]: Account }) {
       targetCategory.children[leafItem].isAvailable = true;
       targetCategory.children[leafItem].alias = it.alias;
       targetCategory.children[leafItem].commodities = it.commodities;
-      targetCategory.children[leafItem].amount = it.amount;
+      targetCategory.children[leafItem].amount = targetCategory.children[leafItem].amount.plus(it.amount);
       targetCategory.children[leafItem].id = it.id;
     }
+
+    parents.forEach(one_parent => {
+      one_parent.amount = one_parent.amount.plus(new Big(it.amount));
+    })
 
   })
   return ret;

@@ -1,3 +1,4 @@
+import Big from 'big.js';
 export interface IdMap<DATA> {
   [id: number]: DATA
 }
@@ -12,7 +13,7 @@ export interface AccountListItemType {
   isAvailable: boolean,
   alias?: string,
   commodities: string[],
-  amount: string,
+  amount: Big,
   id?: number,
   icon?: string,
   children: { [name: string]: AccountListItemType }
