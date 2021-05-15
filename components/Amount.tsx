@@ -17,7 +17,6 @@ export default function Amount(props: Props) {
   const showColor = props.color || false;
 
   const colorCss = showColor ? positive ? "green" : "red" : "";
-  console.log(props, showColor, amountBig.s, colorCss);
   return <>
     <div className={`${colorCss} amount`}>
       <div>{!positive && "-"}</div>

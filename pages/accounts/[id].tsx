@@ -1,17 +1,22 @@
 import {ProtectRoute} from "../../contexts/auth";
 import {useAsync} from "react-async-hook";
-import api from "../../api";
+import api, {get} from "../../api";
 import {useRouter} from "next/router";
 import AuthenticationLayout from "../../components/AuthenticationLayout";
 import {useLedger} from "../../contexts/ledger";
 import React, {useState} from "react";
 import Select from 'react-select';
-import {Button, FormGroup} from "@blueprintjs/core";
+import {Button, FormGroup, H2, HTMLTable, Spinner} from "@blueprintjs/core";
 import Big from 'big.js';
 import {IdMap, Transaction} from "../../types";
 import {Line} from "react-chartjs-2";
 import {DateInput, TimePrecision} from "@blueprintjs/datetime";
 import dayjs from "dayjs";
+import {useSWRInfinite} from "swr";
+import {getUrlByTime} from "../../utils/swr";
+import TransactionLine from "../../components/TransactionLine";
+import Amount from "../../components/Amount";
+import Link from "next/link";
 
 
 const data = {
@@ -61,6 +66,21 @@ function Page() {
   //   let res = await api.loadTransactionsByAccounts(id, null);
   //   setAccountTransactions(res)
   // }, [id]);
+  const {
+    isValidating,
+    data: rawTimeline,
+    revalidate,
+    setSize,
+    size,
+  } = useSWRInfinite(
+    getUrlByTime(`/ledgers/${ledgerContext.ledger_id}/accounts/${id}/timeline`, 'create_time'),
+    get
+  );
+  const timeline = rawTimeline ? [].concat(...rawTimeline) : []
+  const isEmpty = rawTimeline?.[0]?.length === 0;
+  const isReachingEnd =
+    isEmpty || (rawTimeline && rawTimeline[rawTimeline.length - 1]?.length < 1);
+
 
   const accountOptions = Object.values(Object.values(ledgerContext.accounts)
     .reduce((ret, it) => {
@@ -76,19 +96,6 @@ function Page() {
     setPadAccount(selectAccountId);
   }
 
-  async function loadMore() {
-
-    let sort = Object.values(accountTransactions).sort((a, b) => new Date(a.create_time).getTime() - new Date(b.create_time).getTime());
-    console.log(sort);
-    let latestDate = (sort[0] || {create_time: new Date()}).create_time;
-    let moreRes = await api.loadTransactionsByAccounts(id, latestDate);
-    let newTransactionMap = {...accountTransactions};
-    for (let moreResKey in moreRes) {
-      newTransactionMap[moreResKey] = moreRes[moreResKey];
-    }
-    console.log("new", newTransactionMap);
-    setAccountTransactions(newTransactionMap);
-  }
 
   function handlePadAmountChange(e: any) {
     try {
@@ -110,6 +117,33 @@ function Page() {
         <h1>{targetAccount.alias} {targetAccount.full_name}</h1>
 
         <Line data={data} height={70}/>
+        <H2>Timeline</H2>
+        <HTMLTable style={{width: "100%", borderCollapse: "collapse"}}>
+          <thead>
+          <tr>
+            <th>Date</th>
+            <th>Payee Narration</th>
+            <th>Amount</th>
+            <th/>
+          </tr>
+          </thead>
+          <tbody>
+          {timeline.map(item =>
+            <tr key={item.id}>
+              <td>{dayjs(item.create_time).format("MMM DD, YYYY")}</td>
+              <td><Link href={`/transactions/${item.transaction_id}`}>
+                <p>{item.payee} {item.narration}</p>
+              </Link></td>
+              <td><Amount amount={item.amount} prefix="¥" color/></td>
+            </tr>
+          )}
+          </tbody>
+        </HTMLTable>
+        <div>
+          <Button disabled={isReachingEnd} onClick={() => setSize(size + 1)}>
+            {isReachingEnd ? "no more data" : `load more, size:${size}`}
+          </Button>
+        </div>
         {/*{(!loading && !error) &&*/}
         {/*<GroupedTransactions items={accountTransactions} openEditTrxModal={(id) => {*/}
         {/*}}/>*/}

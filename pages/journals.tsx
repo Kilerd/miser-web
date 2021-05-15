@@ -8,20 +8,13 @@ import {Button, HTMLTable, Spinner} from "@blueprintjs/core";
 import {useSWRInfinite} from "swr";
 import {get} from "../api";
 import TransactionLine from "../components/TransactionLine";
+import {getUrlByTime} from "../utils/swr";
 
 
 function Journals() {
   const {ledger_id,} = useLedger();
 
-  const getKey = (pageIndex, previousPageData) => {
-    console.log("pageIdex", pageIndex, "previ data", previousPageData)
-    if (previousPageData && !previousPageData.length) return null // reached the end
-    if (pageIndex === 0) {
-      return `/ledgers/${ledger_id}/journals`
-    }
-    return `/ledgers/${ledger_id}/journals?create_time=${previousPageData.last().create_time}`
-  }
-  const {isValidating, data: transactions, revalidate, setSize, size} = useSWRInfinite(getKey, get);
+  const {isValidating, data: transactions, revalidate, setSize, size} = useSWRInfinite(getUrlByTime(`/ledgers/${ledger_id}/journals`, 'create_time'), get);
 
   const [newTrxStatus, setNewTrxStatus] = useState(false);
 
