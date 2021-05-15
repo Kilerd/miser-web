@@ -1,20 +1,17 @@
 import {ProtectRoute} from "../../contexts/auth";
-import {useAsync} from "react-async-hook";
 import api, {get} from "../../api";
 import {useRouter} from "next/router";
 import AuthenticationLayout from "../../components/AuthenticationLayout";
 import {useLedger} from "../../contexts/ledger";
 import React, {useState} from "react";
 import Select from 'react-select';
-import {Button, FormGroup, H2, HTMLTable, Spinner} from "@blueprintjs/core";
+import {Button, FormGroup, H2, HTMLTable} from "@blueprintjs/core";
 import Big from 'big.js';
-import {IdMap, Transaction} from "../../types";
 import {Line} from "react-chartjs-2";
 import {DateInput, TimePrecision} from "@blueprintjs/datetime";
 import dayjs from "dayjs";
 import {useSWRInfinite} from "swr";
 import {getUrlByTime} from "../../utils/swr";
-import TransactionLine from "../../components/TransactionLine";
 import Amount from "../../components/Amount";
 import Link from "next/link";
 
@@ -60,12 +57,7 @@ function Page() {
   const [padAccount, setPadAccount] = useState(null);
   const [amount, setAmount] = useState("");
   const [amountAvailable, setAmountAvailable] = useState(false);
-  const [accountTransactions, setAccountTransactions] = useState({} as IdMap<Transaction>);
 
-  // const {result, loading, error} = useAsync(async () => {
-  //   let res = await api.loadTransactionsByAccounts(id, null);
-  //   setAccountTransactions(res)
-  // }, [id]);
   const {
     isValidating,
     data: rawTimeline,
@@ -123,7 +115,7 @@ function Page() {
           <tr>
             <th>Date</th>
             <th>Payee Narration</th>
-            <th>Amount</th>
+            <th style={{textAlign: "right"}}>Amount</th>
             <th/>
           </tr>
           </thead>
@@ -141,13 +133,9 @@ function Page() {
         </HTMLTable>
         <div>
           <Button disabled={isReachingEnd} onClick={() => setSize(size + 1)}>
-            {isReachingEnd ? "no more data" : `load more, size:${size}`}
+            {isReachingEnd ? "no more data" : `load more`}
           </Button>
         </div>
-        {/*{(!loading && !error) &&*/}
-        {/*<GroupedTransactions items={accountTransactions} openEditTrxModal={(id) => {*/}
-        {/*}}/>*/}
-        {/*}*/}
 
         <h2>Balance</h2>
         <FormGroup

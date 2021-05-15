@@ -48,7 +48,7 @@ function Journals() {
                 <th>Date</th>
                 <th>Source</th>
                 <th>Destination</th>
-                <th>Amount</th>
+                <th style={{textAlign:"right"}}>Amount</th>
                 <th/>
               </tr>
               </thead>
