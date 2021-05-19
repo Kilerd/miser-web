@@ -4,17 +4,27 @@ import {useLedger} from "../contexts/ledger";
 import AuthenticationLayout from "../components/AuthenticationLayout";
 import NewTransactionModal from "../components/NewTransactionModal";
 import EditTransactionModal from "../components/EditTransactionModal";
-import {Button, HTMLTable, Spinner} from "@blueprintjs/core";
+import {Button, HTMLTable} from "@blueprintjs/core";
 import {useSWRInfinite} from "swr";
 import {get} from "../api";
 import TransactionLine from "../components/TransactionLine";
 import {getUrlByTime} from "../utils/swr";
 
-
 function Journals() {
   const {ledger_id,} = useLedger();
 
-  const {isValidating, data: transactions, revalidate, setSize, size} = useSWRInfinite(getUrlByTime(`/ledgers/${ledger_id}/journals`, 'create_time'), get);
+  const {
+    data: patchTransactions,
+    revalidate,
+    setSize,
+    size
+  } = useSWRInfinite(getUrlByTime(`/ledgers/${ledger_id}/journals`, 'create_time'), get);
+
+  const transactions = patchTransactions ? [].concat(...patchTransactions) : []
+  const isEmpty = patchTransactions?.[0]?.length === 0;
+  const isReachingEnd =
+    isEmpty || (patchTransactions && patchTransactions[patchTransactions.length - 1]?.length < 1);
+
 
   const [newTrxStatus, setNewTrxStatus] = useState(false);
 
@@ -40,31 +50,26 @@ function Journals() {
             </div>
           </div>
 
-          {isValidating ? <Spinner/> :
-            <HTMLTable style={{width: "100%", borderCollapse: "collapse"}}>
-              <thead>
-              <tr>
-                <th>Payee Narration</th>
-                <th>Date</th>
-                <th>Source</th>
-                <th>Destination</th>
-                <th style={{textAlign:"right"}}>Amount</th>
-                <th/>
-              </tr>
-              </thead>
-              <tbody>
-              {transactions.map(batch => batch.map(one =>
-                  <TransactionLine key={one.id} {...one} setEditId={setEditId}/>
-                )
-              )}
-              </tbody>
-            </HTMLTable>}
+          <HTMLTable style={{width: "100%", borderCollapse: "collapse"}}>
+            <thead>
+            <tr>
+              <th>Payee Narration</th>
+              <th>Date</th>
+              <th>Source</th>
+              <th>Destination</th>
+              <th style={{textAlign: "right"}}>Amount</th>
+              <th/>
+            </tr>
+            </thead>
+            <tbody>
+            {transactions.map(one =>
+              <TransactionLine key={one.id} {...one} setEditId={setEditId}/>
+            )}
+            </tbody>
+          </HTMLTable>
 
           <div className="more">
-            <Button icon="more" minimal onClick={() => {
-              console.log("currentSize", size);
-              setSize(size + 1)
-            }}/>
+            <Button icon="more" minimal disabled={isReachingEnd} onClick={() => setSize(size + 1)}/>
           </div>
 
         </div>

@@ -1,9 +1,7 @@
 import {ProtectRoute, useAuth} from "../contexts/auth";
 import AuthenticationLayout from "../components/AuthenticationLayout";
 import {useLedger} from "../contexts/ledger";
-import dayjs from "dayjs";
-import {Classes, Popover2} from "@blueprintjs/popover2";
-import {Button, H5, HTMLTable, Intent} from "@blueprintjs/core";
+import {HTMLTable} from "@blueprintjs/core";
 import React, {useState} from "react";
 import api from "../api";
 
