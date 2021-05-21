@@ -113,7 +113,10 @@ export default function TransactionLine({detail, setEdit}: Props) {
         tr {
           border-bottom: 1px solid #dadada;
           border-left: 3px solid rgba(255, 255, 255, 0);
-
+          
+          &:hover {
+            background-color: rgba(138, 155, 168, 0.05);
+          }
           td {
             vertical-align: middle;
           }
