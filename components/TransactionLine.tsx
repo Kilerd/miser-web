@@ -8,10 +8,13 @@ import Link from "next/link";
 import {Popover2} from "@blueprintjs/popover2";
 import {Alert, Button, Icon, Intent, Menu, MenuItem, Tag} from "@blueprintjs/core";
 import Amount from "./Amount";
-interface  Props {
+
+interface Props {
   detail: any,
-  setEdit(any) :void
+
+  setEdit(any): void
 }
+
 export default function TransactionLine({detail, setEdit}: Props) {
 
   const {getAccountAlias, update, accounts} = useLedger();
@@ -79,8 +82,8 @@ export default function TransactionLine({detail, setEdit}: Props) {
         <td>
           <Link href={`/transactions/${detail.id}`}>
             <div className="info">
-              <span className="payee">{detail.payee}</span>
-              {detail.narration} {detail.has_document && <Icon icon="document"/>}
+              {detail.narration && <span>{detail.narration} {detail.has_document && <Icon icon="document"/>}</span>}
+              {detail.payee && <span className="payee">{detail.payee}</span>}
             </div>
           </Link>
         </td>
@@ -113,10 +116,11 @@ export default function TransactionLine({detail, setEdit}: Props) {
         tr {
           border-bottom: 1px solid #dadada;
           border-left: 3px solid rgba(255, 255, 255, 0);
-          
+
           &:hover {
             background-color: rgba(138, 155, 168, 0.05);
           }
+
           td {
             vertical-align: middle;
           }
@@ -124,11 +128,13 @@ export default function TransactionLine({detail, setEdit}: Props) {
 
         .info {
           //font-size: 1rem;
-          display: inline-block;
+          display: inline-flex;
+          flex-direction: column;
           cursor: pointer;
 
           span.payee {
             font-weight: 500;
+            font-size: 0.9em;
           }
 
         }
