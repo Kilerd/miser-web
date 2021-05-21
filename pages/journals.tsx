@@ -29,10 +29,10 @@ function Journals() {
 
   const [newTrxStatus, setNewTrxStatus] = useState(false);
 
-  const [editId, setEditId] = useState(null);
+  const [editTrx, setEdit] = useState(undefined);
   const [editTrxStatus, setEditTrxStatus] = useState(false);
-  const openEditTrxModal = (id) => {
-    setEditId(id);
+  const openEditTrxModal = (detail) => {
+    setEdit(detail);
     setEditTrxStatus(true)
   };
 
@@ -40,7 +40,7 @@ function Journals() {
     <>
       <AuthenticationLayout>
         <NewTransactionModal modalStatus={newTrxStatus} setModalStatus={setNewTrxStatus}/>
-        <EditTransactionModal editId={editId} modalStatus={editTrxStatus} setModalStatus={setEditTrxStatus}/>
+        <EditTransactionModal detail={editTrx} modalStatus={editTrxStatus} setModalStatus={setEditTrxStatus}/>
 
         <div className="container">
           <div className="header">
@@ -64,7 +64,7 @@ function Journals() {
             </thead>
             <tbody>
             {transactions.map(one =>
-              <TransactionLine key={one.id} {...one} setEditId={setEditId}/>
+              <TransactionLine key={one.id} detail={one} setEdit={openEditTrxModal}/>
             )}
             </tbody>
           </HTMLTable>

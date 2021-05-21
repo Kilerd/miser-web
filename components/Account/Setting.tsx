@@ -26,14 +26,6 @@ const Client = (props: Props) => {
     return newCommodityMap
   });
 
-  //
-  // useEffect(() => {
-  //   const newCommodityMap = {...editCommodityMap};
-  //   Object.keys(ledgerContext.commodities).forEach(one => {
-  //     newCommodityMap[one] = newCommodityMap[one] || false;
-  //   })
-  //   setEditCommodityMap(newCommodityMap);
-  // }, [ledgerContext.commodities])
 
   const handleCommodityClick = (commodity) => {
     const newCommodityMap = {...editCommodityMap};

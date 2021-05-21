@@ -8,31 +8,24 @@ import Link from "next/link";
 import {Popover2} from "@blueprintjs/popover2";
 import {Alert, Button, Icon, Intent, Menu, MenuItem, Tag} from "@blueprintjs/core";
 import Amount from "./Amount";
-
-export default function TransactionLine({
-                                          id,
-                                          flag,
-                                          narration,
-                                          payee,
-                                          create_time,
-                                          lines,
-                                          is_balance,
-                                          has_document,
-                                          setEditId
-                                        }) {
+interface  Props {
+  detail: any,
+  setEdit(any) :void
+}
+export default function TransactionLine({detail, setEdit}: Props) {
 
   const {getAccountAlias, update, accounts} = useLedger();
 
 
   // todo multiple commodities
-  const outAccounts = lines
+  const outAccounts = detail.lines
     .filter(value => new Big(value.cost[0]).s === -1)
     .map(value => value.account)
     .map(it => ({
       id: it,
       value: getAccountAlias(it)
     }));
-  const inAccounts = lines
+  const inAccounts = detail.lines
     .filter(value => new Big(value.cost[0]).s === 1)
     .map(value => value.account)
     .map(it => ({
@@ -41,7 +34,7 @@ export default function TransactionLine({
     }));
 
   let amount = new Big(0);
-  lines.forEach(it => {
+  detail.lines.forEach(it => {
     const targetAccount = accounts[it.account];
     if (targetAccount.full_name.startsWith("Income")) {
       amount = amount.sub(new Big(it.cost[0]));
@@ -51,7 +44,7 @@ export default function TransactionLine({
   });
 
 
-  const s = dayjs(create_time).format("HH:mm");
+  const s = dayjs(detail.create_time).format("HH:mm");
 
   const deleteTrx = async (id) => {
     // setLoading(true);
@@ -72,7 +65,7 @@ export default function TransactionLine({
         intent={Intent.DANGER}
         isOpen={deleteOpen}
         onCancel={() => setDeleteOpen(false)}
-        onConfirm={() => deleteTrx(id)}
+        onConfirm={() => deleteTrx(detail.id)}
       >
         <p>
           Confirm Delete？
@@ -80,19 +73,19 @@ export default function TransactionLine({
       </Alert>
 
       <tr className={classNames({
-        error: flag !== "Complete",
-        notBalance: !is_balance,
+        error: detail.flag !== "Complete",
+        notBalance: !detail.is_balance,
       })}>
         <td>
-          <Link href={`/transactions/${id}`}>
+          <Link href={`/transactions/${detail.id}`}>
             <div className="info">
-              <span className="payee">{payee}</span>
-              {narration} {has_document && <Icon icon="document"/>}
+              <span className="payee">{detail.payee}</span>
+              {detail.narration} {detail.has_document && <Icon icon="document"/>}
             </div>
           </Link>
         </td>
         <td>
-          {dayjs(create_time).format("MMM DD, YYYY")}
+          {dayjs(detail.create_time).format("MMM DD, YYYY")}
         </td>
         <td>{outAccounts.map(it => (
           <Link href={`/accounts/${it.id}`} key={it.id}>
@@ -107,7 +100,7 @@ export default function TransactionLine({
         <td><Amount amount={amount} prefix="¥" color/></td>
         <td>
           <Popover2 content={<Menu>
-            <MenuItem text="Edit" icon="edit" onClick={() => setEditId(id)}/>
+            <MenuItem text="Edit" icon="edit" onClick={() => setEdit(detail)}/>
             <MenuItem text="Delete" icon="trash" onClick={() => setDeleteOpen(true)}/>
           </Menu>}>
             <Button minimal icon="more"/>

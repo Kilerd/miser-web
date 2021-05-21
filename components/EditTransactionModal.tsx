@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import Modal from 'react-modal'
 import api from "../api";
 import {useLedger} from "../contexts/ledger";
 import Big from 'big.js';
@@ -8,7 +7,7 @@ import dayjs from "dayjs";
 import {Button, Classes, Dialog, FormGroup, InputGroup, Intent, Switch, TagInput} from "@blueprintjs/core";
 import {DateInput, TimePrecision} from "@blueprintjs/datetime";
 
-export default function EditTransactionModal({editId, modalStatus, setModalStatus}) {
+export default function EditTransactionModal({detail, modalStatus, setModalStatus}) {
   const ledgerContext = useLedger();
 
   const [simpleMode, setSimpleMode] = useState(false);
@@ -24,13 +23,13 @@ export default function EditTransactionModal({editId, modalStatus, setModalStatu
 
 
   useEffect(() => {
-    const transaction = undefined;
-    if (transaction !== undefined) {
-      setDate(dayjs(transaction.create_time));
-      setPayee(transaction.payee);
-      setNarration(transaction.narration);
-      setTags(transaction.tags);
-      setLines(transaction.lines.map(it => {
+
+    if (detail !== undefined) {
+      setDate(dayjs(detail.create_time));
+      setPayee(detail.payee);
+      setNarration(detail.narration);
+      setTags(detail.tags);
+      setLines(detail.lines.map(it => {
         const targetAccount = ledgerContext.accounts[it.account];
 
         return {
@@ -40,9 +39,9 @@ export default function EditTransactionModal({editId, modalStatus, setModalStatu
           commodity_candidates: targetAccount.commodities
         }
       }))
-      setSimpleMode(transaction.lines.length === 2)
+      setSimpleMode(detail.lines.length === 2)
     }
-  }, [editId])
+  }, [detail])
 
   const [isLoading, setLoading] = useState(false);
   const canBeSubmit = !isLoading
@@ -94,7 +93,7 @@ export default function EditTransactionModal({editId, modalStatus, setModalStatu
       amount: [line.amount, line.commodity],
       description: ""
     }));
-    await api.updateTransaction(editId, date.toDate(), payee, narration, tags, [], lineReq)
+    await api.updateTransaction(detail.id, date.toDate(), payee, narration, tags, [], lineReq)
     setLoading(false);
     setModalStatus(false);
     ledgerContext.update("TRANSACTIONS")

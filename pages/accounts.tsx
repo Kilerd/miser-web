@@ -89,7 +89,7 @@ export function accountTreeGenerator(value: { [id: number]: Account }) {
         isAvailable: true,
         alias: it.alias,
         commodities: it.commodities,
-        amount: new Big(it.amount),
+        amount: new Big(it.amount.value),
         id: it.id,
         children: {}
       }
@@ -97,12 +97,12 @@ export function accountTreeGenerator(value: { [id: number]: Account }) {
       targetCategory.children[leafItem].isAvailable = true;
       targetCategory.children[leafItem].alias = it.alias;
       targetCategory.children[leafItem].commodities = it.commodities;
-      targetCategory.children[leafItem].amount = targetCategory.children[leafItem].amount.plus(it.amount);
+      targetCategory.children[leafItem].amount = targetCategory.children[leafItem].amount.plus(it.amount.value);
       targetCategory.children[leafItem].id = it.id;
     }
 
     parents.forEach(one_parent => {
-      one_parent.amount = one_parent.amount.plus(new Big(it.amount));
+      one_parent.amount = one_parent.amount.plus(new Big(it.amount.value));
     })
 
   })

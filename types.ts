@@ -37,7 +37,11 @@ export interface Account {
   ledger_id: number,
   status: AccountStatus,
   commodities: string[],
-  amount: string,
+  amount: {
+    about: boolean,
+    value: string,
+    commodity: string
+  },
   daily: { [date: string]: AccountDailyStatic }
 }
 
