@@ -134,7 +134,8 @@ export default function TransactionLine({detail, setEdit}: Props) {
 
           span.payee {
             font-weight: 500;
-            font-size: 0.9em;
+            font-size: 0.8em;
+            color: rgba(92, 112, 128, 0.7);
           }
 
         }

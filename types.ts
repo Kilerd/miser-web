@@ -1,4 +1,5 @@
 import Big from 'big.js';
+
 export interface IdMap<DATA> {
   [id: number]: DATA
 }
@@ -37,10 +38,15 @@ export interface Account {
   ledger_id: number,
   status: AccountStatus,
   commodities: string[],
-  amount: {
-    about: boolean,
-    value: string,
-    commodity: string
+  summary: {
+    total: {
+      about: boolean,
+      value: string,
+      commodity: string
+    },
+    detail: {
+      data: { [commodity: string]: string }
+    }
   },
   daily: { [date: string]: AccountDailyStatic }
 }

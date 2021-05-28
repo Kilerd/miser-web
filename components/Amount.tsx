@@ -6,7 +6,9 @@ interface Props {
   prefix?: string,
   amount: Big,
   postfix?: string,
-  color?: boolean;
+  color?: boolean,
+  about?: boolean,
+  size?: number
 }
 
 export default function Amount(props: Props) {
@@ -17,9 +19,10 @@ export default function Amount(props: Props) {
   const showColor = props.color || false;
 
   const colorCss = showColor ? positive ? "green" : "red" : "";
+  const about = (props.about || false) ? "≈" : "";
   return <>
     <div className={`${colorCss} amount`}>
-      <div>{!positive && "-"}</div>
+      <div>{about}{!positive && "-"}</div>
       <div>{props.prefix}</div>
       <div>{new Intl.NumberFormat('en-US', {
         minimumFractionDigits: 2, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
@@ -48,7 +51,7 @@ export default function Amount(props: Props) {
         color: #535353;
         align-items: baseline;
         justify-content: flex-end;
-
+        font-size: ${props.size || 1}em;
         .currency {
           margin-left: 0.5rem;
         }
