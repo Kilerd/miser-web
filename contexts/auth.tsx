@@ -88,13 +88,9 @@ export const AuthProvider = ({children}) => {
 export const useAuth = () => useContext(AuthContext)
 
 export const ProtectRoute = (ChildComponent) => (args) => {
-  const {isAuthenticated, loading} = useAuth();
-  const {initLoading} = useLedger();
+  const {isAuthenticated} = useAuth();
   const router = useRouter();
 
-  if (loading || initLoading) {
-    return <Spinner />
-  }
   if (!isAuthenticated && !UNAUTHENTICATED_ROUTE.includes(router.asPath)) {
     router.push("/");
     return <Spinner />;
