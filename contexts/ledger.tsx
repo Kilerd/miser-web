@@ -21,8 +21,6 @@ interface LedgerContext {
   update(type: RESOURCE_TYPE): void;
 
   // loadMoreTransaction(): void;
-
-  initLoading: boolean
 }
 
 
@@ -49,7 +47,15 @@ export const LedgerProvider = ({children}) => {
 
   const [ledgerId, setLedgerId] = useState(initialState);
   // const [transactions, setTransactions] = useState<IdMap<Transaction>>({});
-  const ledgers = useAsync(async () => api.loadLedgers(), []);
+  const ledgers = useAsync(async () => {
+    let data = await api.loadLedgers();
+    if (data[ledgerId] !== null) {
+      dayjs.tz.setDefault(data[ledgerId].timezone);
+    }else {
+      dayjs.tz.setDefault()
+    }
+    return data;
+  }, []);
 
   // const transactionsR = useAsync(async () => {
   //   const res = ledgerId !== undefined ? await api.loadTransactions(null) : {};
@@ -77,6 +83,11 @@ export const LedgerProvider = ({children}) => {
     Cookies.set("CURRENT_LEDGER_ID", id, {expires: 60})
     api.setLedgerId(id);
     setLedgerId(id);
+    if (ledgers[ledgerId] !== null) {
+      dayjs.tz.setDefault(ledgers[ledgerId].timezone);
+    }else {
+      dayjs.tz.setDefault()
+    }
     // transactionsR.execute();
     commodities.execute();
     accounts.execute();
@@ -105,7 +116,6 @@ export const LedgerProvider = ({children}) => {
   return (
     <LedgerContext.Provider
       value={{
-        initLoading:  accounts.loading || commodities.loading || ledgers.loading,
         ledger_id: ledgerId,
         // transactions: transactions,
         ledgers: ledgers.result,

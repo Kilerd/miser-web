@@ -9,6 +9,7 @@ import {useSWRInfinite} from "swr";
 import {get} from "../api";
 import TransactionLine from "../components/TransactionLine";
 import {getUrlByTime} from "../utils/swr";
+import {groupByDate} from "../utils/sort";
 
 function Journals() {
   const {ledger_id,} = useLedger();
@@ -53,8 +54,8 @@ function Journals() {
           <HTMLTable style={{width: "100%", borderCollapse: "collapse"}}>
             <thead>
             <tr>
+              <th/>
               <th>Payee Narration</th>
-              <th>Date</th>
               <th>Source</th>
               <th>Destination</th>
               <th style={{textAlign: "right"}}>Amount</th>
@@ -62,8 +63,11 @@ function Journals() {
             </tr>
             </thead>
             <tbody>
-            {transactions.map(one =>
-              <TransactionLine key={one.id} detail={one} setEdit={openEditTrxModal}/>
+            {groupByDate(transactions).map(trxByDate => {
+                const [date, trxs] = trxByDate
+                return trxs.map((one, idx) =>
+                  <TransactionLine key={one.id} withDate={idx === 0} detail={one} setEdit={openEditTrxModal}/>)
+              }
             )}
             </tbody>
           </HTMLTable>

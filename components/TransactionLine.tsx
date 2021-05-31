@@ -11,11 +11,12 @@ import Amount from "./Amount";
 
 interface Props {
   detail: any,
+  withDate?: boolean,
 
   setEdit(any): void
 }
 
-export default function TransactionLine({detail, setEdit}: Props) {
+export default function TransactionLine({detail, withDate, setEdit}: Props) {
 
   const {getAccountAlias, update, accounts} = useLedger();
 
@@ -79,6 +80,9 @@ export default function TransactionLine({detail, setEdit}: Props) {
         error: detail.flag !== "Complete",
         notBalance: !detail.is_balance,
       })}>
+        <td className="date">
+          {withDate && dayjs(detail.create_time).format("MMM DD, YYYY")}
+        </td>
         <td>
           <Link href={`/transactions/${detail.id}`}>
             <div className="info">
@@ -86,9 +90,6 @@ export default function TransactionLine({detail, setEdit}: Props) {
               {detail.payee && <span className="payee">{detail.payee}</span>}
             </div>
           </Link>
-        </td>
-        <td>
-          {dayjs(detail.create_time).format("MMM DD, YYYY")}
         </td>
         <td>{outAccounts.map(it => (
           <Link href={`/accounts/${it.id}`} key={it.id}>
@@ -114,7 +115,8 @@ export default function TransactionLine({detail, setEdit}: Props) {
       <style jsx>{`
 
         tr {
-          border-bottom: 1px solid #dadada;
+
+
           border-left: 3px solid rgba(255, 255, 255, 0);
 
           &:hover {
@@ -123,6 +125,12 @@ export default function TransactionLine({detail, setEdit}: Props) {
 
           td {
             vertical-align: middle;
+            border-bottom: 1px solid #dadada;
+
+            &.date {
+              border-bottom: none;
+              font-size: 1.15em;
+            }
           }
         }
 

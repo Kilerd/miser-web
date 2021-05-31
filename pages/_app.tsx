@@ -9,6 +9,12 @@ import {LedgerProvider} from "../contexts/ledger";
 import Head from "next/head";
 import Modal from 'react-modal';
 import {useRouter} from "next/router";
+import dayjs from "dayjs";
+import timezone from "dayjs/plugin/timezone"
+import utc from "dayjs/plugin/utc"
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 Modal.setAppElement("#__next");
 
