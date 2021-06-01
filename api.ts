@@ -32,8 +32,15 @@ class Api {
     // this.api.post
   }
 
-  async newCommodity(name: string) {
-    const {data: res} = await this.client.post(`/ledgers/${this.currentLedgerId}/commodities`, {name})
+  async newCommodity(name: string, description: string, precision: string, prefix: string, postfix: string) {
+    const {data: res} = await this.client.post(`/ledgers/${this.currentLedgerId}/commodities`,
+      {
+        name,
+        description,
+        precision: parseInt(precision),
+        prefix,
+        postfix,
+      })
     return res.data;
   }
 

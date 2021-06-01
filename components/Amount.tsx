@@ -1,18 +1,19 @@
 import React from "react";
 import Big from 'big.js';
-import {show} from "@blueprintjs/core/lib/esnext/components/context-menu/contextMenu";
+import {useLedger} from "../contexts/ledger";
 
 interface Props {
-  prefix?: string,
   amount: Big,
-  postfix?: string,
   color?: boolean,
   about?: boolean,
-  size?: number
+  size?: number,
+  commodity: string,
 }
 
 export default function Amount(props: Props) {
+  const {commodities} = useLedger();
 
+  let targetCommodity = commodities[props.commodity];
   let amountBig = Big(props.amount)
   const positive = amountBig.s === 1;
 
@@ -23,14 +24,14 @@ export default function Amount(props: Props) {
   return <>
     <div className={`${colorCss} amount`}>
       <div>{about}{!positive && "-"}</div>
-      <div>{props.prefix}</div>
+      <div>{targetCommodity.prefix}</div>
       <div>{new Intl.NumberFormat('en-US', {
-        minimumFractionDigits: 2, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+        minimumFractionDigits: targetCommodity.precision, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
         maximumFractionDigits: 6, // (causes 2500.99 to be printed as $2,501)
-      }).format(amountBig.abs(0).toFixed(2))}</div>
+      }).format(amountBig.abs(0).toFixed(targetCommodity.precision))}</div>
 
-      {props.postfix &&
-      <div className="currency">{props.postfix}</div>
+      {targetCommodity.postfix &&
+      <div className="currency">{targetCommodity.postfix}</div>
       }
 
     </div>
@@ -52,6 +53,7 @@ export default function Amount(props: Props) {
         align-items: baseline;
         justify-content: flex-end;
         font-size: ${props.size || 1}em;
+
         .currency {
           margin-left: 0.5rem;
         }

@@ -101,7 +101,7 @@ export default function TransactionLine({detail, withDate, setEdit}: Props) {
             <Tag round minimal interactive key={it.id}>{it.value}</Tag>
           </Link>
         ))}</td>
-        <td><Amount amount={amount} prefix="¥" color/></td>
+        <td><Amount amount={amount} commodity={"CNY"} color/></td>
         <td>
           <Popover2 content={<Menu>
             <MenuItem text="Edit" icon="edit" onClick={() => setEdit(detail)}/>

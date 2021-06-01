@@ -69,14 +69,14 @@ function Page() {
             <div className="right">
               <Amount size={1.75} amount={targetAccount.summary.total.value}
                       about={targetAccount.summary.total.about}
-                      postfix={targetAccount.summary.total.commodity}/>
+                      commodity={targetAccount.summary.total.commodity}/>
 
               <div className="detail">
                 {Object.keys(targetAccount.summary.detail.data).sort().map(it => {
                   let targetAmount = targetAccount.summary.detail.data[it];
                   console.log("TargetAmount", targetAmount);
                   return <Amount key={it} size={1.15} amount={targetAmount}
-                                 postfix={it}/>
+                                 commodity={it}/>
                 })}
               </div>
             </div>

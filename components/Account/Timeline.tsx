@@ -66,7 +66,7 @@ const Client = (props: Props) => {
                 </td>
               }
 
-              <td><Amount amount={item.amount} postfix={item.commodity} color/></td>
+              <td><Amount amount={item.amount} commodity={item.commodity} color/></td>
             </tr>
           )}
           </tbody>

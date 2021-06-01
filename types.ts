@@ -55,6 +55,10 @@ export interface Account {
 export interface Commodity {
   id: number,
   name: string,
+  description?: string,
+  precision: number,
+  prefix?: string,
+  postfix?: string,
   is_deleted: boolean,
   last_price?: string,
   last_price_update_time?: string
