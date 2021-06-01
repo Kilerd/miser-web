@@ -1,5 +1,4 @@
 import React from "react";
-import {useRouter} from "next/router";
 import {ProtectRoute} from "../../contexts/auth";
 import {Button, H2, HTMLTable} from "@blueprintjs/core";
 import dayjs from "dayjs";
@@ -52,7 +51,7 @@ const Client = (props: Props) => {
           </thead>
           <tbody>
           {timeline.map(item =>
-            <tr key={item.id}>
+            <tr key={`${item.type}-${item.id}`}>
               <td>{dayjs(item.create_time).format("MMM DD, YYYY")}</td>
               {item.type === 'Balance' && item.pad == props.id ?
                 <td>{item.type} pad account</td> :

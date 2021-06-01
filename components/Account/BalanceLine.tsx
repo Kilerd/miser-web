@@ -1,14 +1,16 @@
 import React, {useState} from "react";
 import {ProtectRoute} from "../../contexts/auth";
+import {Button} from "@blueprintjs/core";
+import {DateInput, TimePrecision} from "@blueprintjs/datetime";
 import dayjs from "dayjs";
 import api from "../../api";
 import {useLedger} from "../../contexts/ledger";
+import Select from 'react-select';
 import Big from 'big.js';
-import BalanceLine from "./BalanceLine";
 
 interface Props {
   id: string,
-  commodities: string[]
+  commodity: string
 }
 
 const Client = (props: Props) => {
@@ -45,22 +47,49 @@ const Client = (props: Props) => {
   }
 
   async function submitBalance() {
-    await api.newAccountBalance(props.id, date.toDate(), padAccount, amount, "CNY")
+    await api.newAccountBalance(props.id, date.toDate(), padAccount, amount, props.commodity)
   }
 
   return <>
+
     <div>
 
-      <h2>Balance</h2>
-      {props.commodities.map(one =>
-        <BalanceLine id={props.id} commodity={one} key={one}/>
-      )}
+      <h3>{props.commodity}</h3>
+      <div className="line">
+        <DateInput
+          defaultValue={date.toDate()}
+          parseDate={(s) => new Date(s)}
+          formatDate={date => date.toLocaleString()}
+          highlightCurrentDay
+          shortcuts
+          showActionsBar
+          timePickerProps={{showArrowButtons: true}}
+          timePrecision={TimePrecision.MINUTE}
+          onChange={(date) => setDate(dayjs(date))}
+        />
+        <div className="select">
+          <Select
+            options={accountOptions}
+            onChange={(inputValue, actionMeta) => handleAccountChange(inputValue)}
+          />
+        </div>
+        <input type="number" className="input" value={amount} onChange={handlePadAmountChange}
+               placeholder="pad amount"/>
+        <Button disabled={!amountAvailable} onClick={submitBalance}>Submit</Button>
+      </div>
+
     </div>
     <style jsx>{`
-      
+      .line {
+        display: flex;
+
+        .select {
+          width: 100%;
+        }
+      }
     `}</style>
   </>
-};
+}
 
 
 export default ProtectRoute(Client)

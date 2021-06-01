@@ -1,19 +1,13 @@
 import {ProtectRoute} from "../../contexts/auth";
-import api, {get} from "../../api";
+import {get} from "../../api";
 import {useRouter} from "next/router";
 import AuthenticationLayout from "../../components/AuthenticationLayout";
 import {useLedger} from "../../contexts/ledger";
-import React, {useState} from "react";
-import Select from 'react-select';
-import {Button, FormGroup, H2, HTMLTable, Tab, Tabs, Tag} from "@blueprintjs/core";
-import Big from 'big.js';
+import React from "react";
+import {Tab, Tabs} from "@blueprintjs/core";
 import {Line} from "react-chartjs-2";
-import {DateInput, TimePrecision} from "@blueprintjs/datetime";
-import dayjs from "dayjs";
-import useSWR, {useSWRInfinite} from "swr";
-import {getUrlByTime} from "../../utils/swr";
+import useSWR from "swr";
 import Amount from "../../components/Amount";
-import Link from "next/link";
 import Timeline from "../../components/Account/Timeline";
 import Balance from "../../components/Account/Balance";
 import Setting from "../../components/Account/Setting";
@@ -89,7 +83,7 @@ function Page() {
           </div>
           <Tabs renderActiveTabPanelOnly large>
             <Tab id="timeline" title="Timeline" panel={<Timeline id={id}/>}/>
-            <Tab id="balance" title="Balance" panel={<Balance id={id}/>}/>
+            <Tab id="balance" title="Balance" panel={<Balance id={id} commodities={targetAccount.commodities}/>}/>
             <Tab id="setting" title="Setting" panel={<Setting {...targetAccount} />}/>
           </Tabs>
 

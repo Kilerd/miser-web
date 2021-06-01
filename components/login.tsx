@@ -4,7 +4,6 @@ import {useRouter} from "next/router";
 import Link from "next/link";
 import {Button} from "@blueprintjs/core";
 import {BASE_URL} from "../api";
-import Image from 'next/image'
 
 const loginTab = (myUrl): Promise<string> => {
   const windowArea = {
@@ -52,6 +51,7 @@ const Login = () => {
   const router = useRouter();
 
   const disabled = email === "" || password === ""
+
   async function handleLogin() {
     await authContextType.login(email, password);
     await router.push("/dashboard");
@@ -82,7 +82,7 @@ const Login = () => {
             <p className="tips">Don't have an account yet? <Link href="/register">Join Us</Link></p>
           </div>
           <div className="more">
-            <Button  onClick={handleGithubLogin}>Login In with Github</Button>
+            <Button onClick={handleGithubLogin}>Login In with Github</Button>
           </div>
         </div>
       </div>
@@ -109,6 +109,7 @@ const Login = () => {
           div.logo {
             width: 100%;
             padding: 2rem 0;
+
             img.logo {
               width: 100px;
               height: 100px;
@@ -117,9 +118,14 @@ const Login = () => {
             display: flex;
             justify-content: center;
           }
+
           div.form {
-          display: flex;
-          flex-direction: column;
+            display: flex;
+            flex-direction: column;
+
+            input {
+              margin-bottom: 1.5rem;
+            }
           }
         }
 
