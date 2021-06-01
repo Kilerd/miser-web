@@ -36,6 +36,10 @@ function Journals() {
     setEditTrxStatus(true)
   };
 
+  const refresh = () => {
+    revalidate()
+  }
+
   return (
     <>
       <AuthenticationLayout>
@@ -47,7 +51,7 @@ function Journals() {
             <h1>Journals</h1>
             <div className="right">
               <Button onClick={() => setNewTrxStatus(true)} icon="insert"/>
-              <Button onClick={revalidate} icon="refresh"/>
+              <Button onClick={refresh} icon="refresh"/>
             </div>
           </div>
 

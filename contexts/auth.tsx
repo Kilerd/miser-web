@@ -3,7 +3,6 @@ import Cookies from 'js-cookie'
 import {useRouter} from 'next/router'
 import api from '../api'
 import {User} from "../types";
-import {useLedger} from "./ledger";
 import {Spinner} from "@blueprintjs/core";
 
 
@@ -21,7 +20,7 @@ export interface AuthContextType {
   loginWithToken(token: string): void;
 }
 
-const UNAUTHENTICATED_ROUTE = ["login", 'register']
+const UNAUTHENTICATED_ROUTE = ["/login", '/register']
 const AuthContext = createContext({} as AuthContextType);
 
 export const AuthProvider = ({children}) => {
@@ -93,7 +92,7 @@ export const ProtectRoute = (ChildComponent) => (args) => {
 
   if (!isAuthenticated && !UNAUTHENTICATED_ROUTE.includes(router.asPath)) {
     router.push("/");
-    return <Spinner />;
+    return <Spinner/>;
   }
   return <ChildComponent {...args} />;
 };

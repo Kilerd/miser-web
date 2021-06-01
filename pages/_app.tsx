@@ -12,11 +12,15 @@ import {useRouter} from "next/router";
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone"
 import utc from "dayjs/plugin/utc"
+import {Toaster} from "@blueprintjs/core";
+import {useEffect} from "react";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
 Modal.setAppElement("#__next");
+
+export const AppToaster = null;
 
 const WrappedApp = ({Component, pageProps}) => {
   let router = useRouter();
@@ -31,8 +35,10 @@ const WrappedApp = ({Component, pageProps}) => {
         <Component {...pageProps} />
       </>
     )
-
   }
+
+  useEffect(() => {
+  }, [])
   return (
     <>
       <Head>
