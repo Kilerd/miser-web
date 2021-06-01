@@ -18,6 +18,7 @@ function Journals() {
     data: patchTransactions,
     revalidate,
     setSize,
+    isValidating,
     size
   } = useSWRInfinite(getUrlByTime(`/ledgers/${ledger_id}/journals`, 'create_time'), get);
 
@@ -26,8 +27,6 @@ function Journals() {
   const isReachingEnd =
     isEmpty || (patchTransactions && patchTransactions[patchTransactions.length - 1]?.length < 1);
 
-
-  const [newTrxStatus, setNewTrxStatus] = useState(false);
 
   const [editTrx, setEdit] = useState(undefined);
   const [editTrxStatus, setEditTrxStatus] = useState(false);
@@ -43,15 +42,14 @@ function Journals() {
   return (
     <>
       <AuthenticationLayout>
-        <NewTransactionModal modalStatus={newTrxStatus} setModalStatus={setNewTrxStatus}/>
+
         <EditTransactionModal detail={editTrx} modalStatus={editTrxStatus} setModalStatus={setEditTrxStatus}/>
 
         <div className="container">
           <div className="header">
             <h1>Journals</h1>
             <div className="right">
-              <Button onClick={() => setNewTrxStatus(true)} icon="insert"/>
-              <Button onClick={refresh} icon="refresh"/>
+              <Button onClick={refresh} minimal icon="refresh"/>
             </div>
           </div>
 
@@ -77,7 +75,8 @@ function Journals() {
           </HTMLTable>
 
           <div className="more">
-            <Button icon="more" minimal disabled={isReachingEnd} onClick={() => setSize(size + 1)}/>
+            <Button icon={isValidating ? "walk" : "more"} minimal disabled={isReachingEnd}
+                    onClick={() => setSize(size + 1)}/>
           </div>
 
         </div>
@@ -87,6 +86,7 @@ function Journals() {
           display: flex;
           flex-direction: row;
           justify-content: space-between;
+          align-items: center;
         }
 
         div.more {

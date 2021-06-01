@@ -1,12 +1,13 @@
 import {useAuth} from "../contexts/auth";
-import React from "react";
+import React, {useState} from "react";
 import {useLedger} from "../contexts/ledger";
-import {Classes, Icon, Menu, MenuDivider, MenuItem, Popover, Position} from "@blueprintjs/core";
+import {Classes, Divider, Icon, Menu, MenuDivider, MenuItem, Popover, Position} from "@blueprintjs/core";
 import Link from "next/link";
 import {useRouter} from "next/router";
+import NewTransactionModal from "./NewTransactionModal";
 
 export default function Nav() {
-  const {user, logout} = useAuth();
+  const {logout} = useAuth();
   const ledgerContext = useLedger();
   const router = useRouter();
   const ledgerChange = (newLedgerId) => {
@@ -15,7 +16,7 @@ export default function Nav() {
     }
   }
 
-  console.log(router);
+  const [newTrxStatus, setNewTrxStatus] = useState(false);
 
   const name = ledgerContext.ledgers[ledgerContext.ledger_id]?.name;
   const elements = Object.values(ledgerContext.ledgers).map(ledger =>
@@ -23,10 +24,10 @@ export default function Nav() {
               onClick={() => ledgerChange(ledger.id)} text={ledger.name}/>
   );
 
-
   return (
     <>
       <nav>
+        <NewTransactionModal modalStatus={newTrxStatus} setModalStatus={setNewTrxStatus}/>
         <div className="top">
           <div className="ledger">
             <Popover content={<Menu>
@@ -39,6 +40,12 @@ export default function Nav() {
 
           </div>
 
+
+          <div className={`nav-btn create-trx-btn`} onClick={(e) => setNewTrxStatus(true)}>
+            <Icon className={Classes.MINIMAL} icon="plus"/>
+            <p>New Transaction</p>
+          </div>
+          <Divider/>
           <Link href="/dashboard">
             <div className={`nav-btn ${router.asPath === '/dashboard' ? "active" : ""}`}>
               <Icon className={Classes.MINIMAL} icon="control"/>
@@ -137,6 +144,17 @@ export default function Nav() {
 
           p {
             margin: 0 0 0 0.5rem;
+          }
+        }
+
+        div.create-trx-btn {
+          border: 1px solid #dadada;
+          background-color: #fff;
+
+          &:hover {
+            border: 1px solid #999999;
+
+            color: #000
           }
         }
       `}</style>
