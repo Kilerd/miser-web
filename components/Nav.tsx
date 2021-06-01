@@ -113,6 +113,7 @@ export default function Nav() {
 
         div.ledger {
           margin-bottom: 1rem;
+          cursor: pointer;
         }
 
         div.current-ledger {

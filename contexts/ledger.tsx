@@ -83,8 +83,8 @@ export const LedgerProvider = ({children}) => {
     Cookies.set("CURRENT_LEDGER_ID", id, {expires: 60})
     api.setLedgerId(id);
     setLedgerId(id);
-    if (ledgers[ledgerId] !== null) {
-      dayjs.tz.setDefault(ledgers[ledgerId].timezone);
+    if (ledgers.result[ledgerId] !== undefined) {
+      dayjs.tz.setDefault(ledgers.result[ledgerId].timezone);
     }else {
       dayjs.tz.setDefault()
     }
