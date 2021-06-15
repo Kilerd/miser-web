@@ -4,16 +4,15 @@ import "../node_modules/@blueprintjs/icons/lib/css/blueprint-icons.css";
 import "../node_modules/normalize.css/normalize.css";
 import "../node_modules/@blueprintjs/datetime/lib/css/blueprint-datetime.css"
 import * as React from 'react';
-import {AuthProvider} from "../contexts/auth";
-import {LedgerProvider} from "../contexts/ledger";
 import Head from "next/head";
 import Modal from 'react-modal';
 import {useRouter} from "next/router";
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone"
 import utc from "dayjs/plugin/utc"
-import {Toaster} from "@blueprintjs/core";
 import {useEffect} from "react";
+import {LedgerProvider} from "../contexts/ledger";
+import {AuthProvider} from "../contexts/auth";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -23,7 +22,7 @@ Modal.setAppElement("#__next");
 export const AppToaster = null;
 
 const WrappedApp = ({Component, pageProps}) => {
-  let router = useRouter();
+  const router = useRouter();
   if (router.asPath.startsWith("/oauth")) {
     return (
       <>

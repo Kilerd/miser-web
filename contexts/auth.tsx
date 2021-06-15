@@ -1,9 +1,9 @@
 import React, {createContext, useContext, useEffect, useState} from 'react'
 import Cookies from 'js-cookie'
 import {useRouter} from 'next/router'
+import {Spinner} from "@blueprintjs/core";
 import api from '../api'
 import {User} from "../types";
-import {Spinner} from "@blueprintjs/core";
 
 
 export interface AuthContextType {
@@ -24,6 +24,7 @@ const UNAUTHENTICATED_ROUTE = ["/login", '/register']
 const AuthContext = createContext({} as AuthContextType);
 
 export const AuthProvider = ({children}) => {
+  const router = useRouter();
   const [user, setUser] = useState(undefined);
   const [loading, setLoading] = useState(true);
 
@@ -46,18 +47,20 @@ export const AuthProvider = ({children}) => {
   }, [])
 
 
-  const login = async (email, password) => {
-    const token = await api.login(email, password)
-    if (token) {
-      await loginWithToken(token)
-    }
-  }
   const loginWithToken = async (token) => {
     Cookies.set('token', token, {expires: 60})
     api.client.defaults.headers.Authorization = `Bearer ${token}`
     const userData = await api.getUserInfo()
     setUser(userData)
   }
+
+  const login = async (email, password) => {
+    const token = await api.login(email, password)
+    if (token) {
+      await loginWithToken(token)
+    }
+  }
+
 
   const register = async (email, username, password) => {
     const token = await api.register(email, username, password)
@@ -77,6 +80,7 @@ export const AuthProvider = ({children}) => {
   if (loading) {
     return <div>auth loading</div>
   }
+
   return (
     <AuthContext.Provider value={{isAuthenticated: !!user, user, login, loading, logout, register, loginWithToken}}>
       {children}
