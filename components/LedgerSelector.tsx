@@ -22,29 +22,6 @@ export default function Component(props: Props) {
         </div>
 
         <style jsx>{`
-          div.green {
-            color: green !important;
-          }
-
-          div.red {
-            color: red !important;
-          }
-
-          div.amount {
-            font-family: monospace, serif;
-            display: flex;
-            flex-direction: row;
-            color: #535353;
-            align-items: baseline;
-            justify-content: flex-end;
-            font-size: ${props.size || 1}em;
-
-            .currency {
-              margin-left: 0.5rem;
-            }
-          }
-
-
         `}</style>
     </>
 }
