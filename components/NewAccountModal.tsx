@@ -2,8 +2,6 @@ import React, {useEffect, useState} from "react";
 import Modal from 'react-modal'
 import api from "../api";
 import {useLedger} from "../contexts/ledger";
-import {NEXT_PROJECT_ROOT} from "next/dist/lib/constants";
-import {use} from "ast-types";
 
 export default function NewAccountModal({modalStatus, setModalStatus}) {
   const ledgerContext = useLedger();

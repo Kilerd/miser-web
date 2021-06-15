@@ -1,15 +1,14 @@
-import React, {createContext, useCallback, useContext, useEffect, useState} from "react";
+import React, {createContext, useContext, useEffect, useState} from "react";
 import Cookies from 'js-cookie'
 import dayjs from "dayjs";
+import {useAsync} from "react-async-hook";
 import api from "../api";
 import {useAuth} from "./auth";
 import {Account, Commodity, IdMap, Ledger, NameMap, RESOURCE_TYPE, User} from "../types"
-import {useAsync} from "react-async-hook";
 import LedgerSelector from '../components/LedgerSelector'
 
-interface LedgerContext {
+interface LedgerContextProps {
     ledger_id: string,
-    // transactions: IdMap<any>,
     ledgers: IdMap<Ledger>,
     accounts: IdMap<Account>,
     commodities: NameMap<Commodity>
@@ -19,8 +18,6 @@ interface LedgerContext {
     changeLedgerId(id: string): void,
 
     update(type: RESOURCE_TYPE): void;
-
-    // loadMoreTransaction(): void;
 }
 
 interface UserLocalData {
@@ -40,11 +37,11 @@ function initCurrentLedger(user: User | undefined): UserLocalData | null {
     return JSON.parse(item);
 }
 
-function initContext(): LedgerContext {
+function initContext(): LedgerContextProps {
     return {
         ledger_id: Cookies.get("CURRENT_LEDGER_ID"),
         // transactions: {}
-    } as LedgerContext
+    } as LedgerContextProps
 }
 
 
@@ -52,7 +49,7 @@ const LedgerContext = createContext(initContext());
 export const useLedger = () => useContext(LedgerContext)
 
 
-export const LedgerProvider = ({children}) => {
+export const LedgerProvider = ({children}: any) => {
 
     const {user} = useAuth();
 
@@ -70,7 +67,7 @@ export const LedgerProvider = ({children}) => {
             }
         }
         localStorage.setItem(`user_data_${user.id}`, JSON.stringify(userData))
-        api.setLedgerId(id);
+        api.setLedgerId(parseInt(id, 10));
         setLedgerId(id);
         if (ledgers[ledgerId] !== undefined) {
             dayjs.tz.setDefault(ledgers[ledgerId].timezone);
@@ -82,7 +79,7 @@ export const LedgerProvider = ({children}) => {
     }
 
     const loadAndSetledgers = async () => {
-        let data = await api.loadLedgers();
+        const data = await api.loadLedgers();
         setLedgers(data);
         if (ledgerId !== null && data[ledgerId] !== null) {
             dayjs.tz.setDefault(data[ledgerId].timezone);
@@ -127,15 +124,17 @@ export const LedgerProvider = ({children}) => {
             case "COMMODITY":
                 await commodities.execute();
                 break;
+            default:
+                break;
         }
     }
 
 
     const getAccountAlias = (id: number) => {
-        let account = accounts.result[id];
+        const account = accounts.result[id];
         return account?.alias || account?.name;
     }
-    if (accounts.loading || commodities.loading || ledgers.loading) {
+    if (accounts.loading || commodities.loading || ledgers) {
         return <div>ledger loading</div>
     }
     if (ledgerId === null && user !== undefined) {
@@ -146,7 +145,7 @@ export const LedgerProvider = ({children}) => {
         <LedgerContext.Provider
             value={{
                 ledger_id: ledgerId,
-                ledgers: ledgers,
+                ledgers,
                 accounts: accounts.result,
                 commodities: commodities.result,
                 getAccountAlias,
