@@ -27,7 +27,6 @@ interface UserLocalData {
     user_id: number,
     selectedLedger?: {
         id: number,
-        name: string
     },
 
 }
