@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 import {IdMap, Ledger} from "../types";
 
@@ -19,6 +20,8 @@ export default function Component(props: Props) {
                     return <button key={ledger_id} type="submit" onClick={() => selectLedger(ledger_id)}>{ledger.name}</button>
                 })}
             </ul>
+
+            <Link href="/ledgers"> goto create a ledger</Link>
         </div>
 
         <style jsx>{`

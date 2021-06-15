@@ -6,6 +6,8 @@ import api from "../api";
 import {useAuth} from "./auth";
 import {Account, Commodity, IdMap, Ledger, NameMap, RESOURCE_TYPE, User} from "../types"
 import LedgerSelector from '../components/LedgerSelector'
+import {useRouter} from "next/router";
+import {Spinner} from "@blueprintjs/core";
 
 interface LedgerContextProps {
     ledger_id: string,
@@ -49,9 +51,12 @@ const LedgerContext = createContext(initContext());
 export const useLedger = () => useContext(LedgerContext)
 
 
+const UNAUTHENTICATED_ROUTE = ["/ledgers"]
+
 export const LedgerProvider = ({children}: any) => {
 
     const {user} = useAuth();
+    const router = useRouter();
 
     const [ledgerId, setLedgerId] = useState(null);
     const [ledgers, setLedgers] = useState({});
@@ -60,6 +65,7 @@ export const LedgerProvider = ({children}: any) => {
     const accounts = useAsync(async () => ledgerId !== null ? api.loadAccount() : {}, [ledgerId]);
 
     const changeLedgerId = (id: string) => {
+        console.log("set ledger id ", id);
         const userData: UserLocalData = {
             user_id: user.id, selectedLedger: {
                 id: parseInt(id, 10),
@@ -134,10 +140,11 @@ export const LedgerProvider = ({children}: any) => {
         const account = accounts.result[id];
         return account?.alias || account?.name;
     }
-    if (accounts.loading || commodities.loading || ledgers) {
+    if (accounts.loading || commodities.loading) {
         return <div>ledger loading</div>
     }
-    if (ledgerId === null && user !== undefined) {
+
+    if (ledgerId === null && user !== undefined  &&  !UNAUTHENTICATED_ROUTE.includes(router.asPath) ) {
         return <LedgerSelector selectLedger={changeLedgerId} ledgers={ledgers}/>
     }
 
