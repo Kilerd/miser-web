@@ -48,7 +48,7 @@ export const AuthProvider = ({children}) => {
 
 
   const loginWithToken = async (token) => {
-    Cookies.set('token', token, {expires: 60})
+    Cookies.set('token', token, {expires: 7})
     api.client.defaults.headers.Authorization = `Bearer ${token}`
     const userData = await api.getUserInfo()
     setUser(userData)
