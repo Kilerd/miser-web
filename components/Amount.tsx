@@ -24,14 +24,14 @@ export default function Amount(props: Props) {
   return <>
     <div className={`${colorCss} amount`}>
       <div>{about}{!positive && "-"}</div>
-      <div>{targetCommodity.prefix}</div>
+      <div>{targetCommodity?.prefix}</div>
       <div>{new Intl.NumberFormat('en-US', {
-        minimumFractionDigits: targetCommodity.precision, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+        minimumFractionDigits: targetCommodity?.precision || 2, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
         maximumFractionDigits: 6, // (causes 2500.99 to be printed as $2,501)
-      }).format(amountBig.abs(0).toFixed(targetCommodity.precision))}</div>
+      }).format(amountBig.abs(0).toFixed(targetCommodity?.precision || 2))}</div>
 
-      {targetCommodity.postfix &&
-      <div className="currency">{targetCommodity.postfix}</div>
+      {targetCommodity?.postfix &&
+      <div className="currency">{targetCommodity?.postfix}</div>
       }
 
     </div>
