@@ -1,9 +1,10 @@
 import Axios, {AxiosInstance} from 'axios'
 import {Commodity, NameMap} from "./types";
+import Cookies from 'js-cookie'
 
 const urls = {
-  development: "http://192.168.10.100:8000",
-  production: "https://miser.3min.work/api"
+    development: "http://192.168.10.100:8000",
+    production: "https://miser.3min.work/api"
 }
 
 export const BASE_URL = urls[process.env.NODE_ENV];
@@ -93,7 +94,8 @@ class Api {
     }
 
     async getUserInfo() {
-        return (await this.client.get("/user")).data.data
+        const newVar = await get("/user");
+        return newVar
     }
 
     async login(email, password) {
@@ -259,6 +261,26 @@ export const getToIdMap = async (url) => {
 }
 
 export const get = async (url) => {
-    const axiosResponse = await api.client.get(url);
-    return axiosResponse.data.data;
+    try {
+        const axiosResponse = await api.client.get(url);
+        return axiosResponse.data.data;
+    } catch (error) {
+        if (error.response) {
+            if (error.response.status === 401) {
+                Cookies.remove('token');
+                window.location.pathname = '/';
+            }
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+        } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log('Error', error.message);
+        }
+        console.log(error.config);
+    }
+
+
 }
