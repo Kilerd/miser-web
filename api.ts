@@ -3,11 +3,20 @@ import {Commodity, NameMap} from "./types";
 import Cookies from 'js-cookie'
 
 const urls = {
-    development: "http://192.168.10.100:8000",
-    production: "https://miser.3min.work/api"
+    development: {
+        scheme: "http",
+        url: "192.168.10.100:8000",
+        domain: "192.168.10.100:8000"
+    },
+    production: {
+        scheme: "https",
+        url: "api.miser.3min.work",
+        domain: "miser.3min.work"
+    }
 }
 
-export const BASE_URL = urls[process.env.NODE_ENV];
+export const BASE_ENV = urls[process.env.NODE_ENV];
+export const BASE_URL = `${BASE_ENV.scheme}://${BASE_ENV.url}`;
 
 class Api {
 
