@@ -17,10 +17,10 @@ const Register = () => {
 
     return (
         <div>
-            {email}
-            <input type="text" value={email} onChange={e => setEmail(e.target.value)}/>
-            <input type="text" value={username} onChange={e => setUsername(e.target.value)}/>
-            <input type="password" value={password} onChange={e => setPassword(e.target.value)}/>
+
+            <div>email: <input type="text" value={email} onChange={e => setEmail(e.target.value)}/></div>
+            <div>username: <input type="text" value={username} onChange={e => setUsername(e.target.value)}/></div>
+            <div>password: <input type="password" value={password} onChange={e => setPassword(e.target.value)}/></div>
             <button type="submit" onClick={handleLogin}>login</button>
         </div>
     )
