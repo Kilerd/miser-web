@@ -62,12 +62,12 @@ export function accountTreeGenerator(value: { [id: number]: Account }) {
     }
   };
   Object.values(value).forEach(it => {
-    let strings = it.full_name.split(':');
-    let accountType = strings[0].toLocaleLowerCase();
+    const strings = it.name.split(':');
+    const accountType = strings[0].toLocaleLowerCase();
     let targetCategory = ret[accountType];
-    let parents = [targetCategory];
-    for (let i = 1; i < strings.length - 1; i++) {
-      let item = strings[i];
+    const parents = [targetCategory];
+    for (let i = 1; i < strings.length - 1; i+=1) {
+      const item = strings[i];
       if (!(item in targetCategory.children)) {
         targetCategory.children[item] = {
           name: item,
@@ -81,11 +81,11 @@ export function accountTreeGenerator(value: { [id: number]: Account }) {
       targetCategory = targetCategory.children[item];
       parents.push(targetCategory);
     }
-    let leafItem = strings[strings.length - 1];
+    const leafItem = strings[strings.length - 1];
     if (targetCategory.children[leafItem] === undefined) {
       targetCategory.children[leafItem] = {
         name: leafItem,
-        fullName: it.full_name,
+        fullName: it.name,
         isAvailable: true,
         alias: it.alias,
         commodities: it.commodities,
@@ -112,7 +112,6 @@ export function accountTreeGenerator(value: { [id: number]: Account }) {
 
 function Accounts() {
 
-  const {user} = useAuth();
   const ledgerContext = useLedger();
   const [modalIsOpen, setIsOpen] = useState(false);
 

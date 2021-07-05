@@ -25,7 +25,7 @@ export default function NewTransactionModal({modalStatus, setModalStatus}) {
 
   const [isLoading, setLoading] = useState(false);
   const canBeSubmit = !isLoading
-    && (payee !== "" || narration != "")
+    && (payee !== "" || narration !== "")
     && lines.filter(it => it.account !== null && it.amount !== "" && it.amount !== null && it.commodity !== null).length === lines.length;
 
   const canDeleteLine = lines.length > 2;
@@ -46,8 +46,8 @@ export default function NewTransactionModal({modalStatus, setModalStatus}) {
 
   const accountOptions = Object.values(Object.values(ledgerContext.accounts)
     .reduce((ret, it) => {
-      const type = it.full_name.split(":")[0];
-      const item = {label: it.full_name, value: it.id};
+      const type = it.name.split(":")[0];
+      const item = {label: it.name, value: it.id};
       ret[type] = ret[type] || {label: type.toUpperCase(), options: []}
       ret[type].options.push(item);
       return ret;
@@ -67,7 +67,7 @@ export default function NewTransactionModal({modalStatus, setModalStatus}) {
   const submit = async () => {
     setLoading(true);
     const lineReq = lines.map(line => ({
-      account: parseInt(line.account.value),
+      account: parseInt(line.account.value, 10),
       amount: [line.amount, line.commodity],
       description: ""
     }));
@@ -138,7 +138,7 @@ export default function NewTransactionModal({modalStatus, setModalStatus}) {
                 onChange={(e) => setTags(e.filter((it, idx) => e.indexOf(it) === idx))}
                 rightElement={<Button
                   icon="cross"
-                  minimal={true}
+                  minimal
                   onClick={() => setTags([])}
                 />}
               />

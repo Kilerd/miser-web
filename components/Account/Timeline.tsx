@@ -52,13 +52,13 @@ const Client = (props: Props) => {
           <tbody>
           {timeline.map(item =>
             <tr key={`${item.type}-${item.id}`}>
-              <td>{dayjs(item.create_time).format("MMM DD, YYYY")}</td>
-              {item.type === 'Balance' && item.pad == props.id ?
+              <td>{dayjs(item.time).format("MMM DD, YYYY")}</td>
+              {item.type === 'Balance' && item.pad === props.id ?
                 <td>{item.type} pad account</td> :
                 <td>{item.type}</td>
               }
 
-              {item.type === 'Balance' && item.pad == props.id ?
+              {item.type === 'Balance' && item.pad === props.id ?
                 <td>{`change by account ${ledgerContext.getAccountAlias(item.account)} balance`}</td> :
                 <td>
                   <Link href={`/transactions/${item.transaction_id}`}><p

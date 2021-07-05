@@ -8,6 +8,7 @@ import Select from 'react-select';
 import {useLedger} from "../../contexts/ledger";
 import api from "../../api";
 import {useRouter} from "next/router";
+import AccountSelector from "../../components/AccountSelector";
 
 
 function Page() {
@@ -20,8 +21,8 @@ function Page() {
   const [payee, setPayee] = useState("");
   const [narration, setNarration] = useState("");
   const [lines, setLines] = useState([
-    {account: null, amount: "", commodity: null, commodity_candidates: []},
-    {account: null, amount: "", commodity: null, commodity_candidates: []}
+    {account: null, amount: undefined, commodity: null, commodity_candidates: []},
+    {account: null, amount: undefined, commodity: null, commodity_candidates: []}
   ])
 
 
@@ -32,6 +33,7 @@ function Page() {
     newLines[index][fieldId] = e.target.value;
     setLines(newLines);
   }
+
   const newLine = () => {
     setLines([
       ...lines,
@@ -42,21 +44,10 @@ function Page() {
     setLines(lines.filter((value, index) => index != target_index));
   }
 
-  const accountOptions = Object.values(Object.values(ledgerContext.accounts)
-    .reduce((ret, it) => {
-      const type = it.full_name.split(":")[0];
-      const item = {label: it.full_name, value: it.id};
-      ret[type] = ret[type] || {label: type.toUpperCase(), options: []}
-      ret[type].options.push(item);
-      return ret;
-    }, {})).sort()
-
-
-  function handleAccountChange(e: any, index: number) {
-    const selectAccountId = e.value;
+  function handleAccountChange(newAccountId: number, index: number) {
     const newLines = [...lines]
-    newLines[index].account = e;
-    let commodityCandidates = ledgerContext.accounts[selectAccountId]?.commodities || [];
+    newLines[index].account = newAccountId;
+    const commodityCandidates = ledgerContext.accounts[newAccountId]?.commodities || [];
     newLines[index].commodity_candidates = commodityCandidates;
     newLines[index].commodity = commodityCandidates.length > 0 ? commodityCandidates[0] : null;
     setLines(newLines);
@@ -64,7 +55,7 @@ function Page() {
 
   const submit = async () => {
     let linesReq = lines.map(it=> ({
-      account: it.account.value,
+      account: it.account,
       amount: [it.amount, it.commodity]
     }));
     await api.createNewSchedulerTask({
@@ -121,12 +112,8 @@ function Page() {
           <h3>Lines</h3>
           <button onClick={newLine}>new Lines</button>
           {lines.map((one, index) =>
-            <div className="line">
-              <Select
-                defaultValue={one.account}
-                options={accountOptions}
-                onChange={(inputValue, actionMeta) => handleAccountChange(inputValue, index)}
-              />
+            <div className="line" key={index}>
+              <AccountSelector value={one.amount} onChange={(newAccountId) => handleAccountChange(newAccountId, index)} />
               <input type="number" placeholder="Amount" className="input" value={one.amount}
                      onChange={e => handleLineChange(e, index, "amount")}/>
 

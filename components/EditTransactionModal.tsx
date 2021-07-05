@@ -25,27 +25,27 @@ export default function EditTransactionModal({detail, modalStatus, setModalStatu
   useEffect(() => {
 
     if (detail !== undefined) {
-      setDate(dayjs(detail.create_time));
+      setDate(dayjs(detail.time));
       setPayee(detail.payee);
       setNarration(detail.narration);
       setTags(detail.tags);
-      setLines(detail.lines.map(it => {
+      setLines(detail.postings.map(it => {
         const targetAccount = ledgerContext.accounts[it.account];
 
         return {
-          account: {label: targetAccount.full_name, value: targetAccount.id},
+          account: {label: targetAccount.name, value: targetAccount.id},
           amount: it.cost[0],
           commodity: it.cost[1],
           commodity_candidates: targetAccount.commodities
         }
       }))
-      setSimpleMode(detail.lines.length === 2)
+      setSimpleMode(detail.postings.length === 2)
     }
   }, [detail])
 
   const [isLoading, setLoading] = useState(false);
   const canBeSubmit = !isLoading
-    && (payee !== "" || narration != "")
+    && (payee !== "" || narration !== "")
     && lines.filter(it => it.account !== null && it.amount !== "" && it.amount !== null && it.commodity !== null).length === lines.length;
 
 
@@ -67,8 +67,8 @@ export default function EditTransactionModal({detail, modalStatus, setModalStatu
 
   const accountOptions = Object.values(Object.values(ledgerContext.accounts)
     .reduce((ret, it) => {
-      const type = it.full_name.split(":")[0];
-      const item = {label: it.full_name, value: it.id};
+      const type = it.name.split(":")[0];
+      const item = {label: it.name, value: it.id};
       ret[type] = ret[type] || {label: type.toUpperCase(), options: []}
       ret[type].options.push(item);
       return ret;

@@ -70,7 +70,7 @@ function SingleTransactionPage() {
                   </tr>
                   </thead>
                   <tbody>
-                  {transaction.lines.map(it => (
+                  {transaction.postings.map(it => (
                     <tr key={it.id}>
                       <td>{it.id}</td>
                       <td>{getAccountAlias(it.account)}</td>

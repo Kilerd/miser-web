@@ -34,8 +34,6 @@ export interface Account {
   id: number,
   name: string,
   alias?: string,
-  full_name: string,
-  ledger_id: number,
   status: AccountStatus,
   commodities: string[],
   summary: {

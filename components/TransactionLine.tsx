@@ -22,14 +22,14 @@ export default function TransactionLine({detail, withDate, setEdit}: Props) {
 
 
   // todo multiple commodities
-  const outAccounts = detail.lines
+  const outAccounts = detail.postings
     .filter(value => new Big(value.cost[0]).s === -1)
     .map(value => value.account)
     .map(it => ({
       id: it,
       value: getAccountAlias(it)
     }));
-  const inAccounts = detail.lines
+  const inAccounts = detail.postings
     .filter(value => new Big(value.cost[0]).s === 1)
     .map(value => value.account)
     .map(it => ({
@@ -38,11 +38,11 @@ export default function TransactionLine({detail, withDate, setEdit}: Props) {
     }));
 
   let amount = new Big(0);
-  detail.lines.forEach(it => {
+  detail.postings.forEach(it => {
     const targetAccount = accounts[it.account];
-    if (targetAccount.full_name.startsWith("Income")) {
+    if (targetAccount.name.startsWith("Income")) {
       amount = amount.sub(new Big(it.cost[0]));
-    } else if (targetAccount.full_name.startsWith("Expenses")) {
+    } else if (targetAccount.name.startsWith("Expenses")) {
       amount = amount.sub(new Big(it.cost[0]));
     }
   });

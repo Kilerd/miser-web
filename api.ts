@@ -5,8 +5,8 @@ import Cookies from 'js-cookie'
 const urls = {
     development: {
         scheme: "http",
-        url: "192.168.10.100:8000",
-        domain: "192.168.10.100:8000"
+        url: "127.0.0.1:8000",
+        domain: "127.0.0.1:8000"
     },
     production: {
         scheme: "https",
@@ -33,12 +33,16 @@ class Api {
         })
     }
 
-    setLedgerId(id: number) {
-        this.currentLedgerId = id.toString();
+    setLedgerId(id: string) {
+        this.currentLedgerId = id;
     }
 
-    async updateCommodity(id: number, name: string) {
-        // this.api.post
+    async updateCommodity(id: number, precision: number, prefix: string | null, postfix: string | null) {
+
+        await this.client.put(`/ledgers/${this.currentLedgerId}/commodities/${id}`,
+            {
+                 precision, prefix, postfix
+            })
     }
 
     async newCommodity(name: string, description: string, precision: string, prefix: string, postfix: string) {
@@ -46,7 +50,7 @@ class Api {
             {
                 name,
                 description,
-                precision: parseInt(precision),
+                precision: parseInt(precision, 10),
                 prefix,
                 postfix,
             })
@@ -120,23 +124,23 @@ class Api {
 
     async createTransaction(date: Date, payee: string, narration: string, tags: string[], links: string[], lines: any[]) {
         return await this.client.post(`/ledgers/${this.currentLedgerId}/transactions`, {
-            date,
+            time: date,
             payee,
             narration,
             tags,
             links,
-            lines
+            postings: lines
         })
     }
 
     async updateTransaction(id: number, date: Date, payee: string, narration: string, tags: string[], links: string[], lines: any[]) {
         return await this.client.put(`/ledgers/${this.currentLedgerId}/transactions/${id}`, {
-            date,
+            time: date,
             payee,
             narration,
             tags,
             links,
-            lines
+            postings: lines
         })
     }
 
@@ -148,7 +152,7 @@ class Api {
         const accountType = name.split(':')[0];
         let data = {
             account_type: accountType,
-            full_name: name,
+            name,
             alias: alias === '' ? null : alias,
             commodities: selectedCommodityMap,
             init: {
@@ -166,7 +170,7 @@ class Api {
     async updateAccount(id: number, name: string, alias: string, commodities: string[]) {
         return await this.client.put(`/ledgers/${this.currentLedgerId}/accounts/${id}`, {
             account_type: "Expenses",
-            full_name: name,
+            name,
             alias,
             commodities
         })
@@ -184,19 +188,6 @@ class Api {
                 'Content-Type': 'multipart/form-data'
             }
         })
-    }
-
-    async loadTransactionsByAccounts(id: string | string[], createTime: Date | null) {
-        const {data: trxRes} = await this.client.get(`/ledgers/${this.currentLedgerId}/accounts/${id}/journals`, {
-            params: {"create_time": createTime || new Date()}
-        });
-        const transactions = trxRes.data;
-
-        let trxMap: { [id: number]: any } = {}
-        for (let transaction of transactions) {
-            trxMap[transaction.id] = transaction;
-        }
-        return trxMap;
     }
 
     async newAccountBalance(id: string, date: Date, padAccount: unknown, amount: string, commodity: string) {

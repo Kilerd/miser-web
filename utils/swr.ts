@@ -7,7 +7,7 @@ export const getUrlByTime = (url, param_name) => {
       return url
     }
     let temp = sortByDate(previousPageData, param_name);
-    let time = temp[temp.length-1].create_time;
+    let time = temp[temp.length-1].time;
     return `${url}?${param_name}=${time}`
   }
 }

@@ -7,7 +7,6 @@ import api from "../../api";
 interface Props {
   id: number,
   name: string,
-  full_name:string,
   alias: string,
   commodities: string[]
 }
@@ -16,7 +15,7 @@ const Client = (props: Props) => {
 
   const ledgerContext = useLedger();
 
-  const [editName, setEditName] = useState(props.full_name);
+  const [editName, setEditName] = useState(props.name);
   const [editAlias, setEditAlias] = useState(props.alias);
   const [editCommodityMap, setEditCommodityMap] = useState(() => {
     const newCommodityMap = {};

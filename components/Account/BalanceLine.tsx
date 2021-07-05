@@ -23,8 +23,8 @@ const Client = (props: Props) => {
 
   const accountOptions = Object.values(Object.values(ledgerContext.accounts)
     .reduce((ret, it) => {
-      const type = it.full_name.split(":")[0];
-      const item = {label: it.full_name, value: it.id};
+      const type = it.name.split(":")[0];
+      const item = {label: it.name, value: it.id};
       ret[type] = ret[type] || {label: type.toUpperCase(), options: []}
       ret[type].options.push(item);
       return ret;

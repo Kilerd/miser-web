@@ -24,7 +24,6 @@ const UNAUTHENTICATED_ROUTE = ["/login", '/register']
 const AuthContext = createContext({} as AuthContextType);
 
 export const AuthProvider = ({children}) => {
-    const router = useRouter();
     const [user, setUser] = useState(undefined);
     const [loading, setLoading] = useState(true);
 
@@ -48,7 +47,8 @@ export const AuthProvider = ({children}) => {
 
 
     const loginWithToken = async (token) => {
-        Cookies.set('token', token, {expires: 7, domain: BASE_ENV.domain})
+        // Cookies.set('token', token, {expires: 7, domain: BASE_ENV.domain})
+        Cookies.set('token', token, {expires: 7})
         api.client.defaults.headers.Authorization = `Bearer ${token}`
         const userData = await api.getUserInfo()
         setUser(userData)

@@ -25,7 +25,7 @@ interface LedgerContextProps {
 interface UserLocalData {
     user_id: number,
     selectedLedger?: {
-        id: number,
+        id: string,
     },
 
 }
@@ -68,12 +68,12 @@ export const LedgerProvider = ({children}: any) => {
         console.log("set ledger id ", id);
         const userData: UserLocalData = {
             user_id: user.id, selectedLedger: {
-                id: parseInt(id, 10),
+                id,
                 // name: ledgers[id].name
             }
         }
         localStorage.setItem(`user_data_${user.id}`, JSON.stringify(userData))
-        api.setLedgerId(parseInt(id, 10));
+        api.setLedgerId(id);
         setLedgerId(id);
         if (ledgers[ledgerId] !== undefined) {
             dayjs.tz.setDefault(ledgers[ledgerId].timezone);
