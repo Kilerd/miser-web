@@ -32,7 +32,7 @@ interface UserLocalData {
 
 function initCurrentLedger(user: User | undefined): UserLocalData | null {
 
-    const item = localStorage.getItem(`user_data_${user.id}`);
+    const item = localStorage.getItem(`user_data_ledger_${user.id}:0.0.1`);
     if (item === null) {
         return null;
     }
@@ -72,7 +72,7 @@ export const LedgerProvider = ({children}: any) => {
                 // name: ledgers[id].name
             }
         }
-        localStorage.setItem(`user_data_${user.id}`, JSON.stringify(userData))
+        localStorage.setItem(`user_data_ledger_${user.id}:0.0.1`, JSON.stringify(userData))
         api.setLedgerId(id);
         setLedgerId(id);
         if (ledgers[ledgerId] !== undefined) {
