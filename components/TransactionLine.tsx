@@ -81,7 +81,7 @@ export default function TransactionLine({detail, withDate, setEdit}: Props) {
         notBalance: !detail.is_balance,
       })}>
         <td className="date">
-          {withDate && dayjs(detail.create_time).format("MMM DD")}
+          {withDate && dayjs(detail.time).format("MMM DD")}
         </td>
         <td>
           <Link href={`/transactions/${detail.id}`}>
