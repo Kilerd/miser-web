@@ -55,7 +55,7 @@ function Page() {
               <tbody>
               {schedulers.map(it => (
                 <tr key={it.id}>
-                  <td>{it.name}</td>
+                  <td><Link href={`/schedulers/${it.id}`}>{it.name}</Link></td>
                   <td>{it.description}</td>
                   <td>{it.active.toString()}</td>
                   <td>{it.end_flag} {it.end_date} {it.end_times}</td>

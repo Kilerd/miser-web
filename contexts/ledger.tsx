@@ -80,7 +80,6 @@ export const LedgerProvider = ({children}: any) => {
         } else {
             dayjs.tz.setDefault()
         }
-        // transactionsR.execute();
 
     }
 

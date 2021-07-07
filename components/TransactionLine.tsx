@@ -10,205 +10,209 @@ import {Alert, Button, Icon, Intent, Menu, MenuItem, Tag} from "@blueprintjs/cor
 import Amount from "./Amount";
 
 interface Props {
-  detail: any,
-  withDate?: boolean,
+    detail: any,
+    withDate?: boolean,
 
-  setEdit(any): void
+    action?: boolean,
+
+    setEdit?(any): void
 }
 
-export default function TransactionLine({detail, withDate, setEdit}: Props) {
+export default function TransactionLine({detail, withDate, setEdit, action}: Props) {
 
-  const {getAccountAlias, update, accounts} = useLedger();
+    const {getAccountAlias, update, accounts} = useLedger();
 
 
-  // todo multiple commodities
-  const outAccounts = detail.postings
-    .filter(value => new Big(value.cost[0]).s === -1)
-    .map(value => value.account)
-    .map(it => ({
-      id: it,
-      value: getAccountAlias(it)
-    }));
-  const inAccounts = detail.postings
-    .filter(value => new Big(value.cost[0]).s === 1)
-    .map(value => value.account)
-    .map(it => ({
-      id: it,
-      value: getAccountAlias(it)
-    }));
+    // todo multiple commodities
+    const outAccounts = detail.postings
+        .filter(value => new Big(value.cost[0]).s === -1)
+        .map(value => value.account)
+        .map(it => ({
+            id: it,
+            value: getAccountAlias(it)
+        }));
+    const inAccounts = detail.postings
+        .filter(value => new Big(value.cost[0]).s === 1)
+        .map(value => value.account)
+        .map(it => ({
+            id: it,
+            value: getAccountAlias(it)
+        }));
 
-  let amount = new Big(0);
-  detail.postings.forEach(it => {
-    const targetAccount = accounts[it.account];
-    if (targetAccount.name.startsWith("Income")) {
-      amount = amount.sub(new Big(it.cost[0]));
-    } else if (targetAccount.name.startsWith("Expenses")) {
-      amount = amount.sub(new Big(it.cost[0]));
+    let amount = new Big(0);
+    detail.postings.forEach(it => {
+        const targetAccount = accounts[it.account];
+        if (targetAccount.name.startsWith("Income")) {
+            amount = amount.sub(new Big(it.cost[0]));
+        } else if (targetAccount.name.startsWith("Expenses")) {
+            amount = amount.sub(new Big(it.cost[0]));
+        }
+    });
+
+
+    const s = dayjs(detail.create_time).format("HH:mm");
+
+    const deleteTrx = async (id) => {
+        // setLoading(true);
+        await api.deleteTransaction(id)
+        // setLoading(false);
+        update("TRANSACTIONS")
     }
-  });
+
+    const actionShow = action || false;
+    const [deleteOpen, setDeleteOpen] = useState(false)
+    return (
+        <>
 
 
-  const s = dayjs(detail.create_time).format("HH:mm");
+            <Alert
+                cancelButtonText="Cancel"
+                confirmButtonText="Delete"
+                icon="trash"
+                intent={Intent.DANGER}
+                isOpen={deleteOpen}
+                onCancel={() => setDeleteOpen(false)}
+                onConfirm={() => deleteTrx(detail.id)}
+            >
+                <p>
+                    Confirm Delete？
+                </p>
+            </Alert>
 
-  const deleteTrx = async (id) => {
-    // setLoading(true);
-    await api.deleteTransaction(id)
-    // setLoading(false);
-    update("TRANSACTIONS")
-  }
+            <tr className={classNames({
+                error: detail.flag !== "Complete",
+                notBalance: !detail.is_balance,
+            })}>
+                <td className="date">
+                    {withDate && dayjs(detail.time).format("MMM DD")}
+                </td>
+                <td>
+                    <Link href={`/transactions/${detail.id}`}>
+                        <div className="info">
+                            {detail.narration &&
+                            <span>{detail.narration} {detail.has_document && <Icon icon="document"/>}</span>}
+                            {detail.payee && <span className="payee">{detail.payee}</span>}
+                        </div>
+                    </Link>
+                </td>
+                <td>{outAccounts.map(it => (
+                    <Link href={`/accounts/${it.id}`} key={it.id}>
+                        <Tag round minimal interactive key={it.id}>{it.value}</Tag>
+                    </Link>
+                ))}</td>
+                <td>{inAccounts.map(it => (
+                    <Link href={`/accounts/${it.id}`} key={it.id}>
+                        <Tag round minimal interactive key={it.id}>{it.value}</Tag>
+                    </Link>
+                ))}</td>
+                <td><Amount amount={amount} commodity={"CNY"} color/></td>
+                {<td>
+                    {actionShow && <Popover2 content={<Menu>
+                        <MenuItem text="Edit" icon="edit" onClick={() => setEdit(detail)}/>
+                        <MenuItem text="Delete" icon="trash" onClick={() => setDeleteOpen(true)}/>
+                    </Menu>}>
+                        <Button minimal icon="more"/>
+                    </Popover2>}
+                </td>}
+            </tr>
 
-  const [deleteOpen, setDeleteOpen] = useState(false)
-  return (
-    <>
+            <style jsx>{`
 
-
-      <Alert
-        cancelButtonText="Cancel"
-        confirmButtonText="Delete"
-        icon="trash"
-        intent={Intent.DANGER}
-        isOpen={deleteOpen}
-        onCancel={() => setDeleteOpen(false)}
-        onConfirm={() => deleteTrx(detail.id)}
-      >
-        <p>
-          Confirm Delete？
-        </p>
-      </Alert>
-
-      <tr className={classNames({
-        error: detail.flag !== "Complete",
-        notBalance: !detail.is_balance,
-      })}>
-        <td className="date">
-          {withDate && dayjs(detail.time).format("MMM DD")}
-        </td>
-        <td>
-          <Link href={`/transactions/${detail.id}`}>
-            <div className="info">
-              {detail.narration && <span>{detail.narration} {detail.has_document && <Icon icon="document"/>}</span>}
-              {detail.payee && <span className="payee">{detail.payee}</span>}
-            </div>
-          </Link>
-        </td>
-        <td>{outAccounts.map(it => (
-          <Link href={`/accounts/${it.id}`} key={it.id}>
-            <Tag round minimal interactive key={it.id}>{it.value}</Tag>
-          </Link>
-        ))}</td>
-        <td>{inAccounts.map(it => (
-          <Link href={`/accounts/${it.id}`} key={it.id}>
-            <Tag round minimal interactive key={it.id}>{it.value}</Tag>
-          </Link>
-        ))}</td>
-        <td><Amount amount={amount} commodity={"CNY"} color/></td>
-        <td>
-          <Popover2 content={<Menu>
-            <MenuItem text="Edit" icon="edit" onClick={() => setEdit(detail)}/>
-            <MenuItem text="Delete" icon="trash" onClick={() => setDeleteOpen(true)}/>
-          </Menu>}>
-            <Button minimal icon="more"/>
-          </Popover2>
-        </td>
-      </tr>
-
-      <style jsx>{`
-
-        tr {
+              tr {
 
 
-          border-left: 3px solid rgba(255, 255, 255, 0);
+                border-left: 3px solid rgba(255, 255, 255, 0);
 
-          &:hover {
-            background-color: rgba(138, 155, 168, 0.05);
-          }
+                &:hover {
+                  background-color: rgba(138, 155, 168, 0.05);
+                }
 
-          td {
-            vertical-align: middle;
-            border-bottom: 1px solid #dadada;
+                td {
+                  vertical-align: middle;
+                  border-bottom: 1px solid #dadada;
 
-            &.date {
-              border-bottom: none;
-              font-size: 1.15em;
-              width: 100px;
-            }
-          }
-        }
-
-        .info {
-          //font-size: 1rem;
-          display: inline-flex;
-          flex-direction: column;
-          cursor: pointer;
-
-          span.payee {
-            font-weight: 500;
-            font-size: 0.8em;
-            color: rgba(92, 112, 128, 0.7);
-          }
-
-        }
-
-        .line {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 0.5rem 0.75rem;
-          border-left: 1px solid rgb(213, 213, 218);
-          border-right: 1px solid rgb(213, 213, 218);
-          border-bottom: 1px solid rgb(213, 213, 218);
-
-          :first-child {
-            border-top: 1px solid rgb(213, 213, 218);
-            border-top-left-radius: 3px;
-            border-top-right-radius: 3px;
-          }
-
-          :last-child {
-            border-bottom-left-radius: 3px;
-            border-bottom-right-radius: 3px;
-          }
-
-          .left {
-            display: flex;
-            flex-direction: column;
-
-
-            .meta {
-
-              display: flex;
-
-              div {
-                margin-right: 0.25rem;
-              }
-            }
-          }
-
-          .right {
-            display: flex;
-            align-items: center;
-
-            .info {
-              display: flex;
-              flex-direction: column;
-              align-items: flex-end;
-
-              .amount {
-                font-size: 1.25rem;
+                  &.date {
+                    border-bottom: none;
+                    font-size: 1.15em;
+                    width: 100px;
+                  }
+                }
               }
 
+              .info {
+                //font-size: 1rem;
+                display: inline-flex;
+                flex-direction: column;
+                cursor: pointer;
 
-              .orientation {
-                font-size: 0.85rem;
+                span.payee {
+                  font-weight: 500;
+                  font-size: 0.8em;
+                  color: rgba(92, 112, 128, 0.7);
+                }
+
               }
-            }
-          }
-        }
 
-        .notBalance {
-          border-left: 3px solid red;
-        }
-      `}</style>
-    </>
-  )
+              .line {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0.5rem 0.75rem;
+                border-left: 1px solid rgb(213, 213, 218);
+                border-right: 1px solid rgb(213, 213, 218);
+                border-bottom: 1px solid rgb(213, 213, 218);
+
+                :first-child {
+                  border-top: 1px solid rgb(213, 213, 218);
+                  border-top-left-radius: 3px;
+                  border-top-right-radius: 3px;
+                }
+
+                :last-child {
+                  border-bottom-left-radius: 3px;
+                  border-bottom-right-radius: 3px;
+                }
+
+                .left {
+                  display: flex;
+                  flex-direction: column;
+
+
+                  .meta {
+
+                    display: flex;
+
+                    div {
+                      margin-right: 0.25rem;
+                    }
+                  }
+                }
+
+                .right {
+                  display: flex;
+                  align-items: center;
+
+                  .info {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-end;
+
+                    .amount {
+                      font-size: 1.25rem;
+                    }
+
+
+                    .orientation {
+                      font-size: 0.85rem;
+                    }
+                  }
+                }
+              }
+
+              .notBalance {
+                border-left: 3px solid red;
+              }
+            `}</style>
+        </>
+    )
 }

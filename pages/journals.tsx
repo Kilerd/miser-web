@@ -68,7 +68,7 @@ function Journals() {
             {groupByDate(transactions).map(trxByDate => {
                 const [date, trxs] = trxByDate
                 return trxs.map((one, idx) =>
-                  <TransactionLine key={one.id} withDate={idx === 0} detail={one} setEdit={openEditTrxModal}/>)
+                  <TransactionLine key={one.id} withDate={idx === 0} detail={one} action setEdit={openEditTrxModal}/>)
               }
             )}
             </tbody>
