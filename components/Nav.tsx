@@ -47,31 +47,36 @@ export default function Nav() {
           </div>
           <Divider/>
           <Link href="/dashboard">
-            <div className={`nav-btn ${router.asPath === '/dashboard' ? "active" : ""}`}>
+            <div className={`nav-btn ${router.asPath.startsWith('/dashboard') ? "active" : ""}`}>
               <Icon className={Classes.MINIMAL} icon="control"/>
               <p>Dashboard</p>
             </div>
           </Link>
           <Link href="/journals">
-            <div className={`nav-btn ${router.asPath === '/journals' ? "active" : ""}`}>
+            <div className={`nav-btn ${router.asPath.startsWith('/journals') ? "active" : ""}`}>
               <Icon className={Classes.MINIMAL} icon="menu"/>
               <p>Journals</p>
             </div>
           </Link>
           <Link href="/accounts">
-            <div className={`nav-btn ${router.asPath === '/accounts' ? "active" : ""}`}>
+            <div className={`nav-btn ${router.asPath.startsWith('/accounts') ? "active" : ""}`}>
               <Icon className={Classes.MINIMAL} icon="briefcase"/>
               <p>Accounts</p>
             </div>
           </Link>
           <Link href="/commodities">
-            <div className={`nav-btn ${router.asPath === '/commodities' ? "active" : ""}`}>
+            <div className={`nav-btn ${router.asPath.startsWith('/commodities') ? "active" : ""}`}>
               <Icon className={`${Classes.MINIMAL} nav-btn`} icon="euro"/> <p>Commodities</p>
             </div>
           </Link>
           <Link href="/schedulers">
-            <div className={`nav-btn ${router.asPath === '/schedulers' ? "active" : ""}`}>
+            <div className={`nav-btn ${router.asPath.startsWith('/schedulers') ? "active" : ""}`}>
               <Icon className={`${Classes.MINIMAL} nav-btn`} icon="euro"/> <p>Schedulers</p>
+            </div>
+          </Link>
+          <Link href="/budgets">
+            <div className={`nav-btn ${router.asPath.startsWith('/budgets') ? "active" : ""}`}>
+              <Icon className={`${Classes.MINIMAL} nav-btn`} icon="euro"/> <p>Budgets</p>
             </div>
           </Link>
         </div>
