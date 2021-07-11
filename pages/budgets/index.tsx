@@ -43,8 +43,8 @@ function Page() {
                                     <td>{one.name}</td>
                                     <td>{one.description}</td>
                                     <td>{one.periodic}</td>
-                                    <td><Amount amount={one.amount} commodity={one.commodity}/></td>
-                                    <td>100%</td>
+                                    <td><Amount amount={one.total.value} commodity={one.total.commodity}/>/<Amount amount={one.amount} commodity={one.commodity}/></td>
+                                    <td>{(one.total.value/one.amount)*100}%</td>
                                 </tr>
 
                         )}

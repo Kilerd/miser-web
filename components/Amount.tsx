@@ -47,7 +47,7 @@ export default function Amount(props: Props) {
 
       div.amount {
         font-family: monospace, serif;
-        display: flex;
+        display: inline-flex;
         flex-direction: row;
         color: #535353;
         align-items: baseline;

@@ -51,7 +51,7 @@ const Client = (props: Props) => {
           </thead>
           <tbody>
           {timeline.map(item =>
-            <tr key={`${item.type}-${item.id}`}>
+            <tr key={`${item.type}-${item.transaction_id}`}>
               <td>{dayjs(item.time).format("MMM DD, YYYY")}</td>
               {item.type === 'Balance' && item.pad === props.id ?
                 <td>{item.type} pad account</td> :

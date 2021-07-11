@@ -1,17 +1,16 @@
-import {ProtectRoute} from "../../contexts/auth";
-import {get} from "../../api";
 import {useRouter} from "next/router";
-import AuthenticationLayout from "../../components/AuthenticationLayout";
-import {useLedger} from "../../contexts/ledger";
 import React from "react";
 import {Tab, Tabs} from "@blueprintjs/core";
 import {Line} from "react-chartjs-2";
 import useSWR from "swr";
+import {ProtectRoute} from "../../contexts/auth";
+import {get} from "../../api";
+import AuthenticationLayout from "../../components/AuthenticationLayout";
+import {useLedger} from "../../contexts/ledger";
 import Amount from "../../components/Amount";
 import Timeline from "../../components/Account/Timeline";
 import Balance from "../../components/Account/Balance";
 import Setting from "../../components/Account/Setting";
-import dayjs from "dayjs";
 
 
 function Page() {
@@ -28,25 +27,54 @@ function Page() {
     const {isValidating, data: summary} = useSWR(`/ledgers/${ledgerContext.ledger_id}/accounts/${id}/summary`, get);
 
     function fillInData(summary: any) {
-        let date = summary.map(it => it.date).reverse()
-        let data = summary.map(it => it.total.value).reverse();
+        const date = summary.map(it => it.date).reverse()
+        const data1 = summary.map(it => parseFloat(it.total.value)).reverse();
+        const data2 = summary.map(it => it.detail.data.CNY || "0").reverse();
+        console.log("data2", data1);
         return {
             labels: date,
             datasets: [
                 {
-                    label: 'bar',
-                    borderColor: 'rgb(245,77,109)',
-                    backgroundColor: 'rgba(245,77,109, 0.5)',
-                    data,
-                    order: 1
+                    label: 'Total',
+                    fill: false,
+                    lineTension: 0,
+                    backgroundColor: 'rgba(75,192,192,0.4)',
+                    borderColor: 'rgba(75,192,192,1)',
+                    borderCapStyle: 'butt',
+                    borderDash: [],
+                    borderDashOffset: 0.0,
+                    borderJoinStyle: 'miter',
+                    pointBorderColor: 'rgba(75,192,192,1)',
+                    pointBackgroundColor: '#fff',
+                    pointBorderWidth: 1,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+                    pointHoverBorderColor: 'rgba(220,220,220,1)',
+                    pointHoverBorderWidth: 2,
+                    pointRadius: 1,
+                    pointHitRadius: 10,
+                    data: data1
                 },
                 {
-                    label: 'line',
+                    label: 'Change',
                     fill: false,
-                    type: "line",
-                    borderColor: 'rgb(32,189,229)',
-                    order: 0,
-                    data
+                    lineTension: 0,
+                    backgroundColor: 'rgba(75,192,192,0.4)',
+                    borderColor: 'rgba(75,192,192,1)',
+                    borderCapStyle: 'butt',
+                    borderDash: [],
+                    borderDashOffset: 0.0,
+                    borderJoinStyle: 'miter',
+                    pointBorderColor: 'rgba(75,192,192,1)',
+                    pointBackgroundColor: '#fff',
+                    pointBorderWidth: 1,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+                    pointHoverBorderColor: 'rgba(220,220,220,1)',
+                    pointHoverBorderWidth: 2,
+                    pointRadius: 1,
+                    pointHitRadius: 10,
+                    data: data2
                 }
             ]
         }
@@ -59,24 +87,7 @@ function Page() {
                     <div className="header">
                         <div className="left">
                             <h1>{targetAccount.alias} {targetAccount.name}</h1>
-                            {summary && <Line data={fillInData(summary)} height={70} options={{
-                                plugins: {
-                                    title: {
-                                        text: 'Chart.js Combo Time Scale',
-                                        display: true
-                                    }
-                                },
-                                scales: {
-                                    x: {
-                                        type: 'time',
-                                        display: true,
-                                        offset: true,
-                                        time: {
-                                            unit: 'day'
-                                        }
-                                    },
-                                },
-                            }}/>}
+                            {summary && <Line data={fillInData(summary)} height={70} />}
                         </div>
                         <div className="right">
                             <Amount size={1.75} amount={targetAccount.summary.total.value}
@@ -85,7 +96,7 @@ function Page() {
 
                             <div className="detail">
                                 {Object.keys(targetAccount.summary.detail.data).sort().map(it => {
-                                    let targetAmount = targetAccount.summary.detail.data[it];
+                                    const targetAmount = targetAccount.summary.detail.data[it];
                                     console.log("TargetAmount", targetAmount);
                                     return <Amount key={it} size={1.15} amount={targetAmount}
                                                    commodity={it}/>
