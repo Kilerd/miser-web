@@ -18,6 +18,7 @@ interface Props {
 const Client = (props: Props) => {
   const ledgerContext = useLedger();
 
+  const accountId = parseInt(props.id, 10);
   const {
     isValidating,
     data: rawTimeline,
@@ -28,7 +29,7 @@ const Client = (props: Props) => {
     getUrlByTime(`/ledgers/${ledgerContext.ledger_id}/accounts/${props.id}/timeline`, 'create_time'),
     get
   );
-  const timeline = sortByDate(rawTimeline ? [].concat(...rawTimeline) : [], "create_time")
+  const timeline = sortByDate(rawTimeline ? [].concat(...rawTimeline) : [], "time")
   const isEmpty = rawTimeline?.[0]?.length === 0;
   const isReachingEnd =
     isEmpty || (rawTimeline && rawTimeline[rawTimeline.length - 1]?.length < 1);
@@ -53,12 +54,13 @@ const Client = (props: Props) => {
           {timeline.map(item =>
             <tr key={`${item.type}-${item.transaction_id}`}>
               <td>{dayjs(item.time).format("MMM DD, YYYY")}</td>
-              {item.type === 'Balance' && item.pad === props.id ?
+
+              {item.type === 'Balance' && item.pad === accountId ?
                 <td>{item.type} pad account</td> :
                 <td>{item.type}</td>
               }
 
-              {item.type === 'Balance' && item.pad === props.id ?
+              {item.type === 'Balance' && item.pad === accountId ?
                 <td>{`change by account ${ledgerContext.getAccountAlias(item.account)} balance`}</td> :
                 <td>
                   <Link href={`/transactions/${item.transaction_id}`}><p
@@ -66,7 +68,13 @@ const Client = (props: Props) => {
                 </td>
               }
 
-              <td><Amount amount={item.amount} commodity={item.commodity} color/></td>
+              <td>
+                {item.type === 'Balance' && item.pad === accountId ?
+                    <Amount amount={item.change[0]} commodity={item.change[1]} color/> :
+                    <Amount amount={item.amount} commodity={item.commodity} color/>
+                }
+
+              </td>
             </tr>
           )}
           </tbody>

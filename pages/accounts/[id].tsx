@@ -95,12 +95,12 @@ function Page() {
                                     commodity={targetAccount.summary.total.commodity}/>
 
                             <div className="detail">
-                                {Object.keys(targetAccount.summary.detail.data).sort().map(it => {
-                                    const targetAmount = targetAccount.summary.detail.data[it];
-                                    console.log("TargetAmount", targetAmount);
-                                    return <Amount key={it} size={1.15} amount={targetAmount}
-                                                   commodity={it}/>
-                                })}
+                                {/*{Object.keys(targetAccount.summary.detail.data).sort().map(it => {*/}
+                                {/*    const targetAmount = targetAccount.summary.detail.data[it];*/}
+                                {/*    console.log("TargetAmount", targetAmount);*/}
+                                {/*    return <Amount key={it} size={1.15} amount={targetAmount}*/}
+                                {/*                   commodity={it}/>*/}
+                                {/*})}*/}
                             </div>
                         </div>
                     </div>
