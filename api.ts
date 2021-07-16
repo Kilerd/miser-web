@@ -193,7 +193,7 @@ class Api {
     async newAccountBalance(id: string, date: Date, padAccount: unknown, amount: string, commodity: string) {
         return await this.client.post(`/ledgers/${this.currentLedgerId}/accounts/${id}/balance`, {
             time: date,
-            account: padAccount,
+            pad: padAccount,
             amount,
             commodity
         })
