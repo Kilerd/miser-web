@@ -7,7 +7,6 @@ import {useAuth} from "./auth";
 import {Account, Commodity, IdMap, Ledger, NameMap, RESOURCE_TYPE, User} from "../types"
 import LedgerSelector from '../components/LedgerSelector'
 import {useRouter} from "next/router";
-import {Spinner} from "@blueprintjs/core";
 
 interface LedgerContextProps {
     ledger_id: string,
