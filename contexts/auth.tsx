@@ -2,7 +2,7 @@ import React, {createContext, useContext, useEffect, useState} from 'react'
 import Cookies from 'js-cookie'
 import {useRouter} from 'next/router'
 import {Spinner} from "@blueprintjs/core";
-import api, {BASE_ENV} from '../api'
+import api, {BASE_ENV, IS_DEV} from '../api'
 import {User} from "../types";
 
 
@@ -47,8 +47,12 @@ export const AuthProvider = ({children}) => {
 
 
     const loginWithToken = async (token) => {
-        // Cookies.set('token', token, {expires: 7, domain: BASE_ENV.domain})
-        Cookies.set('token', token, {expires: 7})
+        if (IS_DEV) {
+            Cookies.set('token', token, {expires: 7})
+        } else {
+            Cookies.set('token', token, {expires: 7, domain: BASE_ENV.domain})
+        }
+
         api.client.defaults.headers.Authorization = `Bearer ${token}`
         const userData = await api.getUserInfo()
         setUser(userData)

@@ -1,6 +1,6 @@
 import Axios, {AxiosInstance} from 'axios'
-import {Commodity, NameMap} from "./types";
 import Cookies from 'js-cookie'
+import {Commodity, NameMap} from "./types";
 
 const urls = {
     development: {
@@ -14,7 +14,7 @@ const urls = {
         domain: "miser.3min.work"
     }
 }
-
+export const IS_DEV = process.env.NODE_ENV === 'development';
 export const BASE_ENV = urls[process.env.NODE_ENV];
 export const BASE_URL = `${BASE_ENV.scheme}://${BASE_ENV.url}`;
 
