@@ -1,12 +1,12 @@
 import React, {useState} from "react";
 import Big from 'big.js'
-import {useLedger} from "../contexts/ledger";
 import classNames from "classnames";
 import dayjs from 'dayjs'
-import api from "../api";
 import Link from "next/link";
 import {Popover2} from "@blueprintjs/popover2";
 import {Alert, Button, Icon, Intent, Menu, MenuItem, Tag} from "@blueprintjs/core";
+import {useLedger} from "../contexts/ledger";
+import api from "../api";
 import Amount from "./Amount";
 
 interface Props {
@@ -23,14 +23,14 @@ export default function TransactionLine({detail, withDate, setEdit, action}: Pro
     const {getAccountAlias, update, accounts} = useLedger();
 
     // todo multiple commodities
-    const outAccounts = Array.from(new Set(detail.postings
+    const outAccounts = Array.from(new Set<number>(detail.postings
         .filter(value => new Big(value.cost[0]).s === -1)
         .map(value => value.account)))
         .map(it => ({
             id: it,
             value: getAccountAlias(it)
         }));
-    const inAccounts = Array.from(new Set(detail.postings
+    const inAccounts = Array.from(new Set<number>(detail.postings
         .filter(value => new Big(value.cost[0]).s === 1)
         .map(value => value.account)
     )).map(it => ({
@@ -49,7 +49,6 @@ export default function TransactionLine({detail, withDate, setEdit, action}: Pro
     });
 
 
-    const s = dayjs(detail.create_time).format("HH:mm");
 
     const deleteTrx = async (id) => {
         // setLoading(true);
@@ -104,15 +103,15 @@ export default function TransactionLine({detail, withDate, setEdit, action}: Pro
                         <Tag round minimal interactive key={it.id}>{it.value}</Tag>
                     </Link>
                 ))}</td>
-                <td><Amount amount={amount} commodity={"CNY"} color/></td>
-                {<td>
+                <td><Amount amount={amount} commodity="CNY" color/></td>
+                <td>
                     {actionShow && <Popover2 content={<Menu>
                         <MenuItem text="Edit" icon="edit" onClick={() => setEdit(detail)}/>
                         <MenuItem text="Delete" icon="trash" onClick={() => setDeleteOpen(true)}/>
                     </Menu>}>
                         <Button minimal icon="more"/>
                     </Popover2>}
-                </td>}
+                </td>
             </tr>
 
             <style jsx>{`
