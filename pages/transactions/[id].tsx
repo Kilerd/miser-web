@@ -66,6 +66,7 @@ function SingleTransactionPage() {
                   <tr>
                     <th>#</th>
                     <th>ACCOUNT</th>
+                    <th>DESCRIPTION</th>
                     <th>COST</th>
                   </tr>
                   </thead>
@@ -74,6 +75,7 @@ function SingleTransactionPage() {
                     <tr key={it.id}>
                       <td>{it.id}</td>
                       <td>{getAccountAlias(it.account)}</td>
+                      <td>{it.description}</td>
                       <td>{it.cost[0]} {it.cost[1]}</td>
                     </tr>
                   ))}
