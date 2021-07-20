@@ -22,22 +22,21 @@ export default function TransactionLine({detail, withDate, setEdit, action}: Pro
 
     const {getAccountAlias, update, accounts} = useLedger();
 
-
     // todo multiple commodities
-    const outAccounts = detail.postings
+    const outAccounts = Array.from(new Set(detail.postings
         .filter(value => new Big(value.cost[0]).s === -1)
-        .map(value => value.account)
+        .map(value => value.account)))
         .map(it => ({
             id: it,
             value: getAccountAlias(it)
         }));
-    const inAccounts = detail.postings
+    const inAccounts = Array.from(new Set(detail.postings
         .filter(value => new Big(value.cost[0]).s === 1)
         .map(value => value.account)
-        .map(it => ({
-            id: it,
-            value: getAccountAlias(it)
-        }));
+    )).map(it => ({
+        id: it,
+        value: getAccountAlias(it)
+    }));
 
     let amount = new Big(0);
     detail.postings.forEach(it => {
