@@ -1,14 +1,13 @@
 import React from "react";
-import {ProtectRoute} from "../../contexts/auth";
 import {Button, H2, HTMLTable} from "@blueprintjs/core";
 import dayjs from "dayjs";
 import Link from "next/link";
-import Amount from "../Amount";
 import {useSWRInfinite} from "swr";
+import {ProtectRoute} from "../../contexts/auth";
+import Amount from "../Amount";
 import {getUrlByTime} from "../../utils/swr";
 import {get} from "../../api";
 import {useLedger} from "../../contexts/ledger";
-import {sortByDate} from "../../utils/sort";
 
 interface Props {
     id: string
@@ -51,35 +50,64 @@ const Client = (props: Props) => {
                     </tr>
                     </thead>
                     <tbody>
-                    {timeline.map(item =>
-                        <tr key={`${item.type}-${item.transaction_id}`}>
-                            <td>{dayjs(item.time).format("MMM DD, YYYY")}</td>
-
-                            {item.type === 'Balance' && item.pad === accountId ?
-                                <td>{item.type} pad account</td> :
-                                <td>{item.type}</td>
+                    {timeline.map(item => {
+                            if (item.type === "Transaction") {
+                                return <tr key={`${item.type}-${item.transaction_id}`}>
+                                    <td>{dayjs(item.time).format("MMM DD, YYYY")}</td>
+                                    <td>Transaction</td>
+                                    <td>
+                                        <Link href={`/transactions/${item.transaction_id}`}><p
+                                            className='payee'>{item.payee} {item.narration}</p></Link>
+                                    </td>
+                                    <td style={{textAlign: "right"}}><Amount amount={item.amount} commodity={item.commodity} color/></td>
+                                    <td style={{textAlign: "right"}}><Amount amount={item.balance_number} commodity={item.balance_currency}/></td>
+                                </tr>
                             }
 
-                            {item.type === 'Balance' && item.pad === accountId ?
-                                <td>{`change by account ${ledgerContext.getAccountAlias(item.account)} balance`}</td> :
-                                <td>
-                                    <Link href={`/transactions/${item.transaction_id}`}><p
-                                        className='payee'>{item.payee} {item.narration}</p></Link>
+                            if (item.pad !== null) {
+                                // 平账
+                                return <tr key={`${item.type}-${item.transaction_id}`}>
+                                    <td>{dayjs(item.time).format("MMM DD, YYYY")}</td>
+                                    {item.pad === accountId ?
+                                        <td>{item.type} pad account</td> :
+                                        <td>{item.type}</td>}
+                                    <td>
+                                        {item.pad === accountId ?
+                                            `change by account ${ledgerContext.getAccountAlias(item.account)} balance` :
+                                            ""
+                                        }
+                                    </td>
+                                    <td style={{textAlign: "right"}}>{item.pad === accountId ?
+                                        <Amount amount={item.detail.change[0]} commodity={item.detail.change[1]} color/>
+                                        : <Amount amount={item.amount} commodity={item.commodity} color/>
+                                    }</td>
+                                    <td style={{textAlign: "right"}}><Amount amount={item.amount} commodity={item.commodity}/></td>
+                                </tr>
+                            }
+                            // 对账
+                            return <tr key={`${item.type}-${item.transaction_id}`}>
+                                <td>{dayjs(item.time).format("MMM DD, YYYY")}</td>
+                                {item.pad === accountId ?
+                                    <td>{item.type} pad account</td> :
+                                    <td>{item.type}</td>}
+                                <td>check account</td>
+                                <td style={{textAlign: "right"}}><Amount amount={item.amount} commodity={item.commodity} color/></td>
+                                <td style={{textAlign: "right"}}>
+                                    {item.detail.balance ?
+                                        <p>OK</p>
+                                        : <div>
+                                            <p>Unbalanced</p>
+                                            <div>current: <Amount amount={item.detail.current[0]}
+                                                                  commodity={item.detail.current[1]} color/></div>
+                                            <div>distance: <Amount amount={item.detail.distance[0]}
+                                                                   commodity={item.detail.distance[1]} color/></div>
+                                        </div>
+
+                                    }
                                 </td>
-                            }
-                            <td style={{textAlign: "right"}}>
-                                {item.type === 'Balance' && item.pad === accountId ?
-                                    <Amount amount={item.change[0]} commodity={item.change[1]} color/> :
-                                    <Amount amount={item.amount} commodity={item.commodity} color/>
-                                }
+                            </tr>
 
-                            </td>
-                            <td style={{textAlign: "right"}}>
-                                {item.type === 'Transaction' && item.balance_number &&
-                                <Amount amount={item.balance_number} commodity={item.balance_currency}/>
-                                }
-                            </td>
-                        </tr>
+                        }
                     )}
                     </tbody>
                 </HTMLTable>
@@ -102,4 +130,3 @@ const Client = (props: Props) => {
 
 
 export default ProtectRoute(Client)
-// export default Client
