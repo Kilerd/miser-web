@@ -3,12 +3,14 @@ import {useRouter} from "next/router";
 import {ProtectRoute} from "../../contexts/auth";
 import {useLedger} from "../../contexts/ledger";
 import api from "../../api";
+import {Switch} from "@blueprintjs/core";
 
 interface Props {
   id: number,
   name: string,
   alias: string,
-  commodities: string[]
+  commodities: string[],
+  status: string,
 }
 
 const Client = (props: Props) => {
@@ -43,10 +45,17 @@ const Client = (props: Props) => {
     setEditName("");
     ledgerContext.update("ACCOUNT")
   }
-
+  const updateStatus = async () => {
+    await api.updateAccountStatus(props.id, props.status === "Open" ? "Close" : "Open");
+    ledgerContext.update("ACCOUNT")
+  }
 
 
   return (<div>
+
+    <h2>General</h2>
+    <Switch checked={props.status === "Open"} label="Opened" onChange={updateStatus}/>
+
     <h2>Edit Account {props.id}</h2>
     <input type="text" value={editName} placeholder="name" onChange={e => setEditName(e.target.value)}/>
     <input type="text" value={editAlias} placeholder="alias" onChange={e => setEditAlias(e.target.value)}/>

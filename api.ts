@@ -243,6 +243,9 @@ class Api {
     }
 
 
+    async updateAccountStatus(id: number, status: string) {
+        return await this.client.patch(`/ledgers/${this.currentLedgerId}/accounts/${id}/status:${status}`)
+    }
 }
 
 const api = new Api(null);
