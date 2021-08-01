@@ -246,6 +246,17 @@ class Api {
     async updateAccountStatus(id: number, status: string) {
         return await this.client.patch(`/ledgers/${this.currentLedgerId}/accounts/${id}/status:${status}`)
     }
+
+    async createBudget(name:string, description: string, periodic:string, amount:string, currency:string, accounts:number[]) {
+        return await this.client.post(`/ledgers/${this.currentLedgerId}/budgets`, {
+            name,
+            description,
+            periodic,
+            amount,
+            commodity:currency,
+            accounts
+        })
+    }
 }
 
 const api = new Api(null);

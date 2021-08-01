@@ -1,12 +1,12 @@
 import React from "react";
 import {HTMLTable} from "@blueprintjs/core";
 import useSWR from "swr";
+import Link from 'next/link'
 import {ProtectRoute} from "../../contexts/auth";
 import AuthenticationLayout from "../../components/AuthenticationLayout";
 import {useLedger} from "../../contexts/ledger";
 import {get} from "../../api";
 import Amount from "../../components/Amount";
-
 
 function Page() {
 
@@ -25,6 +25,8 @@ function Page() {
                 <div className="container">
                     <div className="header">
                         <h1>Budgets</h1>
+
+                        <Link href="/budgets/new"> new</Link>
                     </div>
 
                     <HTMLTable style={{width: "100%", borderCollapse: "collapse"}}>

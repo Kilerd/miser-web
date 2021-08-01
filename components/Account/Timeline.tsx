@@ -93,7 +93,7 @@ const Client = (props: Props) => {
                                 <td>check account</td>
                                 <td style={{textAlign: "right"}}><Amount amount={item.amount} commodity={item.commodity} color/></td>
                                 <td style={{textAlign: "right"}}>
-                                    {item.detail.balance ?
+                                    {item.detail?.balance ?
                                         <p>OK</p>
                                         : <div>
                                             <p>Unbalanced</p>
