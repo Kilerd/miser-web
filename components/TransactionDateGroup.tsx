@@ -47,11 +47,11 @@ export default function TransactionDateGroup({ date, items }: Props) {
           .date {
             margin-left: 0.5rem;
             margin-bottom: 0.2rem;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
 
             span.weekday {
               margin-left: 0.4rem;
-              font-size: 1.1rem;
+              font-size: 0.9rem;
               color: rgba(92, 112, 128, 0.7);
             }
           }
