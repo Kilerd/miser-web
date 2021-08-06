@@ -83,7 +83,7 @@ function Page() {
           <RadioGroup
             inline
             label="Periodic"
-            onChange={(e) => setPeriodic(e.target.value)}
+            onChange={(e) => setPeriodic(e.currentTarget.value)}
             selectedValue={periodic}
           >
             {PERIODIC.map((it) => (
