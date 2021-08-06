@@ -30,30 +30,12 @@ function Page() {
             <h1>Scheduler Detail</h1>
           </div>
 
-          <HTMLTable style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead>
-              <tr>
-                <th />
-                <th>Payee Narration</th>
-                <th>Source</th>
-                <th>Destination</th>
-                <th style={{ textAlign: "right" }}>Amount</th>
-                <th />
-              </tr>
-            </thead>
-            <tbody>
-              {groupByDate(transactions).map((trxByDate) => {
-                const [date, trxs] = trxByDate;
-                return trxs.map((one, idx) => (
-                  <TransactionLine
-                    key={one.id}
-                    withDate={idx === 0}
-                    detail={one}
-                  />
-                ));
-              })}
-            </tbody>
-          </HTMLTable>
+          {groupByDate(transactions).map((trxByDate) => {
+            const [date, trxs] = trxByDate;
+            return trxs.map((one, idx) => (
+              <TransactionLine key={one.id} detail={one} />
+            ));
+          })}
         </div>
       </AuthenticationLayout>
     </>
