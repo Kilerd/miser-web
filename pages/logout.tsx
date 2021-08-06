@@ -1,6 +1,6 @@
-import {ProtectRoute, useAuth} from "../contexts/auth";
+import { ProtectRoute, useAuth } from "../contexts/auth";
 import React from "react";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 
 const Client = () => {
   const router = useRouter();
@@ -8,13 +8,10 @@ const Client = () => {
 
   authContextType.logout();
 
-  router.push("/")
+  router.push("/");
 
-  return (<div>
-    logout
-  </div>)
-}
+  return <div>logout</div>;
+};
 
-
-export default ProtectRoute(Client)
+export default ProtectRoute(Client);
 // export default Client

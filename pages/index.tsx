@@ -1,25 +1,24 @@
-import Head from 'next/head'
-import {useAuth} from "../contexts/auth";
+import Head from "next/head";
+import { useAuth } from "../contexts/auth";
 import Login from "../components/login";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 import React from "react";
 
 export default function Home() {
-
-  const {user} = useAuth();
+  const { user } = useAuth();
   const router = useRouter();
   if (user !== undefined) {
     router.push("/dashboard");
-    return <div>redirecting...</div>
+    return <div>redirecting...</div>;
   }
   return (
     <>
       <Head>
         <title>Miser - A double-entry accounting tool</title>
-        <link rel="icon" href="/favicon.ico"/>
+        <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Login/>
+      <Login />
       <style jsx>{`
         main {
           display: flex;
@@ -34,7 +33,7 @@ export default function Home() {
           justify-content: center;
           display: flex;
           flex-direction: column;
-          background-color: #6C63FF;
+          background-color: #6c63ff;
           padding: 2rem;
         }
 
@@ -58,7 +57,9 @@ export default function Home() {
           min-height: 1.4em;
           margin-left: -2px;
           line-height: 1.4em;
-          font-family: 'Open Sans', -apple-system, Helvetica Neue, Helvetica, Open Sans, Arial, PingFang SC, PingFang TC, Hiragino Sans GB, Microsoft Yahei, Microsoft Jhenghei, sans-serif;
+          font-family: "Open Sans", -apple-system, Helvetica Neue, Helvetica,
+            Open Sans, Arial, PingFang SC, PingFang TC, Hiragino Sans GB,
+            Microsoft Yahei, Microsoft Jhenghei, sans-serif;
         }
 
         img {
@@ -67,7 +68,5 @@ export default function Home() {
         }
       `}</style>
     </>
-
-
-  )
+  );
 }

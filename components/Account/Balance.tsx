@@ -1,38 +1,37 @@
-import React, {useState} from "react";
-import {ProtectRoute} from "../../contexts/auth";
+import React, { useState } from "react";
+import { ProtectRoute } from "../../contexts/auth";
 import dayjs from "dayjs";
 import api from "../../api";
-import {useLedger} from "../../contexts/ledger";
-import Big from 'big.js';
+import { useLedger } from "../../contexts/ledger";
+import Big from "big.js";
 import BalanceLine from "./BalanceLine";
 
 interface Props {
-  id: string,
-  commodities: string[]
+  id: string;
+  commodities: string[];
 }
 
 const Client = (props: Props) => {
-
   const [date, setDate] = useState(() => dayjs());
   const [padAccount, setPadAccount] = useState(null);
   const [amount, setAmount] = useState("");
   const [amountAvailable, setAmountAvailable] = useState(false);
   const ledgerContext = useLedger();
 
-  const accountOptions = Object.values(Object.values(ledgerContext.accounts)
-    .reduce((ret, it) => {
+  const accountOptions = Object.values(
+    Object.values(ledgerContext.accounts).reduce((ret, it) => {
       const type = it.name.split(":")[0];
-      const item = {label: it.name, value: it.id};
-      ret[type] = ret[type] || {label: type.toUpperCase(), options: []}
+      const item = { label: it.name, value: it.id };
+      ret[type] = ret[type] || { label: type.toUpperCase(), options: [] };
       ret[type].options.push(item);
       return ret;
-    }, {})).sort()
+    }, {})
+  ).sort();
 
   function handleAccountChange(e: any) {
     const selectAccountId = e.value;
     setPadAccount(selectAccountId);
   }
-
 
   function handlePadAmountChange(e: any) {
     try {
@@ -41,26 +40,29 @@ const Client = (props: Props) => {
     } catch (e) {
       setAmountAvailable(false);
     }
-    setAmount(e.target.value)
+    setAmount(e.target.value);
   }
 
   async function submitBalance() {
-    await api.newAccountBalance(props.id, date.toDate(), padAccount, amount, "CNY")
+    await api.newAccountBalance(
+      props.id,
+      date.toDate(),
+      padAccount,
+      amount,
+      "CNY"
+    );
   }
 
-  return <>
-    <div>
-
-      <h2>Balance</h2>
-      {props.commodities.map(one =>
-        <BalanceLine id={props.id} commodity={one} key={one}/>
-      )}
-    </div>
-    <style jsx>{`
-      
-    `}</style>
-  </>
+  return (
+    <>
+      <div>
+        <h2>Balance</h2>
+        {props.commodities.map((one) => (
+          <BalanceLine id={props.id} commodity={one} key={one} />
+        ))}
+      </div>
+    </>
+  );
 };
 
-
-export default ProtectRoute(Client)
+export default ProtectRoute(Client);

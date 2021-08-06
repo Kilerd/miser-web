@@ -1,53 +1,66 @@
-import {AccountListItemType} from "../types";
-import React, {useState} from "react";
+import { AccountListItemType } from "../types";
+import React, { useState } from "react";
 import Link from "next/link";
-import {Button, Icon, Tag} from "@blueprintjs/core";
-import {IconName} from "@blueprintjs/icons";
+import { Button, Icon, Tag } from "@blueprintjs/core";
+import { IconName } from "@blueprintjs/icons";
 import Amount from "./Amount";
 
 interface ModalStatus {
-  openEditAccount: any
-  level: number
+  openEditAccount: any;
+  level: number;
 }
 
-
 export default function AccountListItem({
-                                          name,
-                                          fullName,
-                                          isAvailable,
-                                          alias,
-                                          commodities,
-                                          amount,
-                                          id,
-                                          icon,
-                                          children,
-                                          openEditAccount,
-                                          level
-                                        }: AccountListItemType & ModalStatus) {
-
+  name,
+  fullName,
+  isAvailable,
+  alias,
+  commodities,
+  amount,
+  id,
+  icon,
+  children,
+  openEditAccount,
+  level,
+}: AccountListItemType & ModalStatus) {
   const [childrenOpen, setChildrenOpen] = useState(true);
 
+  const childrenDOM = Object.values(children).map((one) => (
+    <AccountListItem
+      key={one.fullName}
+      {...one}
+      level={level + 1}
+      openEditAccount={openEditAccount}
+    />
+  ));
 
-  const childrenDOM = Object.values(children).map(one =>
-    <AccountListItem key={one.fullName} {...one} level={level + 1} openEditAccount={openEditAccount}/>
-  )
-
-
-  let targetIcon = icon || (id ? childrenDOM.length < 1 ? "dot" : childrenOpen ? "small-minus" : "small-plus" : childrenOpen ? "folder-open" : "folder-close")
+  let targetIcon =
+    icon ||
+    (id
+      ? childrenDOM.length < 1
+        ? "dot"
+        : childrenOpen
+        ? "small-minus"
+        : "small-plus"
+      : childrenOpen
+      ? "folder-open"
+      : "folder-close");
 
   const openChildren = (e: any) => {
     setChildrenOpen(!childrenOpen);
-  }
+  };
 
   return (
-
     <>
       <div className="account">
         <div className="content">
-          {id
-            ?
-            <div className="left" style={{paddingLeft: `${level}rem`}}>
-              <Icon icon={targetIcon as IconName} onClick={openChildren} className="account-icon"/>
+          {id ? (
+            <div className="left" style={{ paddingLeft: `${level}rem` }}>
+              <Icon
+                icon={targetIcon as IconName}
+                onClick={openChildren}
+                className="account-icon"
+              />
               <Link href={`/accounts/${id}`}>
                 <div className="name pointer">
                   {alias || name}
@@ -55,17 +68,21 @@ export default function AccountListItem({
                 </div>
               </Link>
             </div>
-            :
-            <div className="left" style={{paddingLeft: `${level}rem`}}>
-              <Icon icon={targetIcon as IconName} onClick={openChildren} className="account-icon"/>
+          ) : (
+            <div className="left" style={{ paddingLeft: `${level}rem` }}>
+              <Icon
+                icon={targetIcon as IconName}
+                onClick={openChildren}
+                className="account-icon"
+              />
               <div className="name">
                 {alias || name}
                 {alias && <span>{name}</span>}
               </div>
             </div>
-          }
+          )}
           <div className="right">
-            <Amount amount={amount} commodity="CNY"/>
+            <Amount amount={amount} commodity="CNY" />
             {/*{id &&*/}
             {/*<span>*/}
             {/*  <a onClick={() => openEditAccount(id, fullName, alias, commodities)}><Button minimal icon="edit"/></a>*/}
@@ -73,12 +90,9 @@ export default function AccountListItem({
             {/*}*/}
           </div>
         </div>
-        {childrenDOM.length !== 0 && childrenOpen &&
-        <div className="children">
-          {childrenDOM}
-        </div>
-        }
-
+        {childrenDOM.length !== 0 && childrenOpen && (
+          <div className="children">{childrenDOM}</div>
+        )}
       </div>
 
       <style jsx>{`
@@ -144,5 +158,5 @@ export default function AccountListItem({
         }
       `}</style>
     </>
-  )
+  );
 }
