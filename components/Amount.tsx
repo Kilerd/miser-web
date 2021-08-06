@@ -51,7 +51,7 @@ export default function Amount(props: Props) {
         }
 
         div.amount {
-          font-family: monospace, serif;
+          font-family: Monaco, serif;
           display: inline-flex;
           flex-direction: row;
           color: #535353;
@@ -60,7 +60,7 @@ export default function Amount(props: Props) {
           font-size: ${props.size || 1}em;
 
           .currency {
-            margin-left: 0.5rem;
+            margin-left: 0.4rem;
           }
         }
       `}</style>
