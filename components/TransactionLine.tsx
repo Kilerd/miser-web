@@ -5,11 +5,11 @@ import dayjs from "dayjs";
 import Link from "next/link";
 import { Popover2 } from "@blueprintjs/popover2";
 import { Alert, Button, Intent, Menu, MenuItem } from "@blueprintjs/core";
+import Modal, { ModalTransition } from "@atlaskit/modal-dialog";
 import { useLedger } from "../contexts/ledger";
 import api from "../api";
 import Amount from "./Amount";
 import LinkTag from "../basic/LinkTag";
-import Modal, { ModalTransition } from "@atlaskit/modal-dialog";
 import EditTransactionModal from "./EditTransactionModal";
 
 interface Props {
@@ -99,11 +99,13 @@ export default function TransactionLine({ detail, action }: Props) {
       >
         <div className="left">
           <Link href={`/transactions/${detail.id}`}>
-            <div className="narration">{detail.narration}</div>
+            <div className="basic">
+              {detail.payee && <span className="payee">{detail.payee}</span>}
+              <span className="narration">{detail.narration}</span>
+            </div>
           </Link>
           <div className="info">
             <span className="time">{dayjs(detail.time).format("HH:mm")}</span>
-            {detail.payee && <span className="payee">{detail.payee}</span>}
             {outAccounts.map((it) => (
               <LinkTag
                 link={`/accounts/${it.id}`}
@@ -158,13 +160,18 @@ export default function TransactionLine({ detail, action }: Props) {
             align-items: baseline;
             flex-direction: column;
 
-            .narration {
-              font-size: 1.2rem;
-
+            .basic {
+              font-size: 1rem;
+              .payee {
+                font-weight: 500;
+                :after {
+                  content: "•";
+                  margin: 0 0.2rem;
+                }
+              }
               :hover {
                 cursor: pointer;
               }
-
               padding-bottom: 0.2rem;
             }
 
@@ -172,11 +179,10 @@ export default function TransactionLine({ detail, action }: Props) {
               display: flex;
               flex-direction: row;
               font-weight: 500;
-              font-size: 0.95rem;
+              font-size: 0.9rem;
               color: rgba(92, 112, 128, 0.7);
 
-              .time,
-              .payee {
+              .time {
                 margin-right: 0.4rem;
               }
             }
