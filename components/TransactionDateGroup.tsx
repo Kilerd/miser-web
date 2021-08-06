@@ -45,7 +45,7 @@ export default function TransactionDateGroup({ date, items }: Props) {
           margin-bottom: 1rem;
 
           .date {
-            margin-left: 1rem;
+            margin-left: 0.5rem;
             margin-bottom: 0.2rem;
             font-size: 1.5rem;
 
