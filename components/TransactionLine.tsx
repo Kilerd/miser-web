@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import Link from "next/link";
 import { Popover2 } from "@blueprintjs/popover2";
 import { Alert, Button, Intent, Menu, MenuItem } from "@blueprintjs/core";
-import Modal, { ModalTransition } from "@atlaskit/modal-dialog";
+import Modal from "react-modal";
 import { useLedger } from "../contexts/ledger";
 import api from "../api";
 import Amount from "./Amount";
@@ -14,7 +14,6 @@ import EditTransactionModal from "./EditTransactionModal";
 
 interface Props {
   detail: any;
-
   action?: boolean;
 }
 
@@ -79,17 +78,31 @@ export default function TransactionLine({ detail, action }: Props) {
         <p>Confirm Delete？</p>
       </Alert>
 
-      <ModalTransition>
-        {isOpen && (
-          <Modal onClose={close} width="x-large" heading="Create a user">
-            <EditTransactionModal
-              detail={detail}
-              modalStatus={isOpen}
-              setModalStatus={setIsOpen}
-            />
-          </Modal>
-        )}
-      </ModalTransition>
+      {isOpen && (
+        <Modal
+          isOpen={isOpen}
+          onClose={close}
+          onRequestClose={close}
+          width="x-large"
+          heading={`Update Transaction #${detail.id}`}
+          style={{
+            content: {
+              top: "50%",
+              left: "50%",
+              right: "auto",
+              bottom: "auto",
+              marginRight: "-50%",
+              transform: "translate(-50%, -50%)",
+            },
+          }}
+        >
+          <EditTransactionModal
+            detail={detail}
+            modalStatus={isOpen}
+            setModalStatus={setIsOpen}
+          />
+        </Modal>
+      )}
 
       <div
         className={classNames("journal-line", {

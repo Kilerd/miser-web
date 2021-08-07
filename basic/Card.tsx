@@ -2,20 +2,13 @@ import React from "react";
 import classNames from "classnames";
 
 interface Props {
-  children: React.ReactElement[];
-  noPadding?: boolean;
+  children: React.ReactElement[] | React.ReactElement;
 }
 
-export default function Card({ children, noPadding }: Props) {
+export default function Card({ children }: Props) {
   return (
     <>
-      <div
-        className={classNames("card", {
-          padding: noPadding === undefined ? true : !noPadding,
-        })}
-      >
-        {children}
-      </div>
+      <div className={classNames("card", {})}>{children}</div>
 
       <style jsx>{`
         .card {
@@ -27,11 +20,30 @@ export default function Card({ children, noPadding }: Props) {
           background-color: #fff;
           grid-column: span 4;
         }
+      `}</style>
+    </>
+  );
+}
 
-        .padding {
+interface HeaderProps {
+  children: React.ReactElement[] | React.ReactElement;
+}
+
+export function CardHeader({ children }: HeaderProps) {
+  return (
+    <>
+      <div>{children}</div>
+
+      <style jsx>{`
+        div {
           padding: 1rem;
+          border-bottom: 1px solid #dadada;
         }
       `}</style>
     </>
   );
+}
+
+export function CardContent({ children }: Props) {
+  return <div>{children}</div>;
 }

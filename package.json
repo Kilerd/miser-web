@@ -8,9 +8,6 @@
     "start": "next start"
   },
   "dependencies": {
-    "@atlaskit/form": "^8.2.4",
-    "@atlaskit/modal-dialog": "^11.7.3",
-    "@atlaskit/textfield": "^5.0.5",
     "@blueprintjs/core": "^3.41.0",
     "@blueprintjs/datetime": "^3.21.2",
     "@blueprintjs/popover2": "^0.3.3",

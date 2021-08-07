@@ -16,7 +16,7 @@ import {
 import { useLedger } from "../contexts/ledger";
 import api from "../api";
 import Amount from "./Amount";
-import Card from "../basic/Card";
+import Card, { CardContent, CardHeader } from "../basic/Card";
 import TransactionLine from "./TransactionLine";
 import { groupByDate } from "../utils/sort";
 
@@ -33,10 +33,12 @@ export default function TransactionDateGroup({ date, items }: Props) {
           {dayjs(date).format("MMMM D")}
           <span className="weekday">{dayjs(date).format("dddd")}</span>
         </div>
-        <Card noPadding>
-          {items.map((one) => (
-            <TransactionLine key={one.id} detail={one} action />
-          ))}
+        <Card>
+          <CardContent>
+            {items.map((one) => (
+              <TransactionLine key={one.id} detail={one} action />
+            ))}
+          </CardContent>
         </Card>
       </div>
 
