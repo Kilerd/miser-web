@@ -1,12 +1,10 @@
+import * as React from "react";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { Button } from "@blueprintjs/core";
-import * as React from "react";
-import Textfield from "@atlaskit/textfield";
 import { useAuth } from "../contexts/auth";
 import { BASE_URL } from "../api";
-import Form, { Field } from "@atlaskit/form";
 import Card from "../basic/Card";
 
 const loginTab = (myUrl): Promise<string> => {
