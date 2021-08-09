@@ -76,7 +76,7 @@ const Login = () => {
     <>
       <div className="center">
         <div className="login">
-          <Card>
+          <Card padding={2}>
             <div className="logo">
               <img src="/images/logo.png" alt="logo" className="logo" />
             </div>

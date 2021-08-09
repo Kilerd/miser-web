@@ -3,12 +3,18 @@ import classNames from "classnames";
 
 interface Props {
   children: React.ReactElement[] | React.ReactElement;
+  padding?: number;
 }
 
-export default function Card({ children }: Props) {
+export default function Card({ children, padding }: Props) {
   return (
     <>
-      <div className={classNames("card", {})}>{children}</div>
+      <div
+        className={classNames("card", {})}
+        style={{ padding: `${padding}rem` }}
+      >
+        {children}
+      </div>
 
       <style jsx>{`
         .card {

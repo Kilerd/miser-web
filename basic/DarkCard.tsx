@@ -20,7 +20,8 @@ export default function DarkCard({ children, title }: Props) {
           padding: 2rem;
           border-radius: 4px;
           overflow: hidden;
-          background-color: #f6f5f8;
+          box-shadow: 0 1px 1px rgb(9 30 66 / 25%), 0 0 1px 0 rgb(9 30 66 / 31%);
+          background-color: rgb(255, 255, 255);
           margin-bottom: 2rem;
 
           div.title {
