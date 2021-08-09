@@ -206,7 +206,12 @@ function SingleTransactionPage() {
           display: flex;
           justify-content: space-between;
           //align-items: center;
-          margin-bottom: 1rem;
+          margin-bottom: 0.7rem;
+          padding-bottom: 0.7rem;
+
+          :not(:last-child) {
+            border-bottom: 1px dotted rgb(9 30 66 / 25%);
+          }
           div.account {
             span.desc {
               color: rgba(92, 112, 128, 0.7);
