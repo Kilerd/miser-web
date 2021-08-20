@@ -1,5 +1,4 @@
-import React, { CSSProperties, KeyboardEvent } from "react";
-import Link from "next/link";
+import React, { KeyboardEvent, LegacyRef } from "react";
 
 interface Props {
   value: string[];
@@ -8,8 +7,15 @@ interface Props {
 }
 
 export default function TagsInput({ value, onChange }: Props) {
-  const innerRef = React.createRef();
+  const innerRef: LegacyRef<HTMLDivElement> = React.createRef();
+
+  // record if is on Composition
+  let isOnComposition: boolean = false;
+
   const handleInput = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (isOnComposition) {
+      return;
+    }
     if (event.key === "Enter") {
       event.preventDefault();
       const newTags = [
@@ -22,7 +28,6 @@ export default function TagsInput({ value, onChange }: Props) {
       onChange(newTags.filter((it, idx) => newTags.indexOf(it) === idx));
       innerRef.current.innerText = "";
     }
-    console.log(event.key);
     if (event.key === "Backspace" && innerRef.current.innerText === "") {
       const newTags = [...value];
       newTags.pop();
@@ -42,7 +47,11 @@ export default function TagsInput({ value, onChange }: Props) {
         {value.map((tag) => (
           <span className="tag" key={tag}>
             <p>{tag}</p>
-            <button className="remove" onClick={() => deleteTag(tag)}>
+            <button
+              type="button"
+              className="remove"
+              onClick={() => deleteTag(tag)}
+            >
               <svg width="16" height="16" viewBox="0 0 16 16">
                 <path
                   d="M9.41 8l2.29-2.29c.19-.18.3-.43.3-.71a1.003 1.003 0 00-1.71-.71L8 6.59l-2.29-2.3a1.003 1.003 0 00-1.42 1.42L6.59 8 4.3 10.29c-.19.18-.3.43-.3.71a1.003 1.003 0 001.71.71L8 9.41l2.29 2.29c.18.19.43.3.71.3a1.003 1.003 0 00.71-1.71L9.41 8z"
@@ -57,6 +66,12 @@ export default function TagsInput({ value, onChange }: Props) {
           ref={innerRef}
           contentEditable
           placeholder="Enter Tag"
+          onCompositionStart={() => {
+            isOnComposition = true;
+          }}
+          onCompositionEnd={() => {
+            isOnComposition = false;
+          }}
           onKeyDown={(event) => handleInput(event)}
         />
       </div>
