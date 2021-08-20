@@ -1,26 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import api from "../api";
 import { useLedger } from "../contexts/ledger";
 import Big from "big.js";
 import Select from "react-select";
 import dayjs from "dayjs";
-import {
-  Button,
-  Classes,
-  Dialog,
-  FormGroup,
-  HTMLTable,
-  InputGroup,
-  Intent,
-  Switch,
-  TagInput,
-} from "@blueprintjs/core";
-import { DateInput, TimePrecision } from "@blueprintjs/datetime";
+import { Button, Classes, HTMLTable, Intent, Switch } from "@blueprintjs/core";
 import Input from "../basic/Input";
 import DateTimePicker from "react-datetime-picker/dist/entry.nostyle";
 import "react-calendar/dist/Calendar.css";
 import "react-clock/dist/Clock.css";
 import "react-datetime-picker/dist/DateTimePicker.css";
+import TagsInput from "../basic/TagsInput";
 
 export default function EditTransactionModal({
   detail,
@@ -144,32 +134,12 @@ export default function EditTransactionModal({
           <div className="line">
             <Input value={payee} onChange={setPayee} />
           </div>
-
-          <FormGroup label="Narration" labelFor="text-narration">
-            <InputGroup
-              id="text-narration"
-              placeholder="Narration"
-              value={narration}
-              onChange={(e) => setNarration(e.target.value)}
-            />
-          </FormGroup>
-
-          <FormGroup label="Tags">
-            <TagInput
-              values={tags}
-              placeholder="Separate tags with commas..."
-              onChange={(e) =>
-                setTags(e.filter((it, idx) => e.indexOf(it) === idx))
-              }
-              rightElement={
-                <Button
-                  icon="cross"
-                  minimal={true}
-                  onClick={() => setTags([])}
-                />
-              }
-            />
-          </FormGroup>
+          <div className="line">
+            <Input value={narration} onChange={setNarration} />
+          </div>
+          <div className="line">
+            <TagsInput value={tags} onChange={setTags} />
+          </div>
         </div>
 
         <Switch
