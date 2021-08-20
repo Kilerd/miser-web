@@ -207,7 +207,7 @@ function SingleTransactionPage() {
           padding-bottom: 0.7rem;
 
           :not(:last-child) {
-            border-bottom: 1px dotted rgb(9 30 66 / 25%);
+            border-bottom: 1px dashed rgb(9 30 66 / 25%);
           }
 
           div.account {
@@ -275,7 +275,7 @@ function SingleTransactionPage() {
               padding-bottom: 0.7rem;
 
               :not(:last-child) {
-                border-bottom: 1px dotted rgb(9 30 66 / 25%);
+                border-bottom: 1px dashed rgb(9 30 66 / 25%);
               }
 
               div.document-item-left {
