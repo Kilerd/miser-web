@@ -104,10 +104,36 @@ function SingleTransactionPage() {
                     {documents && (
                       <DarkCard title="Documents">
                         <div className="documents">
+                          <div className="document-list">
+                            {documents.map((it) => (
+                              <div className="document-item" key={it.id}>
+                                <div className="document-item-left">
+                                  <p className="title">{it.filename}</p>
+                                  <div>
+                                    <span>
+                                      {dayjs(it.create_time).format(
+                                        "MMMM D YYYY"
+                                      )}
+                                      {it.size}
+                                    </span>
+                                  </div>
+                                </div>
+                                <div className="document-item-right">
+                                  <a
+                                    target="_blank"
+                                    href={`${BASE_URL}/ledgers/${ledger_id}/transactions/${id}/documents/${it.id}/download`}
+                                    rel="noreferrer"
+                                  >
+                                    download
+                                  </a>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
                           {fileLoading ? (
                             <div>uploading...</div>
                           ) : (
-                            <div {...getRootProps()}>
+                            <div className="upload" {...getRootProps()}>
                               <input {...getInputProps()} />
                               {isDragActive ? (
                                 <p>Drop the files here ...</p>
@@ -119,34 +145,6 @@ function SingleTransactionPage() {
                               )}
                             </div>
                           )}
-                          <table>
-                            <thead>
-                              <tr>
-                                <th>#</th>
-                                <th>NAME</th>
-                                <th>DATE</th>
-                                <th />
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {documents.map((it) => (
-                                <tr key={it.id}>
-                                  <td>{it.id}</td>
-                                  <td>{it.filename}</td>
-                                  <td>{it.create_time}</td>
-                                  <td>
-                                    <a
-                                      target="_blank"
-                                      href={`${BASE_URL}/ledgers/${ledger_id}/transactions/${id}/documents/${it.id}/download`}
-                                      rel="noreferrer"
-                                    >
-                                      download
-                                    </a>
-                                  </td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
                         </div>
                       </DarkCard>
                     )}
@@ -205,20 +203,22 @@ function SingleTransactionPage() {
         div.line {
           display: flex;
           justify-content: space-between;
-          //align-items: center;
           margin-bottom: 0.7rem;
           padding-bottom: 0.7rem;
 
           :not(:last-child) {
             border-bottom: 1px dotted rgb(9 30 66 / 25%);
           }
+
           div.account {
             span.desc {
               color: rgba(92, 112, 128, 0.7);
+
               :before {
                 content: "(";
                 margin: 0 0.2rem;
               }
+
               :after {
                 content: ")";
                 margin: 0 0.2rem;
@@ -261,6 +261,62 @@ function SingleTransactionPage() {
           }
 
           margin-bottom: 2rem;
+        }
+
+        div.documents {
+          div.document-list {
+            margin-bottom: 2rem;
+
+            div.document-item {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 0.7rem;
+              padding-bottom: 0.7rem;
+
+              :not(:last-child) {
+                border-bottom: 1px dotted rgb(9 30 66 / 25%);
+              }
+
+              div.document-item-left {
+                flex: 0 70%;
+                overflow: hidden;
+
+                p.title {
+                  overflow: hidden;
+                  white-space: nowrap;
+                  text-overflow: ellipsis;
+                }
+              }
+            }
+          }
+        }
+
+        div.upload {
+          position: relative;
+          width: 100%;
+          padding: 4px;
+          border: 1px dashed rgb(215, 217, 226);
+          border-radius: 12rem;
+          background-color: rgb(246, 247, 249);
+          color: rgb(42, 48, 57);
+          display: flex;
+          flex-direction: column;
+          -webkit-box-pack: center;
+          justify-content: center;
+          -webkit-box-align: center;
+          align-items: center;
+          outline: none;
+          cursor: pointer;
+
+          &:hover,
+          &:focus {
+            border-color: rgb(0, 82, 204);
+          }
+
+          p {
+            margin: 1rem;
+          }
         }
       `}</style>
     </>

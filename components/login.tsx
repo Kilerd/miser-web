@@ -6,6 +6,7 @@ import { Button } from "@blueprintjs/core";
 import { useAuth } from "../contexts/auth";
 import { BASE_URL } from "../api";
 import Card from "../basic/Card";
+import Input from "../basic/Input";
 
 const loginTab = (myUrl): Promise<string> => {
   const windowArea = {
@@ -81,23 +82,22 @@ const Login = () => {
               <img src="/images/logo.png" alt="logo" className="logo" />
             </div>
             <div className="form">
-              <input
-                type="text"
-                placeholder="Email"
-                id="email"
-                className="input"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-
-              <input
-                type="password"
-                placeholder="Password"
-                id="password"
-                className="input"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
+              <div className="line">
+                <Input
+                  type="text"
+                  value={email}
+                  onChange={setEmail}
+                  placeholder="Enter Email"
+                />
+              </div>
+              <div className="line">
+                <Input
+                  type="password"
+                  value={password}
+                  onChange={setPassword}
+                  placeholder="Enter password"
+                />
+              </div>
 
               <button
                 className="button"
@@ -149,7 +149,7 @@ const Login = () => {
           display: flex;
           flex-direction: column;
 
-          input {
+          div.line {
             margin-bottom: 1.5rem;
           }
         }

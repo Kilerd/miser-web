@@ -16,6 +16,11 @@ import {
   TagInput,
 } from "@blueprintjs/core";
 import { DateInput, TimePrecision } from "@blueprintjs/datetime";
+import Input from "../basic/Input";
+import DateTimePicker from "react-datetime-picker/dist/entry.nostyle";
+import "react-calendar/dist/Calendar.css";
+import "react-clock/dist/Clock.css";
+import "react-datetime-picker/dist/DateTimePicker.css";
 
 export default function EditTransactionModal({
   detail,
@@ -24,51 +29,25 @@ export default function EditTransactionModal({
 }) {
   const ledgerContext = useLedger();
 
-  const [simpleMode, setSimpleMode] = useState(false);
+  const [simpleMode, setSimpleMode] = useState(detail.postings.length === 2);
 
-  const [date, setDate] = useState(() => dayjs());
-  const [payee, setPayee] = useState("");
-  const [narration, setNarration] = useState("");
-  const [tags, setTags] = useState([]);
-  const [lines, setLines] = useState([
-    {
-      account: null,
-      desc: "",
-      amount: "",
-      commodity: null,
-      commodity_candidates: [],
-    },
-    {
-      account: null,
-      desc: "",
-      amount: "",
-      commodity: null,
-      commodity_candidates: [],
-    },
-  ]);
+  const [date, setDate] = useState(dayjs(detail.time).toDate());
+  const [payee, setPayee] = useState(detail.payee);
+  const [narration, setNarration] = useState(detail.narration);
+  const [tags, setTags] = useState(detail.tags);
+  const [lines, setLines] = useState(() => {
+    return detail.postings.map((it) => {
+      const targetAccount = ledgerContext.accounts[it.account];
 
-  useEffect(() => {
-    if (detail !== undefined) {
-      setDate(dayjs(detail.time));
-      setPayee(detail.payee);
-      setNarration(detail.narration);
-      setTags(detail.tags);
-      setLines(
-        detail.postings.map((it) => {
-          const targetAccount = ledgerContext.accounts[it.account];
-
-          return {
-            account: { label: targetAccount.name, value: targetAccount.id },
-            amount: it.cost[0],
-            desc: it.description,
-            commodity: it.cost[1],
-            commodity_candidates: targetAccount.commodities,
-          };
-        })
-      );
-      setSimpleMode(detail.postings.length === 2);
-    }
-  }, [detail]);
+      return {
+        account: { label: targetAccount.name, value: targetAccount.id },
+        amount: it.cost[0],
+        desc: it.description,
+        commodity: it.cost[1],
+        commodity_candidates: targetAccount.commodities,
+      };
+    });
+  });
 
   const [isLoading, setLoading] = useState(false);
   const canBeSubmit =
@@ -135,7 +114,7 @@ export default function EditTransactionModal({
     }));
     await api.updateTransaction(
       detail.id,
-      date.toDate(),
+      date,
       payee,
       narration,
       tags,
@@ -159,29 +138,12 @@ export default function EditTransactionModal({
     <div>
       <div className={Classes.DIALOG_BODY}>
         <div>
-          <FormGroup label="Date">
-            <DateInput
-              defaultValue={date.toDate()}
-              parseDate={(s) => new Date(s)}
-              formatDate={(date) => date.toLocaleString()}
-              highlightCurrentDay
-              shortcuts
-              showActionsBar
-              timePickerProps={{ showArrowButtons: true }}
-              timePrecision={TimePrecision.MINUTE}
-              onChange={(date) => setDate(dayjs(date))}
-              fill
-            />
-          </FormGroup>
-
-          <FormGroup label="Payee" labelFor="text-payee">
-            <InputGroup
-              id="text-payee"
-              placeholder="Payee"
-              value={payee}
-              onChange={(e) => setPayee(e.target.value)}
-            />
-          </FormGroup>
+          <div className="line">
+            <DateTimePicker value={date} onChange={setDate} />
+          </div>
+          <div className="line">
+            <Input value={payee} onChange={setPayee} />
+          </div>
 
           <FormGroup label="Narration" labelFor="text-narration">
             <InputGroup
