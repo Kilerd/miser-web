@@ -8,7 +8,7 @@ const LoadingPage = ({ message }: Props) => {
   return (
     <>
       <div className="center">
-        <img src="/images/integration.svg" alt="logo" className="logo" />
+        <img src="/images/loading.svg" alt="logo" className="logo" />
         <p>{message || "Loading..."}</p>
       </div>
 
