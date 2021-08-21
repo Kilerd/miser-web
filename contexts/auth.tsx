@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
-import { Spinner } from "@blueprintjs/core";
 import api, { BASE_ENV, IS_DEV } from "../api";
 import { User } from "../types";
 import LoadingPage from "../components/LoadingPage";
@@ -74,7 +73,11 @@ export const AuthProvider = ({ children }) => {
     }
   };
   const logout = () => {
-    Cookies.remove("token");
+    if (IS_DEV) {
+      Cookies.remove("token");
+    } else {
+      Cookies.remove("token", { path: "/", domain: BASE_ENV.domain });
+    }
     setUser(undefined);
     delete api.client.defaults.headers.Authorization;
     window.location.pathname = "/";
