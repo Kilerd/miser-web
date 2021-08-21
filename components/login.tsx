@@ -79,7 +79,7 @@ const Login = () => {
         <div className="login">
           <Card padding={2}>
             <div className="logo">
-              <img src="/images/logo.png" alt="logo" className="logo" />
+              <img src="/images/welcome.svg" alt="logo" className="logo" />
             </div>
             <div className="form">
               <div className="line">
@@ -134,12 +134,6 @@ const Login = () => {
 
         div.logo {
           width: 100%;
-          padding: 2rem 0;
-
-          img.logo {
-            width: 100px;
-            height: 100px;
-          }
 
           display: flex;
           justify-content: center;

@@ -3,13 +3,14 @@ import { useAuth } from "../contexts/auth";
 import Login from "../components/login";
 import { useRouter } from "next/router";
 import React from "react";
+import LoadingPage from "../components/LoadingPage";
 
 export default function Home() {
   const { user } = useAuth();
   const router = useRouter();
   if (user !== undefined) {
     router.push("/dashboard");
-    return <div>redirecting...</div>;
+    return <LoadingPage />;
   }
   return (
     <>

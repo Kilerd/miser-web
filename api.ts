@@ -119,6 +119,7 @@ class Api {
   }
 
   async loadCommodities(): Promise<NameMap<Commodity>> {
+    console.log("------- loading commodities");
     const { data: res } = await this.client.get(
       `/ledgers/${this.currentLedgerId}/commodities`
     );

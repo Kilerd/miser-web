@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { Spinner } from "@blueprintjs/core";
 import api, { BASE_ENV, IS_DEV } from "../api";
 import { User } from "../types";
+import LoadingPage from "../components/LoadingPage";
 
 export interface AuthContextType {
   isAuthenticated: boolean;
@@ -79,7 +80,7 @@ export const AuthProvider = ({ children }) => {
     window.location.pathname = "/";
   };
   if (loading) {
-    return <div>auth loading</div>;
+    return <LoadingPage message="Loading user data..." />;
   }
 
   return (
@@ -107,7 +108,7 @@ export const ProtectRoute = (ChildComponent) => (args) => {
 
   if (!isAuthenticated && !UNAUTHENTICATED_ROUTE.includes(router.asPath)) {
     router.push("/");
-    return <Spinner />;
+    return <div />;
   }
   return <ChildComponent {...args} />;
 };

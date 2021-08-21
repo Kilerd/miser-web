@@ -179,27 +179,22 @@ function Accounts() {
 
           <AccountListItem
             {...accountTreeGenerator1.assets}
-            level={0}
             openEditAccount={openEditAccount}
           />
           <AccountListItem
             {...accountTreeGenerator1.expenses}
-            level={0}
             openEditAccount={openEditAccount}
           />
           <AccountListItem
             {...accountTreeGenerator1.income}
-            level={0}
             openEditAccount={openEditAccount}
           />
           <AccountListItem
             {...accountTreeGenerator1.liabilities}
-            level={0}
             openEditAccount={openEditAccount}
           />
           <AccountListItem
             {...accountTreeGenerator1.equity}
-            level={0}
             openEditAccount={openEditAccount}
           />
         </div>

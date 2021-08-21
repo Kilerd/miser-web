@@ -139,8 +139,7 @@ function SingleTransactionPage() {
                                 <p>Drop the files here ...</p>
                               ) : (
                                 <p>
-                                  Drag drop some files here, or click to select
-                                  files
+                                  Drag some files here, or click to select files
                                 </p>
                               )}
                             </div>

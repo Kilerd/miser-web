@@ -15,6 +15,9 @@ import {
 } from "../types";
 import LedgerSelector from "../components/LedgerSelector";
 import { useRouter } from "next/router";
+import LoadingPage from "../components/LoadingPage";
+
+const VERSION = "0.0.2";
 
 interface LedgerContextProps {
   ledger_id: string;
@@ -37,7 +40,7 @@ interface UserLocalData {
 }
 
 function initCurrentLedger(user: User | undefined): UserLocalData | null {
-  const item = localStorage.getItem(`user_data_ledger_${user.id}:0.0.1`);
+  const item = localStorage.getItem(`user_data_ledger_${user?.id}:${VERSION}`);
   if (item === null) {
     return null;
   }
@@ -59,30 +62,30 @@ const UNAUTHENTICATED_ROUTE = ["/ledgers"];
 export const LedgerProvider = ({ children }: any) => {
   const { user } = useAuth();
   const router = useRouter();
+  const userLocalData = initCurrentLedger(user);
+  api.setLedgerId(userLocalData?.selectedLedger?.id);
 
-  const [ledgerId, setLedgerId] = useState(null);
+  const [ledgerId, setLedgerId] = useState(userLocalData?.selectedLedger?.id);
   const [ledgers, setLedgers] = useState({});
 
   const commodities = useAsync(
-    async () => (ledgerId !== null ? api.loadCommodities() : {}),
-    [ledgerId]
+    async () => (ledgerId !== undefined ? api.loadCommodities() : {}),
+    []
   );
   const accounts = useAsync(
-    async () => (ledgerId !== null ? api.loadAccount() : {}),
-    [ledgerId]
+    async () => (ledgerId !== undefined ? api.loadAccount() : {}),
+    []
   );
 
   const changeLedgerId = (id: string) => {
-    console.log("set ledger id ", id);
     const userData: UserLocalData = {
       user_id: user.id,
       selectedLedger: {
         id,
-        // name: ledgers[id].name
       },
     };
     localStorage.setItem(
-      `user_data_ledger_${user.id}:0.0.1`,
+      `user_data_ledger_${user.id}:${VERSION}`,
       JSON.stringify(userData)
     );
     api.setLedgerId(id);
@@ -94,11 +97,11 @@ export const LedgerProvider = ({ children }: any) => {
     }
   };
 
-  const loadAndSetledgers = async () => {
+  const loadAndSetLedgers = async () => {
     const data = await api.loadLedgers();
     setLedgers(data);
     if (ledgerId !== null && data[ledgerId] !== null) {
-      dayjs.tz.setDefault(data[ledgerId].timezone);
+      dayjs.tz.setDefault(data[ledgerId]?.timezone);
     } else {
       dayjs.tz.setDefault();
     }
@@ -111,9 +114,8 @@ export const LedgerProvider = ({ children }: any) => {
 
   useEffect(() => {
     (async () => {
-      console.log("trigger by useeffect user change", ledgerId, ledgers, user);
       if (user !== undefined) {
-        await loadAndSetledgers();
+        await loadAndSetLedgers();
         const initialState = initCurrentLedger(user);
         if (initialState !== null) {
           await changeLedgerId(initialState.selectedLedger.id.toString());
@@ -121,11 +123,6 @@ export const LedgerProvider = ({ children }: any) => {
       }
     })();
   }, [user]);
-
-  // const transactionsR = useAsync(async () => {
-  //   const res = ledgerId !== undefined ? await api.loadTransactions(null) : {};
-  //   setTransactions(res);
-  // }, [ledgerId]);
 
   const update = async (type: RESOURCE_TYPE) => {
     switch (type) {
@@ -147,18 +144,16 @@ export const LedgerProvider = ({ children }: any) => {
     const account = accounts.result[id];
     return account?.alias || account?.name;
   };
-  if (accounts.loading || commodities.loading) {
-    return <div>ledger loading</div>;
+  if (accounts.result === undefined || commodities.result === undefined) {
+    return <LoadingPage message="Loading ledger basic data..." />;
   }
-
   if (
-    ledgerId === null &&
+    ledgerId === undefined &&
     user !== undefined &&
     !UNAUTHENTICATED_ROUTE.includes(router.asPath)
   ) {
     return <LedgerSelector selectLedger={changeLedgerId} ledgers={ledgers} />;
   }
-
   return (
     <LedgerContext.Provider
       value={{

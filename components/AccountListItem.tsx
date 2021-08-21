@@ -7,21 +7,16 @@ import Amount from "./Amount";
 
 interface ModalStatus {
   openEditAccount: any;
-  level: number;
 }
 
 export default function AccountListItem({
   name,
-  fullName,
-  isAvailable,
   alias,
-  commodities,
   amount,
   id,
   icon,
   children,
   openEditAccount,
-  level,
 }: AccountListItemType & ModalStatus) {
   const [childrenOpen, setChildrenOpen] = useState(true);
 
@@ -29,12 +24,11 @@ export default function AccountListItem({
     <AccountListItem
       key={one.fullName}
       {...one}
-      level={level + 1}
       openEditAccount={openEditAccount}
     />
   ));
 
-  let targetIcon =
+  const targetIcon =
     icon ||
     (id
       ? childrenDOM.length < 1
@@ -55,7 +49,7 @@ export default function AccountListItem({
       <div className="account">
         <div className="content">
           {id ? (
-            <div className="left" style={{ paddingLeft: `${level}rem` }}>
+            <div className="left">
               <Icon
                 icon={targetIcon as IconName}
                 onClick={openChildren}
@@ -69,7 +63,7 @@ export default function AccountListItem({
               </Link>
             </div>
           ) : (
-            <div className="left" style={{ paddingLeft: `${level}rem` }}>
+            <div className="left">
               <Icon
                 icon={targetIcon as IconName}
                 onClick={openChildren}
@@ -83,11 +77,6 @@ export default function AccountListItem({
           )}
           <div className="right">
             <Amount amount={amount} commodity="CNY" />
-            {/*{id &&*/}
-            {/*<span>*/}
-            {/*  <a onClick={() => openEditAccount(id, fullName, alias, commodities)}><Button minimal icon="edit"/></a>*/}
-            {/*</span>*/}
-            {/*}*/}
           </div>
         </div>
         {childrenDOM.length !== 0 && childrenOpen && (
@@ -98,6 +87,7 @@ export default function AccountListItem({
       <style jsx>{`
         .account {
           //padding: 1rem 0 0 1.5rem;
+          margin-left: 0.5rem;
           display: flex;
           flex-direction: column;
 
@@ -110,7 +100,8 @@ export default function AccountListItem({
             align-items: center;
             justify-content: space-between;
             //margin: 0.25rem;
-            padding: 0.35rem 1rem;
+            padding: 0.25rem 0.75rem;
+            margin-bottom: 0.25rem;
 
             &:hover {
               background-color: #efefef;
@@ -154,6 +145,8 @@ export default function AccountListItem({
           }
 
           .children {
+            margin-left: 1.25rem;
+            border-left: 1px dashed #7c7c7c;
           }
         }
       `}</style>
