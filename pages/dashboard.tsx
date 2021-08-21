@@ -33,12 +33,19 @@ const data = {
 function Dashboard() {
   const { user } = useAuth();
   return (
-    <AuthenticationLayout>
-      <div className="container">
-        <div>hello {user.username}</div>
-        <Line data={data} />
-      </div>
-    </AuthenticationLayout>
+    <>
+      <AuthenticationLayout>
+        <div className="container">
+          <div>hello {user.username}</div>
+        </div>
+      </AuthenticationLayout>
+
+      <style jsx>{`
+        .container {
+          min-height: 90vh;
+        }
+      `}</style>
+    </>
   );
 }
 
