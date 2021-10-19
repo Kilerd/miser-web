@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import React from "react";
 import { Tab, Tabs } from "@blueprintjs/core";
-import { Line } from "react-chartjs-2";
+import ChartComponent, { Line } from "react-chartjs-2";
 import useSWR from "swr";
 import { ProtectRoute } from "../../contexts/auth";
 import { get } from "../../api";
@@ -11,6 +11,8 @@ import Amount from "../../components/Amount";
 import Timeline from "../../components/Account/Timeline";
 import Balance from "../../components/Account/Balance";
 import Setting from "../../components/Account/Setting";
+import Card from "../../basic/Card";
+import dayjs from "dayjs";
 
 function Page() {
   const router = useRouter();
@@ -28,7 +30,10 @@ function Page() {
   );
 
   function fillInData(summary: any) {
-    const date = summary.map((it) => it.date).reverse();
+    const date = summary
+      .map((it) => dayjs(it.date.toString(), "YYYYMMDD", true))
+      .reverse()
+      .map((it) => it.format("MMM D"));
     const data1 = summary.map((it) => parseFloat(it.total.value)).reverse();
     const data2 = summary.map((it) => it.detail.data.CNY || "0").reverse();
     console.log("data2", data1);
@@ -90,7 +95,6 @@ function Page() {
               <h1>
                 {targetAccount.alias} {targetAccount.name}
               </h1>
-              {summary && <Line data={fillInData(summary)} height={70} />}
             </div>
             <div className="right">
               <Amount
@@ -110,6 +114,11 @@ function Page() {
               </div>
             </div>
           </div>
+          <Card padding={2}>
+            {summary && (
+              <ChartComponent data={fillInData(summary)} height={100} />
+            )}
+          </Card>
           <Tabs renderActiveTabPanelOnly large>
             <Tab id="timeline" title="Timeline" panel={<Timeline id={id} />} />
             <Tab

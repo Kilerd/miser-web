@@ -1,5 +1,6 @@
 body {
   background-color: #fafbfc;
+  overscroll-behavior: none;
 }
 html {
   font-size: 14px;

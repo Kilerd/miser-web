@@ -48,33 +48,27 @@ export default function AccountListItem({
     <>
       <div className="account">
         <div className="content">
-          {id ? (
-            <div className="left">
-              <Icon
-                icon={targetIcon as IconName}
-                onClick={openChildren}
-                className="account-icon"
-              />
+          <div className="left">
+            <Icon
+              icon={targetIcon as IconName}
+              onClick={openChildren}
+              className="account-icon"
+            />
+            {id ? (
               <Link href={`/accounts/${id}`}>
                 <div className="name pointer">
                   {alias || name}
                   {alias && <span>{name}</span>}
                 </div>
               </Link>
-            </div>
-          ) : (
-            <div className="left">
-              <Icon
-                icon={targetIcon as IconName}
-                onClick={openChildren}
-                className="account-icon"
-              />
+            ) : (
               <div className="name">
                 {alias || name}
                 {alias && <span>{name}</span>}
               </div>
-            </div>
-          )}
+            )}
+          </div>
+
           <div className="right">
             <Amount amount={amount} commodity="CNY" />
           </div>
@@ -93,25 +87,24 @@ export default function AccountListItem({
 
           .content {
             //border: 1px solid #eee;
-            border-radius: 5px;
+            //border-radius: 5px;
             //background-color: rgba(0, 114, 239, 0.06);
             display: flex;
             flex-direction: row;
             align-items: center;
             justify-content: space-between;
             //margin: 0.25rem;
-            padding: 0.25rem 0.75rem;
-            margin-bottom: 0.25rem;
-
+            padding: 0.75rem 0.75rem;
+            border-bottom: 1px solid rgb(9 30 66 / 5%);
             &:hover {
               background-color: #efefef;
-              border-radius: 5px;
+              //border-radius: 5px;
 
               .left {
-                color: #535353;
+                color: #000;
 
                 .name {
-                  color: #535353;
+                  color: #000;
                 }
               }
             }
@@ -126,7 +119,7 @@ export default function AccountListItem({
               color: #7f878a;
 
               .name {
-                margin-left: 0.25rem;
+                margin-left: 0.5rem;
                 font-size: 1rem;
                 color: #7f878a;
               }

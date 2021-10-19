@@ -4,16 +4,18 @@ import "../node_modules/@blueprintjs/icons/lib/css/blueprint-icons.css";
 import "../node_modules/normalize.css/normalize.css";
 import "../node_modules/@blueprintjs/datetime/lib/css/blueprint-datetime.css";
 import * as React from "react";
+import { useEffect } from "react";
 import Head from "next/head";
 import Modal from "react-modal";
 import { useRouter } from "next/router";
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
-import { useEffect } from "react";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 import { LedgerProvider } from "../contexts/ledger";
 import { AuthProvider } from "../contexts/auth";
 
+dayjs.extend(customParseFormat);
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
