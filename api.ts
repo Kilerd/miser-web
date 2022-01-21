@@ -10,8 +10,8 @@ const urls = {
   },
   production: {
     scheme: "https",
-    url: "api.miser.3min.work",
-    domain: "miser.3min.work",
+    url: "miser-api.kilerd.me",
+    domain: "miser-api.kilerd.me",
   },
 };
 export const IS_DEV = process.env.NODE_ENV === "development";
